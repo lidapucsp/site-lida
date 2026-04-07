@@ -2,24 +2,22 @@ import Layout from "@/components/layout/Layout";
 import { Calendar as CalIcon } from "lucide-react";
 
 const meses = [
+  { mes: "Março 2026", eventos: [
+    { dia: "23", titulo: "Início do processo seletivo 2026.1", tipo: "Seletivo" },
+    { dia: "27", titulo: "Fim do processo seletivo 2026.1", tipo: "Seletivo" },
+    { dia: "30", titulo: "Resultado do processo seletivo 2026.1", tipo: "Seletivo" },
+  ]},
   { mes: "Abril 2026", eventos: [
-    { dia: "07", titulo: "Reunião geral do LIDA", tipo: "Reunião" },
-    { dia: "14", titulo: "Grupo de estudo: Regulação de IA", tipo: "Estudo" },
-    { dia: "21", titulo: "Prazo: entrega de resumos expandidos", tipo: "Prazo" },
-    { dia: "28", titulo: "Grupo de estudo: Proteção de Dados", tipo: "Estudo" },
+    { dia: "04", titulo: "Primeira Reunião", tipo: "Reunião" },
+    { dia: "25", titulo: "Segunda Reunião", tipo: "Reunião" },
   ]},
   { mes: "Maio 2026", eventos: [
-    { dia: "05", titulo: "Reunião geral do LIDA", tipo: "Reunião" },
-    { dia: "12", titulo: "Grupo de estudo: Ética e Viés", tipo: "Estudo" },
-    { dia: "15", titulo: "Seminário: IA Generativa e Direitos Autorais", tipo: "Evento" },
-    { dia: "28", titulo: "Workshop: Prompt Engineering para Juristas", tipo: "Evento" },
-    { dia: "30", titulo: "Prazo: inscrições processo seletivo 2026.1", tipo: "Prazo" },
+    { dia: "02", titulo: "Terceira Reunião", tipo: "Reunião" },
+    { dia: "16", titulo: "Quarta Reunião", tipo: "Reunião" },
   ]},
   { mes: "Junho 2026", eventos: [
-    { dia: "02", titulo: "Reunião geral do LIDA", tipo: "Reunião" },
-    { dia: "10", titulo: "Palestra: LGPD na Era dos Dados Sintéticos", tipo: "Evento" },
-    { dia: "14", titulo: "Dinâmica de grupo — processo seletivo", tipo: "Seletivo" },
-    { dia: "25", titulo: "Resultado final do processo seletivo 2026.1", tipo: "Seletivo" },
+    { dia: "06", titulo: "Quinta Reunião", tipo: "Reunião" },
+    { dia: "27", titulo: "Última Reunião", tipo: "Reunião" },
   ]},
 ];
 

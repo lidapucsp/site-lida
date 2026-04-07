@@ -78,13 +78,13 @@ const Index = () => (
           
           <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-200">
             <Button variant="hero" size="lg" asChild className="group">
-              <Link to="/processo-seletivo">
+              <a href="https://forms.gle/cLmgoubo87g31oqS6" target="_blank" rel="noopener noreferrer">
                 Participar do LIDA
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
             </Button>
             <Button variant="hero-outline" size="lg" asChild>
-              <Link to="/eixos">Ver Eixos Temáticos</Link>
+              <a href="https://drive.google.com/file/d/1MN7WpRxoYP6SZC_1zZpwbMWrMilSgHqR/view?usp=sharing" target="_blank" rel="noopener noreferrer">Ver Edital</a>
             </Button>
             <Button variant="hero-outline" size="lg" asChild>
               <Link to="/publicacoes">Publicações</Link>

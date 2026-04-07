@@ -37,11 +37,27 @@ const ProcessoSeletivo = () => {
 
       <section className="section-padding">
         <div className="container mx-auto max-w-3xl">
+          {/* Edital Card */}
+          <div className="bg-gradient-to-br from-navy to-navy-dark border-2 border-gold/40 rounded-2xl p-8 mb-8 text-center shadow-xl">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/20 mb-4">
+              <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold mb-3 text-gold">Edital Processo Seletivo 2026.1</h2>
+            <p className="text-cream/80 mb-6">Leia o edital completo com todas as regras, critérios de seleção e informações sobre o processo.</p>
+            <Button variant="hero" size="lg" asChild className="bg-gold hover:bg-gold-dark text-navy">
+              <a href="https://drive.google.com/file/d/1MN7WpRxoYP6SZC_1zZpwbMWrMilSgHqR/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                Acessar Edital Completo
+              </a>
+            </Button>
+          </div>
+
           <div className="bg-gold/10 border border-gold/30 rounded-xl p-6 mb-10 text-center">
             <h2 className="text-xl font-display font-bold mb-2">Processo Seletivo 2026.1</h2>
             <p className="text-muted-foreground mb-4">Inscrições: 23/03 às 10h até 07/04 às 23h59 (horário de Brasília)</p>
             <Button variant="hero" size="lg" asChild>
-              <a href="#" target="_blank" rel="noopener noreferrer">Inscrever-se agora</a>
+              <a href="https://forms.gle/cLmgoubo87g31oqS6" target="_blank" rel="noopener noreferrer">Inscrever-se agora</a>
             </Button>
           </div>
 
