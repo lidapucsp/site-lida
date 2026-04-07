@@ -41,8 +41,8 @@ const Index = () => (
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
       </div>
       
-      {/* Large Logo Watermark with Gold Gradient */}
-      <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[700px] h-[700px] opacity-[0.04] pointer-events-none animate-fade-in animate-delay-500">
+      {/* Large Logo Watermark with Subtle Shine Animation */}
+      <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[700px] h-[700px] opacity-[0.08] pointer-events-none animate-fade-in animate-delay-500">
         <div className="w-full h-full relative" style={{
           WebkitMaskImage: 'url(/LIDA-logo.PNG)',
           WebkitMaskSize: 'contain',
@@ -53,8 +53,10 @@ const Index = () => (
           maskRepeat: 'no-repeat',
           maskPosition: 'center'
         }}>
-          {/* Subtle cream/gold gradient applied through mask */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cream via-gold/30 to-gold/50" />
+          {/* Subtle navy/cream blend matching background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-navy-light/40 via-cream/20 to-navy-light/30" />
+          {/* Animated shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cream/40 to-transparent -translate-x-full animate-shine" />
         </div>
       </div>
       
