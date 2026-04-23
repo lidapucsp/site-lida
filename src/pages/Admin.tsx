@@ -90,7 +90,7 @@ export default function Admin() {
                 Painel Administrativo
               </h1>
               <p className="text-sm text-gold-light">
-                Bem-vindo, {profile?.full_name || profile?.username}
+                Bem-vindo(a), {profile?.full_name || profile?.username}
               </p>
             </div>
             <div className="flex items-center gap-3">

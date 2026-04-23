@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Eventos", path: "/eventos" },
   { label: "Seletivo", path: "/processo-seletivo" },
   { label: "Calendário", path: "/calendario" },
+  { label: "Conceitos", path: "/conceitos" },
   { label: "Contato", path: "/contato" },
 ];
 

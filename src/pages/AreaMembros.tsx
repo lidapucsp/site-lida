@@ -38,7 +38,7 @@ export default function AreaMembros() {
               </Avatar>
               <div>
                 <h1 className="text-2xl font-display font-bold">
-                  Bem-vindo, {profile?.full_name || profile?.username}!
+                  Bem-vindo(a), {profile?.full_name || profile?.username}!
                 </h1>
                 <p className="text-gold-light text-sm">Área de Membros LIDA</p>
               </div>

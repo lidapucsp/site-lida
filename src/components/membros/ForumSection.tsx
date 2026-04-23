@@ -19,7 +19,8 @@ import {
   ExternalLink,
   Loader2,
   Pin,
-  Send
+  Send,
+  Trash2
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -373,6 +374,7 @@ function PostDialog({ post, onClose, onUpdate }: any) {
   const [novoComentario, setNovoComentario] = useState('')
   const [loading, setLoading] = useState(false)
   const [curtido, setCurtido] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const handleCurtir = async () => {
     if (!user) return
@@ -395,6 +397,49 @@ function PostDialog({ post, onClose, onUpdate }: any) {
       onUpdate()
     } catch (error) {
       console.error('[FORUM] Erro ao curtir:', error)
+    }
+  }
+
+  const handleDeletePost = async () => {
+    if (!user || user.id !== post.autor_id) return
+    if (!confirm('Tem certeza que deseja deletar esta postagem?')) return
+
+    setDeleting(true)
+    try {
+      const { error } = await supabase
+        .from('forum_posts')
+        .delete()
+        .eq('id', post.id)
+        .eq('autor_id', user.id) // Segurança adicional no banco
+
+      if (error) throw error
+      onUpdate()
+      onClose()
+    } catch (error) {
+      console.error('[FORUM] Erro ao deletar post:', error)
+      alert('Erro ao deletar postagem. Tente novamente.')
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  const handleDeleteComentario = async (comentarioId: string, autorId: string) => {
+    if (!user || user.id !== autorId) return
+    if (!confirm('Tem certeza que deseja deletar este comentário?')) return
+
+    try {
+      const { error } = await supabase
+        .from('forum_comentarios')
+        .delete()
+        .eq('id', comentarioId)
+        .eq('autor_id', user.id) // Segurança adicional no banco
+
+      if (error) throw error
+      refetchComentarios()
+      onUpdate()
+    } catch (error) {
+      console.error('[FORUM] Erro ao deletar comentário:', error)
+      alert('Erro ao deletar comentário. Tente novamente.')
     }
   }
 
@@ -457,6 +502,21 @@ function PostDialog({ post, onClose, onUpdate }: any) {
                   })}
                 </span>
               </div>
+              {user?.id === post.autor_id && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDeletePost}
+                  disabled={deleting}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  {deleting ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-4 h-4" />
+                  )}
+                </Button>
+              )}
             </div>
 
             <h2 className="text-2xl font-display font-bold text-navy mb-4">
@@ -513,8 +573,55 @@ function PostDialog({ post, onClose, onUpdate }: any) {
           <div className="border-t border-gold/20 pt-6">
             <h3 className="font-semibold text-navy mb-4">Comentários</h3>
 
+            {/* Lista de Comentários */}
+            <div className="space-y-4">
+              {comentarios.map((comentario) => (
+                <div key={comentario.id} className="flex gap-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={comentario.autor_avatar || ''} />
+                    <AvatarFallback className="bg-navy text-cream text-xs">
+                      {comentario.autor_nome.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="bg-cream rounded-lg p-3 border border-gold/20">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-navy text-sm">
+                          {comentario.autor_nome}
+                        </span>
+                        <span className="text-xs text-navy-light">
+                          {formatDistanceToNow(new Date(comentario.created_at), {
+                            addSuffix: true,
+                            locale: ptBR
+                          })}
+                        </span>
+                        {user?.id === comentario.autor_id && (
+                          <button
+                            onClick={() => handleDeleteComentario(comentario.id, comentario.autor_id)}
+                            className="ml-auto text-red-600 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
+                            title="Deletar comentário"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-navy-light text-sm whitespace-pre-wrap">
+                        {comentario.conteudo}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {comentarios.length === 0 && (
+              <p className="text-center text-navy-light py-8">
+                Nenhum comentário ainda. Seja o primeiro a comentar!
+              </p>
+            )}
+
             {/* Form de Novo Comentário */}
-            <form onSubmit={handleComentar} className="mb-6">
+            <form onSubmit={handleComentar} className="mt-6 pt-6 border-t border-gold/20">
               <div className="flex gap-3">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={profile?.avatar_url || ''} />
@@ -545,44 +652,6 @@ function PostDialog({ post, onClose, onUpdate }: any) {
                 </div>
               </div>
             </form>
-
-            {/* Lista de Comentários */}
-            <div className="space-y-4">
-              {comentarios.map((comentario) => (
-                <div key={comentario.id} className="flex gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={comentario.autor_avatar || ''} />
-                    <AvatarFallback className="bg-navy text-cream text-xs">
-                      {comentario.autor_nome.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="bg-cream rounded-lg p-3 border border-gold/20">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-navy text-sm">
-                          {comentario.autor_nome}
-                        </span>
-                        <span className="text-xs text-navy-light">
-                          {formatDistanceToNow(new Date(comentario.created_at), {
-                            addSuffix: true,
-                            locale: ptBR
-                          })}
-                        </span>
-                      </div>
-                      <p className="text-navy-light text-sm whitespace-pre-wrap">
-                        {comentario.conteudo}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {comentarios.length === 0 && (
-              <p className="text-center text-navy-light py-8">
-                Nenhum comentário ainda. Seja o primeiro a comentar!
-              </p>
-            )}
           </div>
         </div>
       </DialogContent>

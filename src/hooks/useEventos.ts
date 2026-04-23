@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Database } from '@/types/database';
 
@@ -13,42 +13,42 @@ export function useEventos(options: UseEventosOptions = { status: 'todos' }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    async function fetchEventos() {
-      try {
-        setLoading(true);
-        let query = supabase
-          .from('eventos')
-          .select('*');
-        
-        // Filtrar por status ativo (padrão) ou todos
-        if (options.status !== 'todos') {
-          query = query.eq('ativo', true);
-        }
-
-        // Filtrar por status
-        if (options.status === 'agendado') {
-          query = query.in('status', ['agendado', 'em_andamento']);
-        } else if (options.status === 'realizado') {
-          query = query.eq('status', 'realizado');
-        }
-
-        query = query.order('data_evento', { ascending: options.status === 'agendado' });
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        setEventos(data || []);
-      } catch (err) {
-        setError(err as Error);
-        console.error('Erro ao buscar eventos:', err);
-      } finally {
-        setLoading(false);
+  const fetchEventos = useCallback(async () => {
+    try {
+      setLoading(true);
+      let query = supabase
+        .from('eventos')
+        .select('*');
+      
+      // Filtrar por status ativo (padrão) ou todos
+      if (options.status !== 'todos') {
+        query = query.eq('ativo', true);
       }
-    }
 
-    fetchEventos();
+      // Filtrar por status
+      if (options.status === 'agendado') {
+        query = query.in('status', ['agendado', 'em_andamento']);
+      } else if (options.status === 'realizado') {
+        query = query.eq('status', 'realizado');
+      }
+
+      query = query.order('data_evento', { ascending: options.status === 'agendado' });
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      setEventos(data || []);
+    } catch (err) {
+      setError(err as Error);
+      console.error('Erro ao buscar eventos:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [options.status]);
 
-  return { eventos, loading, error };
+  useEffect(() => {
+    fetchEventos();
+  }, [fetchEventos]);
+
+  return { eventos, loading, error, refetch: fetchEventos };
 }

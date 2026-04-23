@@ -19,7 +19,7 @@ type Evento = Database['public']['Tables']['eventos']['Row']
 type EventoInsert = Database['public']['Tables']['eventos']['Insert']
 
 export function AdminEventos() {
-  const { eventos, loading, error } = useEventos({ status: 'todos' })
+  const { eventos, loading, error, refetch } = useEventos({ status: 'todos' })
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [editingEvento, setEditingEvento] = useState<Evento | null>(null)
@@ -96,7 +96,7 @@ export function AdminEventos() {
       }
       
       setOpen(false)
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',
@@ -124,7 +124,7 @@ export function AdminEventos() {
         description: 'O evento foi removido com sucesso.',
       })
       
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',

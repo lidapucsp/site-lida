@@ -13,6 +13,7 @@ import ProcessoSeletivo from "./pages/ProcessoSeletivo";
 import Calendario from "./pages/Calendario";
 import Contato from "./pages/Contato";
 import Links from "./pages/Links";
+import Conceitos from "./pages/Conceitos";
 import Privacidade from "./pages/Privacidade";
 import Cookies from "./pages/Cookies";
 import Termos from "./pages/Termos";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/calendario" element={<Calendario />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/links" element={<Links />} />
+          <Route path="/conceitos" element={<Conceitos />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/termos" element={<Termos />} />

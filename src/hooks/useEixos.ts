@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Database } from '@/types/database';
 
@@ -9,28 +9,28 @@ export function useEixos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    async function fetchEixos() {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('eixos')
-          .select('*')
-          .eq('ativo', true)
-          .order('ordem', { ascending: true });
+  const fetchEixos = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('eixos')
+        .select('*')
+        .eq('ativo', true)
+        .order('ordem', { ascending: true });
 
-        if (error) throw error;
-        setEixos(data || []);
-      } catch (err) {
-        setError(err as Error);
-        console.error('Erro ao buscar eixos:', err);
-      } finally {
-        setLoading(false);
-      }
+      if (error) throw error;
+      setEixos(data || []);
+    } catch (err) {
+      setError(err as Error);
+      console.error('Erro ao buscar eixos:', err);
+    } finally {
+      setLoading(false);
     }
-
-    fetchEixos();
   }, []);
 
-  return { eixos, loading, error };
+  useEffect(() => {
+    fetchEixos();
+  }, [fetchEixos]);
+
+  return { eixos, loading, error, refetch: fetchEixos };
 }

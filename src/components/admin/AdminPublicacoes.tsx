@@ -20,7 +20,7 @@ type Publicacao = Database['public']['Tables']['publicacoes']['Row']
 type PublicacaoInsert = Database['public']['Tables']['publicacoes']['Insert']
 
 export function AdminPublicacoes() {
-  const { publicacoes, loading, error } = usePublicacoes({ status: 'todos' })
+  const { publicacoes, loading, error, refetch } = usePublicacoes({ status: 'todos' })
   const { eixos } = useEixos()
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
@@ -101,7 +101,7 @@ export function AdminPublicacoes() {
       }
       
       setOpen(false)
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',
@@ -129,7 +129,7 @@ export function AdminPublicacoes() {
         description: 'A publicação foi removida com sucesso.',
       })
       
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',

@@ -18,7 +18,7 @@ type Eixo = Database['public']['Tables']['eixos']['Row']
 type EixoInsert = Database['public']['Tables']['eixos']['Insert']
 
 export function AdminEixos() {
-  const { eixos, loading, error } = useEixos()
+  const { eixos, loading, error, refetch } = useEixos()
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [editingEixo, setEditingEixo] = useState<Eixo | null>(null)
@@ -83,7 +83,7 @@ export function AdminEixos() {
       }
       
       setOpen(false)
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',
@@ -111,7 +111,7 @@ export function AdminEixos() {
         description: 'O eixo foi removido com sucesso.',
       })
       
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',

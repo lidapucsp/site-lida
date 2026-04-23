@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Mail, Send, Users, AlertCircle, CheckCircle2, Clock, History } from 'lucide-react'
+import { Loader2, Mail, Send, Users, AlertCircle, CheckCircle2, Clock, History, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 interface Comunicado {
@@ -126,6 +126,32 @@ export function AdminComunicados() {
       })
     } finally {
       setSending(false)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Tem certeza que deseja deletar este comunicado do histórico?')) return
+    
+    try {
+      const { error } = await supabase
+        .from('comunicados')
+        .delete()
+        .eq('id', id)
+      
+      if (error) throw error
+      
+      toast({
+        title: 'Comunicado deletado',
+        description: 'O comunicado foi removido do histórico.',
+      })
+      
+      fetchComunicados()
+    } catch (error) {
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível deletar o comunicado.',
+        variant: 'destructive',
+      })
     }
   }
 
@@ -341,6 +367,7 @@ export function AdminComunicados() {
                         <TableHead>Data/Hora</TableHead>
                         <TableHead>Destinatários</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -368,6 +395,16 @@ export function AdminComunicados() {
                           </TableCell>
                           <TableCell>
                             {getStatusBadge(comunicado.status)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(comunicado.id)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}

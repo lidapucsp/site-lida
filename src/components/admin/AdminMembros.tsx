@@ -19,7 +19,7 @@ type Membro = Database['public']['Tables']['membros']['Row']
 type MembroInsert = Database['public']['Tables']['membros']['Insert']
 
 export function AdminMembros() {
-  const { membros, loading, error } = useMembros({ tipo: 'todos' })
+  const { membros, loading, error, refetch } = useMembros({ tipo: 'todos' })
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [editingMembro, setEditingMembro] = useState<Membro | null>(null)
@@ -88,7 +88,7 @@ export function AdminMembros() {
       }
       
       setOpen(false)
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',
@@ -116,7 +116,7 @@ export function AdminMembros() {
         description: 'O membro foi removido com sucesso.',
       })
       
-      window.location.reload()
+      refetch()
     } catch (error) {
       toast({
         title: 'Erro',
