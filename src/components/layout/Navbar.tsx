@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
   { label: "Início", path: "/" },
   { label: "Sobre", path: "/sobre" },
   { label: "Eixos", path: "/eixos" },
-  { label: "Projetos", path: "/projetos" },
   { label: "Publicações", path: "/publicacoes" },
   { label: "Eventos", path: "/eventos" },
   { label: "Seletivo", path: "/processo-seletivo" },
@@ -23,9 +22,11 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-gold/10 shadow-xl">
       <div className="container mx-auto flex items-center justify-between h-20 px-4">
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-xl bg-cream border border-gold/20 flex items-center justify-center shadow-lg shadow-navy/10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 p-1.5">
-            <img src="/LIDA-logo.PNG" alt="LIDA Logo" className="w-full h-full object-contain" />
-          </div>
+          <img 
+            src="/LIDA-logo.PNG" 
+            alt="LIDA Logo" 
+            className="h-12 w-auto object-contain group-hover:scale-110 transition-transform duration-300" 
+          />
           <span className="text-primary-foreground font-display text-2xl font-extrabold tracking-tight">LIDA</span>
         </Link>
 
@@ -47,7 +48,10 @@ const Navbar = () => {
         </nav>
 
         <Button variant="hero" size="sm" className="hidden lg:inline-flex shadow-lg shadow-gold/20" asChild>
-          <Link to="/processo-seletivo">Inscrever-se</Link>
+          <Link to="/membros">
+            <User className="w-4 h-4 mr-2" />
+            Área de Membros
+          </Link>
         </Button>
 
         {/* Mobile toggle */}
@@ -79,7 +83,10 @@ const Navbar = () => {
               </Link>
             ))}
             <Button variant="hero" size="sm" className="mt-3 shadow-lg shadow-gold/20" asChild>
-              <Link to="/processo-seletivo" onClick={() => setOpen(false)}>Inscrever-se</Link>
+              <Link to="/membros" onClick={() => setOpen(false)}>
+                <User className="w-4 h-4 mr-2" />
+                Área de Membros
+              </Link>
             </Button>
           </div>
         </nav>

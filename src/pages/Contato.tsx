@@ -8,7 +8,7 @@ const Contato = () => {
 
   return (
     <Layout>
-      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden section-padding">
+      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
@@ -25,7 +25,7 @@ const Contato = () => {
         </div>
       </section>
 
-      <section className="section-padding">
+      <section className="section-padding-top-sm">
         <div className="container mx-auto max-w-4xl">
           <div className="grid md:grid-cols-2 gap-10">
             <div>

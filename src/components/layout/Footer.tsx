@@ -7,9 +7,11 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gold flex items-center justify-center">
-              <Scale className="w-4 h-4 text-accent-foreground" />
-            </div>
+            <img 
+              src="/LIDA-logo.PNG" 
+              alt="LIDA Logo" 
+              className="h-8 w-auto object-contain" 
+            />
             <span className="font-display text-lg font-bold">LIDA</span>
           </div>
           <p className="text-sm text-primary-foreground/70 leading-relaxed">
@@ -21,7 +23,7 @@ const Footer = () => (
           <h4 className="font-semibold text-sm mb-3 text-gold">Navegação</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/70">
             {[
-              ["Sobre", "/sobre"], ["Eixos", "/eixos"], ["Projetos", "/projetos"],
+              ["Sobre", "/sobre"], ["Eixos", "/eixos"],
               ["Publicações", "/publicacoes"], ["Eventos", "/eventos"],
             ].map(([l, p]) => (
               <li key={p}><Link to={p} className="hover:text-primary-foreground transition-colors">{l}</Link></li>

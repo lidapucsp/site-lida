@@ -1,9 +1,19 @@
 import Layout from "@/components/layout/Layout";
-import { Target, Eye, Heart, BookOpen, Users, Lightbulb, Calendar, FileText } from "lucide-react";
+import { Target, Eye, Heart, BookOpen, Users, Lightbulb, Calendar, FileText, Loader2 } from "lucide-react";
+import { useMembros } from "@/hooks/useMembros";
 
-const Sobre = () => (
+const Sobre = () => {
+  const { membros: coordenadores, loading: loadingCoordenadores } = useMembros({ tipo: 'coordenador' });
+  const { membros: presidentes, loading: loadingPresidentes } = useMembros({ tipo: 'presidente' });
+  const { membros: diretores, loading: loadingDiretores } = useMembros({ tipo: 'diretor' });
+
+  const loading = loadingCoordenadores || loadingPresidentes || loadingDiretores;
+  const coordenador = coordenadores[0];
+  const presidente = presidentes[0];
+
+  return (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden section-padding">
+    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
@@ -20,7 +30,7 @@ const Sobre = () => (
       </div>
     </section>
 
-    <section className="section-padding">
+    <section className="section-padding-top-sm">
       <div className="container mx-auto max-w-4xl">
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {[
@@ -60,95 +70,148 @@ const Sobre = () => (
 
         <h2 className="text-2xl md:text-3xl font-display font-bold mb-8 text-center text-gradient">Nosso Time</h2>
         
-        {/* Coordenador */}
-        <div className="mb-12">
-          <div className="glass rounded-2xl p-8 max-w-3xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-gold to-gold-dark rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
-                <img 
-                  src="/Jose-foto.jpeg" 
-                  alt="Prof. Dr. José de Jesus Filho" 
-                  className="relative w-32 h-32 rounded-2xl object-cover border-4 border-gold/20 group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-gold to-gold-dark text-navy text-xs font-bold mb-3">
-                  Professor Orientador
-                </span>
-                <h3 className="font-display font-bold text-2xl mb-2 text-gradient">Prof. Dr. José de Jesus Filho</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Doutor e professor na PUC-SP, especialista em Direito e Tecnologia. Coordena o LIDA com foco em pesquisa aplicada sobre IA e Sistema de Justiça, orientando projetos que conectam rigor acadêmico à transformação digital do campo jurídico.
-                </p>
-                <a 
-                  href="https://www.linkedin.com/in/jjesusfilho/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-4 text-gold hover:text-gold-dark transition-colors"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
-                  </svg>
-                  Ver perfil no LinkedIn
-                </a>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
           </div>
-        </div>
-
-        {/* Diretoria */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {[
-            {
-              name: "Marília Affonso",
-              role: "Diretora Acadêmica",
-              image: "/Marilia-foto.jpeg",
-              linkedin: "https://www.linkedin.com/in/mar%C3%ADlia-affonso-9024763b3/",
-              bio: "Responsável pela coordenação das atividades acadêmicas do LIDA, incluindo grupos de estudo, projetos de pesquisa e produção científica, garantindo rigor metodológico e excelência nas publicações."
-            },
-            {
-              name: "Giovanna P. Andrade",
-              role: "Diretora de Comunicação",
-              image: "/Giovanna-foto.jpeg",
-              linkedin: "https://www.linkedin.com/in/giovannapandrade/",
-              bio: "Gerencia a comunicação institucional do LIDA, coordenando redes sociais, divulgação de eventos, relacionamento com a comunidade acadêmica e estratégias de engajamento digital."
-            },
-            {
-              name: "Felipe Toshio Kamishibahara",
-              role: "Diretor Administrativo",
-              image: "/Felipe-foto.jpeg",
-              linkedin: "https://www.linkedin.com/in/felipe-toshio-kamishibahara-44822537a/",
-              bio: "Coordena a gestão administrativa e organizacional do laboratório, incluindo planejamento de atividades, controle de participação, logística de eventos e processos seletivos."
-            }
-          ].map((member) => (
-            <div key={member.name} className="glass rounded-2xl p-6 card-hover group">
-              <div className="relative mb-4">
-                <div className="absolute inset-0 bg-gradient-to-br from-navy to-navy-light rounded-xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="relative w-full aspect-square object-cover rounded-xl border-2 border-navy/10 group-hover:scale-105 transition-transform duration-300"
-                />
+        ) : (
+          <>
+            {/* Coordenador */}
+            {coordenador && (
+              <div className="mb-12">
+                <div className="glass rounded-2xl p-8 max-w-3xl mx-auto">
+                  <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-br from-gold to-gold-dark rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                      <img 
+                        src={coordenador.foto_url} 
+                        alt={coordenador.nome} 
+                        className="relative w-32 h-32 rounded-2xl object-cover border-4 border-gold/20 group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="flex-1 text-center md:text-left">
+                      <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-gold to-gold-dark text-navy text-xs font-bold mb-3">
+                        {coordenador.cargo}
+                      </span>
+                      <h3 className="font-display font-bold text-2xl mb-2 text-gradient">{coordenador.nome}</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {coordenador.bio}
+                      </p>
+                      {coordenador.linkedin_url && (
+                        <a 
+                          href={coordenador.linkedin_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 mt-4 text-gold hover:text-gold-dark transition-colors"
+                        >
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+                          </svg>
+                          Ver perfil no LinkedIn
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <span className="inline-block px-2.5 py-1 rounded-full bg-navy/5 text-navy text-xs font-semibold mb-3">
-                {member.role}
-              </span>
-              <h3 className="font-display font-bold text-lg mb-3">{member.name}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">{member.bio}</p>
-              <a 
-                href={member.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-navy hover:text-navy-light transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
-                </svg>
-                LinkedIn
-              </a>
+            )}
+
+            {/* Presidente */}
+            {presidente && (
+              <div className="mb-12">
+                <div className="glass rounded-2xl p-8 max-w-3xl mx-auto ring-2 ring-gold/30 shadow-2xl shadow-gold/10">
+                  <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-br from-gold via-gold-dark to-gold rounded-2xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity" />
+                      <img 
+                        src={presidente.foto_url} 
+                        alt={presidente.nome} 
+                        className="relative w-32 h-32 rounded-2xl object-cover border-4 border-gold/40 group-hover:scale-105 transition-transform duration-300 shadow-xl"
+                      />
+                    </div>
+                    <div className="flex-1 text-center md:text-left">
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-gold via-gold-dark to-gold text-navy text-xs font-bold mb-3 shadow-lg shadow-gold/30">
+                        {presidente.cargo}
+                      </span>
+                      <h3 className="font-display font-bold text-2xl mb-2 bg-gradient-to-r from-gold via-gold-dark to-gold bg-clip-text text-transparent">
+                        {presidente.nome}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {presidente.bio}
+                      </p>
+                      {presidente.linkedin_url && (
+                        <a 
+                          href={presidente.linkedin_url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 mt-4 text-gold hover:text-gold-dark transition-colors"
+                        >
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+                          </svg>
+                          Ver perfil no LinkedIn
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Diretoria */}
+            <div className="flex flex-wrap justify-center gap-6 mb-16">
+              {diretores.map((member) => (
+                <div 
+                  key={member.id} 
+                  className={`glass rounded-2xl p-5 card-hover group w-full sm:w-64 ${
+                    member.is_founder 
+                      ? 'ring-2 ring-gold/50 shadow-xl shadow-gold/20 hover:ring-gold/70' 
+                      : ''
+                  }`}
+                >
+                  <div className="relative mb-4">
+                    <div className={`absolute inset-0 ${
+                      member.is_founder 
+                        ? 'bg-gradient-to-br from-gold to-gold-dark' 
+                        : 'bg-gradient-to-br from-navy to-navy-light'
+                    } rounded-xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity`} />
+                    <img 
+                      src={member.foto_url} 
+                      alt={member.nome}
+                      className={`relative w-full aspect-square object-cover rounded-xl border-2 ${
+                        member.is_founder ? 'border-gold/30' : 'border-navy/10'
+                      } group-hover:scale-105 transition-transform duration-300`}
+                    />
+                  </div>
+                  <div className="flex justify-center items-center gap-2 mb-3 min-h-[28px]">
+                    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      member.is_founder 
+                        ? 'bg-gradient-to-r from-gold to-gold-dark text-navy shadow-lg shadow-gold/20' 
+                        : 'bg-navy/5 text-navy'
+                    }`}>
+                      {member.cargo}
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg mb-3 text-center">{member.nome}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-4 text-center">{member.bio}</p>
+                  {member.linkedin_url && (
+                    <a 
+                      href={member.linkedin_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 text-navy hover:text-navy-light transition-colors text-sm"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/>
+                      </svg>
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
         <h2 className="text-2xl font-display font-bold mb-6">Perguntas que nos movem</h2>
         <ul className="space-y-3 text-muted-foreground">
@@ -168,6 +231,7 @@ const Sobre = () => (
       </div>
     </section>
   </Layout>
-);
+  );
+};
 
 export default Sobre;

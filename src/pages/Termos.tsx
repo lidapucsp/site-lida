@@ -2,7 +2,7 @@ import Layout from "@/components/layout/Layout";
 
 const Termos = () => (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden section-padding">
+    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
@@ -17,7 +17,7 @@ const Termos = () => (
         <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Termos de Uso</h1>
       </div>
     </section>
-    <section className="section-padding">
+    <section className="section-padding-top-sm">
       <div className="container mx-auto max-w-3xl prose prose-sm">
         <div className="bg-gold/10 border border-gold/30 rounded-lg p-4 mb-8 text-sm text-muted-foreground">
           <strong className="text-foreground">Aviso:</strong> Este conteúdo é informativo e institucional. Não constitui aconselhamento jurídico.

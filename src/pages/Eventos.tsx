@@ -1,22 +1,17 @@
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, ExternalLink, Loader2 } from "lucide-react";
+import { useEventos } from "@/hooks/useEventos";
 
-const proximos = [
-  { title: "Seminário: IA Generativa e Direitos Autorais", data: "15 Mai 2026", horario: "14h–17h", local: "Auditório 300 — PUC-SP", desc: "Mesa redonda com especialistas em propriedade intelectual e tecnologia sobre os desafios das obras criadas por IA generativa.", tipo: "Seminário" },
-  { title: "Workshop: Prompt Engineering para Juristas", data: "28 Mai 2026", horario: "10h–12h", local: "Laboratório de Informática — PUC-SP", desc: "Oficina prática sobre técnicas de prompt engineering aplicadas à pesquisa jurídica e à elaboração de peças.", tipo: "Workshop" },
-  { title: "Palestra: LGPD na Era dos Dados Sintéticos", data: "10 Jun 2026", horario: "19h–21h", local: "Online (Zoom)", desc: "Palestra aberta sobre as implicações da LGPD para o uso de dados sintéticos no treinamento de modelos de IA.", tipo: "Palestra" },
-];
+const Eventos = () => {
+  const { eventos: eventosAgendados, loading: loadingAgendados } = useEventos({ status: 'agendado' });
+  const { eventos: eventosRealizados, loading: loadingRealizados } = useEventos({ status: 'realizado' });
 
-const passados = [
-  { title: "I Congresso LIDA de Direito e IA", data: "Nov 2025", desc: "Primeiro congresso do LIDA com 200 participantes, 12 palestrantes e 3 mesas redondas sobre regulação, ética e aplicação de IA no Direito.", materiais: true },
-  { title: "Workshop: Introdução ao Machine Learning para Juristas", data: "Set 2025", desc: "Oficina introdutória com conceitos básicos de ML aplicados ao contexto jurídico.", materiais: true },
-  { title: "Seminário: IA e o Futuro dos Tribunais", data: "Ago 2025", desc: "Evento com participação de magistrados e pesquisadores sobre a adoção de IA pelo poder judiciário brasileiro.", materiais: true },
-];
+  const loading = loadingAgendados || loadingRealizados;
 
-const Eventos = () => (
+  return (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden section-padding">
+    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
@@ -33,43 +28,87 @@ const Eventos = () => (
       </div>
     </section>
 
-    <section className="section-padding">
+    <section className="section-padding-top-sm">
       <div className="container mx-auto max-w-4xl">
-        <h2 className="text-2xl font-display font-bold mb-6">Próximos Eventos</h2>
-        <div className="space-y-4 mb-16">
-          {proximos.map((e) => (
-            <div key={e.title} className="bg-card rounded-xl border border-border p-6 card-hover">
-              <span className="text-xs font-medium text-gold bg-gold/10 px-2.5 py-1 rounded-full">{e.tipo}</span>
-              <h3 className="text-lg font-semibold mt-3 mb-2">{e.title}</h3>
-              <p className="text-sm text-muted-foreground mb-3">{e.desc}</p>
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {e.data} · {e.horario}</span>
-                <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {e.local}</span>
-              </div>
-              <Button variant="hero" size="sm">Inscrever-se</Button>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="text-2xl font-display font-bold mb-6">Eventos Passados</h2>
-        <div className="space-y-4">
-          {passados.map((e) => (
-            <div key={e.title} className="bg-cream rounded-xl border border-border p-6">
-              <h3 className="font-semibold mb-1">{e.title}</h3>
-              <p className="text-xs text-muted-foreground mb-2">{e.data}</p>
-              <p className="text-sm text-muted-foreground mb-3">{e.desc}</p>
-              {e.materiais && (
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm"><ExternalLink className="w-3 h-3 mr-1" /> Slides</Button>
-                  <Button variant="outline" size="sm"><ExternalLink className="w-3 h-3 mr-1" /> Gravação</Button>
-                </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
+          </div>
+        ) : (
+          <>
+            <h2 className="text-2xl font-display font-bold mb-6">Próximos Eventos</h2>
+            <div className="space-y-4 mb-16">
+              {eventosAgendados.length === 0 ? (
+                <p className="text-center text-muted-foreground py-10">Nenhum evento agendado no momento.</p>
+              ) : (
+                eventosAgendados.map((e) => {
+                  const dataFormatada = new Date(e.data_evento).toLocaleDateString('pt-BR', { 
+                    day: '2-digit', 
+                    month: 'short', 
+                    year: 'numeric' 
+                  });
+                  return (
+                    <div key={e.id} className="bg-card rounded-xl border border-border p-6 card-hover">
+                      <span className="text-xs font-medium text-gold bg-gold/10 px-2.5 py-1 rounded-full">{e.tipo}</span>
+                      <h3 className="text-lg font-semibold mt-3 mb-2">{e.titulo}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{e.descricao}</p>
+                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" /> {dataFormatada}
+                          {e.horario && ` · ${e.horario}`}
+                        </span>
+                        {e.local && (
+                          <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {e.local}</span>
+                        )}
+                      </div>
+                      {e.url_inscricao ? (
+                        <Button variant="hero" size="sm" asChild>
+                          <a href={e.url_inscricao} target="_blank" rel="noopener noreferrer">Inscrever-se</a>
+                        </Button>
+                      ) : (
+                        <Button variant="hero" size="sm">Inscrever-se</Button>
+                      )}
+                    </div>
+                  );
+                })
               )}
             </div>
-          ))}
-        </div>
+
+            <h2 className="text-2xl font-display font-bold mb-6">Eventos Passados</h2>
+            <div className="space-y-4">
+              {eventosRealizados.length === 0 ? (
+                <p className="text-center text-muted-foreground py-10">Nenhum evento realizado ainda.</p>
+              ) : (
+                eventosRealizados.map((e) => {
+                  const dataFormatada = new Date(e.data_evento).toLocaleDateString('pt-BR', { 
+                    month: 'short', 
+                    year: 'numeric' 
+                  });
+                  return (
+                    <div key={e.id} className="bg-cream rounded-xl border border-border p-6">
+                      <h3 className="font-semibold mb-1">{e.titulo}</h3>
+                      <p className="text-xs text-muted-foreground mb-2">{dataFormatada}</p>
+                      <p className="text-sm text-muted-foreground mb-3">{e.descricao}</p>
+                      {e.possui_materiais && e.url_materiais && (
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" asChild>
+                            <a href={e.url_materiais} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="w-3 h-3 mr-1" /> Acessar Materiais
+                            </a>
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </>
+        )}
       </div>
     </section>
   </Layout>
-);
+  );
+};
 
 export default Eventos;

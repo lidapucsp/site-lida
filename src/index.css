@@ -82,6 +82,14 @@
     @apply py-20 md:py-32 px-4 md:px-8;
   }
 
+  .section-padding-top-sm {
+    @apply pt-10 md:pt-16 pb-20 md:pb-32 px-4 md:px-8;
+  }
+
+  .hero-padding {
+    @apply py-10 md:py-16 px-4 md:px-8;
+  }
+
   .card-hover {
     @apply transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5 hover:-translate-y-2 hover:scale-[1.02];
   }
