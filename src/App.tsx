@@ -19,6 +19,7 @@ import Cookies from "./pages/Cookies";
 import Termos from "./pages/Termos";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import GerenciarTarefas from "./pages/GerenciarTarefas";
 import AreaMembros from "./pages/AreaMembros";
 import NotFound from "./pages/NotFound";
 
@@ -50,6 +51,14 @@ const App = () => (
             element={
               <ProtectedRoute requireAdmin>
                 <Admin />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/tarefas" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <GerenciarTarefas />
               </ProtectedRoute>
             } 
           />

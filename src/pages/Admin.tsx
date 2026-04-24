@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useEixos } from '@/hooks/useEixos'
 import { usePublicacoes } from '@/hooks/usePublicacoes'
 import { useEventos } from '@/hooks/useEventos'
 import { useProfiles } from '@/hooks/useProfiles'
+import { useTarefas } from '@/hooks/useTarefas'
+import { supabase } from '@/lib/supabase'
+import { formatDateBR } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -23,7 +26,13 @@ import {
   Video,
   Home,
   Mail,
-  ClipboardList
+  ClipboardList,
+  Heart,
+  Database,
+  Shield,
+  List,
+  CheckSquare,
+  ArrowRight
 } from 'lucide-react'
 import { AdminEixos } from '@/components/admin/AdminEixos'
 import { AdminPublicacoes } from '@/components/admin/AdminPublicacoes'
@@ -33,6 +42,7 @@ import AdminReunioes from '@/components/admin/AdminReunioes'
 import AdminCalendario from '@/components/admin/AdminCalendario'
 import AdminComunicados from '@/components/admin/AdminComunicados'
 import { AdminProcessoSeletivo } from '@/components/admin/AdminProcessoSeletivo'
+import { AdminInteresses } from '@/components/admin/AdminInteresses'
 
 export default function Admin() {
   const navigate = useNavigate()
@@ -42,20 +52,68 @@ export default function Admin() {
   const { eventos } = useEventos({ status: 'todos' })
   const { profiles } = useProfiles()
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [comunicadosCount, setComunicadosCount] = useState(0)
+  const [reunioesCount, setReunioesCount] = useState(0)
+  const [membrosCount, setMembrosCount] = useState(0)
+  const [membroLogadoId, setMembroLogadoId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Buscar membro_id do profile assim que disponível
+  useEffect(() => {
+    if (profile?.membro_id) {
+      setMembroLogadoId(profile.membro_id)
+    }
+  }, [profile?.membro_id])
+
+  // Buscar tarefas do membro logado (se ele estiver na tabela membros)
+  const { tarefas: minhasTarefas, loading: loadingTarefas } = useTarefas({ 
+    membroId: membroLogadoId || undefined 
+  })
+
+  // Buscar counts de comunicados, reuniões e membros da diretoria
+  useEffect(() => {
+    fetchCounts()
+  }, [])
+
+  const fetchCounts = async () => {
+    try {
+      const [comunicadosRes, reunioesRes, membrosRes] = await Promise.all([
+        supabase.from('comunicados').select('*', { count: 'exact', head: true }),
+        supabase.from('reunioes').select('*', { count: 'exact', head: true }),
+        supabase.from('membros').select('*', { count: 'exact', head: true })
+      ])
+
+      setComunicadosCount(comunicadosRes.count || 0)
+      setReunioesCount(reunioesRes.count || 0)
+      setMembrosCount(membrosRes.count || 0)
+    } catch (error) {
+      console.error('Erro ao buscar counts:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogout = async () => {
     await signOut()
     navigate('/login')
   }
 
+  // Membros da Diretoria (busca da tabela membros)
+  const membrosDiretoria = membrosCount
+  
+  // Estimativa de uso do Supabase (baseado em registros)
+  // Plano gratuito: 500MB de banco de dados, ~50k linhas
+  const totalRegistros = 
+    (eixos?.length || 0) + 
+    (publicacoes?.length || 0) + 
+    (eventos?.length || 0) + 
+    (profiles?.length || 0) + 
+    comunicadosCount + 
+    reunioesCount + 
+    membrosCount
+  const estimativaUsoSupabase = Math.min((totalRegistros / 50000) * 100, 100).toFixed(1)
+
   const stats = [
-    {
-      title: 'Total de Eixos',
-      value: eixos?.length || 0,
-      icon: Target,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
-    },
     {
       title: 'Publicações',
       value: publicacoes?.length || 0,
@@ -69,6 +127,20 @@ export default function Admin() {
       icon: CalendarCheck,
       color: 'text-green-600',
       bgColor: 'bg-green-100',
+    },
+    {
+      title: 'Comunicados',
+      value: comunicadosCount,
+      icon: Mail,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100',
+    },
+    {
+      title: 'Reuniões',
+      value: reunioesCount,
+      icon: Video,
+      color: 'text-red-600',
+      bgColor: 'bg-red-100',
     },
     {
       title: 'Participantes',
@@ -118,7 +190,7 @@ export default function Admin() {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9 bg-white border border-gold/20 p-1 h-auto">
+          <TabsList className="grid w-full grid-cols-10 bg-white border border-gold/20 p-1 h-auto">
             <TabsTrigger 
               value="dashboard" 
               className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
@@ -169,6 +241,13 @@ export default function Admin() {
               <span className="hidden sm:inline">Membros</span>
             </TabsTrigger>
             <TabsTrigger 
+              value="interesses"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+            >
+              <Heart className="w-4 h-4" />
+              <span className="hidden sm:inline">Interesses</span>
+            </TabsTrigger>
+            <TabsTrigger 
               value="comunicados"
               className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
             >
@@ -186,7 +265,7 @@ export default function Admin() {
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
               {stats.map((stat) => {
                 const Icon = stat.icon
                 return (
@@ -209,41 +288,114 @@ export default function Admin() {
               })}
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <Card className="border-gold/20">
                 <CardHeader>
-                  <CardTitle className="text-navy flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-gold" />
-                    Visão Geral
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-navy flex items-center gap-2">
+                      <CheckSquare className="w-5 h-5 text-gold" />
+                      Minhas Tarefas
+                    </CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate('/admin/tarefas')}
+                      className="text-gold hover:text-gold-600"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
                   <CardDescription>
-                    Estatísticas gerais do sistema
+                    Tarefas atribuídas a você
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-cream rounded-lg">
-                    <span className="text-sm text-navy-light">Eixos Ativos</span>
-                    <span className="font-semibold text-navy">
-                      {eixos?.filter(e => e.ativo).length || 0}
-                    </span>
+                  {!membroLogadoId ? (
+                    <div className="text-center py-6 text-navy-light text-sm">
+                      Você não está vinculado a um membro da diretoria
+                    </div>
+                  ) : minhasTarefas.filter(t => t.status !== 'concluido').length === 0 ? (
+                    <div className="text-center py-6 text-navy-light text-sm">
+                      Nenhuma tarefa pendente
+                    </div>
+                  ) : (
+                    minhasTarefas
+                      .filter(t => t.status !== 'concluido')
+                      .slice(0, 4)
+                      .map((tarefa) => (
+                        <div
+                          key={tarefa.id}
+                          className="p-3 bg-cream rounded-lg border border-gold/10 hover:border-gold/30 transition-colors cursor-pointer"
+                          onClick={() => navigate('/admin/tarefas')}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="text-sm font-medium text-navy line-clamp-1 flex-1">
+                              {tarefa.titulo}
+                            </p>
+                            <span className={`text-xs px-2 py-0.5 rounded ${
+                              tarefa.status === 'em_progresso' 
+                                ? 'bg-yellow-100 text-yellow-800' 
+                                : 'bg-blue-100 text-blue-800'
+                            }`}>
+                              {tarefa.status === 'em_progresso' ? 'Em Progresso' : 'A Fazer'}
+                            </span>
+                          </div>
+                          {tarefa.prazo && (
+                            <p className="text-xs text-navy-light mt-1">
+                              Prazo: {formatDateBR(tarefa.prazo)}
+                            </p>
+                          )}
+                        </div>
+                      ))
+                  )}
+                  <Button
+                    variant="outline"
+                    className="w-full mt-2"
+                    onClick={() => navigate('/admin/tarefas')}
+                  >
+                    Gerenciar Tarefas
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-gold/20">
+                <CardHeader>
+                  <CardTitle className="text-navy flex items-center gap-2">
+                    <List className="w-5 h-5 text-gold" />
+                    Conteúdos por Página
+                  </CardTitle>
+                  <CardDescription>
+                    Quantidade de registros em cada seção
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Eixos</span>
+                    <span className="font-semibold text-navy">{eixos?.length || 0}</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-cream rounded-lg">
-                    <span className="text-sm text-navy-light">Eventos Futuros</span>
-                    <span className="font-semibold text-navy">
-                      {eventos?.filter(e => e.status === 'agendado').length || 0}
-                    </span>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Publicações</span>
+                    <span className="font-semibold text-navy">{publicacoes?.length || 0}</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-cream rounded-lg">
-                    <span className="text-sm text-navy-light">Publicações Este Ano</span>
-                    <span className="font-semibold text-navy">
-                      {publicacoes?.filter(p => p.ano === new Date().getFullYear()).length || 0}
-                    </span>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Eventos</span>
+                    <span className="font-semibold text-navy">{eventos?.length || 0}</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-cream rounded-lg">
-                    <span className="text-sm text-navy-light">Participantes Registrados</span>
-                    <span className="font-semibold text-navy">
-                      {profiles?.length || 0}
-                    </span>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Comunicados</span>
+                    <span className="font-semibold text-navy">{comunicadosCount}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Reuniões</span>
+                    <span className="font-semibold text-navy">{reunioesCount}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Diretoria</span>
+                    <span className="font-semibold text-navy">{membrosCount}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Participantes</span>
+                    <span className="font-semibold text-navy">{profiles?.length || 0}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -309,6 +461,10 @@ export default function Admin() {
 
           <TabsContent value="membros">
             <AdminMembrosGeral />
+          </TabsContent>
+
+          <TabsContent value="interesses">
+            <AdminInteresses />
           </TabsContent>
 
           <TabsContent value="comunicados">

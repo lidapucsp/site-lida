@@ -276,6 +276,44 @@ export interface Database {
           updated_at?: string
         }
       }
+      tarefas: {
+        Row: {
+          id: string
+          titulo: string
+          descricao: string | null
+          status: 'a_fazer' | 'em_progresso' | 'concluido'
+          prioridade: 'baixa' | 'media' | 'alta'
+          atribuido_para: string
+          criado_por: string
+          prazo: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          titulo: string
+          descricao?: string | null
+          status?: 'a_fazer' | 'em_progresso' | 'concluido'
+          prioridade?: 'baixa' | 'media' | 'alta'
+          atribuido_para: string
+          criado_por: string
+          prazo?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          titulo?: string
+          descricao?: string | null
+          status?: 'a_fazer' | 'em_progresso' | 'concluido'
+          prioridade?: 'baixa' | 'media' | 'alta'
+          atribuido_para?: string
+          criado_por?: string
+          prazo?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
