@@ -23,8 +23,9 @@ const Footer = () => (
           <h4 className="font-semibold text-sm mb-3 text-gold">Navegação</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/70">
             {[
-              ["Sobre", "/sobre"], ["Eixos", "/eixos"],
+              ["Início", "/"], ["Sobre", "/sobre"], ["Eixos", "/eixos"],
               ["Publicações", "/publicacoes"], ["Eventos", "/eventos"],
+              ["Conceitos", "/conceitos"],
             ].map(([l, p]) => (
               <li key={p}><Link to={p} className="hover:text-primary-foreground transition-colors">{l}</Link></li>
             ))}
@@ -38,7 +39,6 @@ const Footer = () => (
             <li><a href="https://forms.gle/cLmgoubo87g31oqS6" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">Inscrever-se</a></li>
             <li><a href="https://drive.google.com/file/d/1MN7WpRxoYP6SZC_1zZpwbMWrMilSgHqR/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">Edital 2026.1</a></li>
             <li><Link to="/calendario" className="hover:text-primary-foreground transition-colors">Calendário</Link></li>
-            <li><Link to="/links" className="hover:text-primary-foreground transition-colors">Links Úteis</Link></li>
             <li><Link to="/contato" className="hover:text-primary-foreground transition-colors">Contato</Link></li>
           </ul>
         </div>

@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Scale, Brain, BookOpen, Calendar, Users, ArrowRight, FileText, Lightbulb, ShieldCheck, Cpu, Gavel, Database, Zap, Target, Award, Loader2 } from "lucide-react";
+import { Scale, Brain, BookOpen, Calendar, Users, ArrowRight, FileText, Lightbulb, ShieldCheck, Cpu, Gavel, Database, Zap, Target, Award, Loader2, Instagram } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { useEixos } from "@/hooks/useEixos";
 import { useEventos } from "@/hooks/useEventos";
+import { supabase } from "@/lib/supabase";
 
 const iconMap: Record<string, any> = {
   ShieldCheck,
@@ -17,6 +19,35 @@ const iconMap: Record<string, any> = {
 const Index = () => {
   const { eixos, loading: loadingEixos } = useEixos();
   const { eventos, loading: loadingEventos } = useEventos({ status: 'agendado' });
+  const [processoSeletivo, setProcessoSeletivo] = useState<any>(null);
+  const [loadingProcesso, setLoadingProcesso] = useState(true);
+
+  useEffect(() => {
+    const fetchProcessoAtivo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('processos_seletivos')
+          .select('*')
+          .eq('ativo', true)
+          .eq('exibir_site', true)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          throw error;
+        }
+
+        setProcessoSeletivo(data);
+      } catch (error) {
+        console.error('Erro ao buscar processo seletivo:', error);
+      } finally {
+        setLoadingProcesso(false);
+      }
+    };
+
+    fetchProcessoAtivo();
+  }, []);
 
   return (
   <Layout>
@@ -242,44 +273,99 @@ const Index = () => {
     <section className="section-padding bg-white">
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-6 text-gradient">Como Participar</h2>
-        <p className="text-center text-muted-foreground text-lg mb-16 max-w-3xl mx-auto">
-          O Processo Seletivo 2026.1 é composto por <strong className="text-foreground">etapa única</strong>. Serão selecionados até <strong className="text-foreground">20 participantes</strong> para compor a primeira turma do LIDA.
-        </p>
         
-        <div className="glass rounded-2xl p-8 max-w-4xl mx-auto mb-12">
-          <h3 className="font-bold text-2xl mb-6 text-center text-gradient">Requisitos do Processo Seletivo</h3>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p><strong className="text-foreground">Formulário classificatório:</strong> Informações de contato, interesses e motivações para participar do grupo</p>
-            <p><strong className="text-foreground">Carta de apresentação:</strong> Documento elaborado pelo candidato</p>
-            <p><strong className="text-foreground">Resposta reflexiva:</strong> Em até 15 linhas, responder à pergunta: <em className="text-foreground">"Como você utiliza IA no seu cotidiano?"</em></p>
+        {loadingProcesso ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
           </div>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
-          {[
-            { date: "23/03", time: "10h", title: "Inscrições Abertas", text: "Abertura do PS 2026.1 a partir das 10h" },
-            { date: "07/04", time: "23h59", title: "Encerramento", text: "Encerra às 23h59 (horário de Brasília)" },
-            { date: "15/04", time: "", title: "Resultado", text: "Divulgação até 15/04 via e-mail aos aprovados" },
-          ].map((s, idx) => (
-            <div key={s.date} className={`text-center group animate-fade-in-up animate-delay-${idx * 200}`}>
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold via-gold to-gold-dark text-navy font-display font-extrabold text-xl flex flex-col items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl shadow-gold/30">
-                <span className="leading-none">{s.date}</span>
-                {s.time && <span className="text-xs font-normal leading-none mt-1">{s.time}</span>}
+        ) : processoSeletivo ? (
+          <>
+            <p className="text-center text-muted-foreground text-lg mb-16 max-w-3xl mx-auto">
+              O {processoSeletivo.titulo} está <strong className="text-foreground">aberto</strong>! 
+              {processoSeletivo.vagas && ` Serão selecionados até ${processoSeletivo.vagas} participantes.`}
+            </p>
+            
+            {processoSeletivo.descricao && (
+              <div className="glass rounded-2xl p-8 max-w-4xl mx-auto mb-12">
+                <h3 className="font-bold text-2xl mb-6 text-center text-gradient">Sobre o Processo Seletivo</h3>
+                <div className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                  {processoSeletivo.descricao}
+                </div>
               </div>
-              <h3 className="font-bold text-xl mb-3">{s.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{s.text}</p>
+            )}
+            
+            {processoSeletivo.inscricao_inicio && processoSeletivo.inscricao_fim && (
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+                <div className="text-center group animate-fade-in-up">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold via-gold to-gold-dark text-navy font-display font-extrabold text-xl flex flex-col items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl shadow-gold/30">
+                    <span className="leading-none">{new Date(processoSeletivo.inscricao_inicio).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
+                    <span className="text-xs font-normal leading-none mt-1">{new Date(processoSeletivo.inscricao_inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <h3 className="font-bold text-xl mb-3">Abertura das Inscrições</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {new Date(processoSeletivo.inscricao_inicio).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+                
+                <div className="text-center group animate-fade-in-up animate-delay-200">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold via-gold to-gold-dark text-navy font-display font-extrabold text-xl flex flex-col items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl shadow-gold/30">
+                    <span className="leading-none">{new Date(processoSeletivo.inscricao_fim).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}</span>
+                    <span className="text-xs font-normal leading-none mt-1">{new Date(processoSeletivo.inscricao_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <h3 className="font-bold text-xl mb-3">Encerramento</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {new Date(processoSeletivo.inscricao_fim).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="text-center space-y-4">
+              {processoSeletivo.inscricao_url && (
+                <Button variant="hero" size="lg" asChild className="shadow-2xl shadow-gold/20">
+                  <a href={processoSeletivo.inscricao_url} target="_blank" rel="noopener noreferrer" className="group">
+                    Inscrever-se Agora
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+              )}
+              <div>
+                <Button variant="outline" size="lg" asChild>
+                  <Link to="/processo-seletivo" className="group">
+                    Ver Detalhes Completos
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+              </div>
             </div>
-          ))}
-        </div>
-        
-        <div className="text-center">
-          <Button variant="hero" size="lg" asChild className="shadow-2xl shadow-gold/20">
-            <Link to="/processo-seletivo" className="group">
-              Processo Seletivo 2026.1
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        </div>
+          </>
+        ) : (
+          <div className="max-w-3xl mx-auto text-center py-16">
+            <div className="glass rounded-2xl p-12">
+              <Users className="w-16 h-16 text-gold mx-auto mb-6" />
+              <h3 className="font-bold text-2xl mb-4 text-gradient">Nenhum Processo Seletivo Aberto</h3>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                No momento não há processos seletivos em andamento. Fique atento às nossas redes sociais e ao site para não perder o próximo!
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                Enquanto isso, conheça mais sobre o LIDA, nossos eixos de pesquisa e publicações.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button variant="outline" size="lg" asChild>
+                  <Link to="/sobre">
+                    Sobre o LIDA
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild>
+                  <a href="https://instagram.com/lidapucsp" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="w-5 h-5 mr-2" />
+                    Seguir no Instagram
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
 

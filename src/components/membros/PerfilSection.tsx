@@ -12,7 +12,7 @@ import { supabase } from '@/lib/supabase'
 import { Loader2, User, Briefcase, Building2, Linkedin, Mail, Lock, Save, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
 
 export default function PerfilSection() {
-  const { profile, refreshProfile } = useAuth()
+  const { user, profile, refreshProfile } = useAuth()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [showNewPassword, setShowNewPassword] = useState(false)
@@ -309,7 +309,7 @@ export default function PerfilSection() {
             Alterar Email
           </CardTitle>
           <CardDescription>
-            Seu email atual: <strong>{profile?.email || 'Não definido'}</strong>
+            Seu email atual: <strong>{user?.email || 'Não definido'}</strong>
           </CardDescription>
         </CardHeader>
         <CardContent>

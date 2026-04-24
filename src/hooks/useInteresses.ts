@@ -95,23 +95,32 @@ export function useInteresses(userId?: string) {
 
   const fetchMembrosInteressados = async (areaId: string) => {
     try {
-      const { data, error } = await supabase
+      // Primeiro buscar os membros_interesses
+      const { data: interessesData, error: interessesError } = await supabase
         .from('membros_interesses')
-        .select(`
-          id,
-          user_id,
-          area_id,
-          created_at,
-          profiles:user_id (
-            username,
-            full_name,
-            avatar_url
-          )
-        `)
+        .select('id, user_id, area_id, created_at')
         .eq('area_id', areaId);
 
-      if (error) throw error;
-      return data || [];
+      if (interessesError) throw interessesError;
+      
+      if (!interessesData || interessesData.length === 0) {
+        return [];
+      }
+
+      // Buscar os profiles relacionados
+      const userIds = interessesData.map(i => i.user_id);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url')
+        .in('id', userIds);
+
+      if (profilesError) throw profilesError;
+
+      // Combinar os dados
+      return interessesData.map(interesse => ({
+        ...interesse,
+        profiles: profilesData?.find(p => p.id === interesse.user_id)
+      }));
     } catch (err) {
       setError(err as Error);
       return [];

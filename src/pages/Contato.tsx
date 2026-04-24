@@ -1,10 +1,59 @@
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Instagram, Mail, Send } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Instagram, Mail, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 const Contato = () => {
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validações
+    if (!form.nome || !form.email || !form.assunto || !form.mensagem) {
+      setMessage({ type: 'error', text: 'Por favor, preencha todos os campos' });
+      return;
+    }
+
+    if (!form.email.includes('@')) {
+      setMessage({ type: 'error', text: 'Por favor, insira um email válido' });
+      return;
+    }
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const { error } = await supabase
+        .from('contatos')
+        .insert([{
+          nome: form.nome,
+          email: form.email,
+          assunto: form.assunto,
+          mensagem: form.mensagem
+        }]);
+
+      if (error) throw error;
+
+      setMessage({ 
+        type: 'success', 
+        text: 'Mensagem enviada com sucesso! Entraremos em contato em breve.' 
+      });
+      setForm({ nome: "", email: "", assunto: "", mensagem: "" });
+    } catch (error: any) {
+      console.error('Erro ao enviar mensagem:', error);
+      setMessage({ 
+        type: 'error', 
+        text: 'Erro ao enviar mensagem. Tente novamente ou entre em contato por email.' 
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Layout>
@@ -27,27 +76,74 @@ const Contato = () => {
 
       <section className="section-padding-top-sm">
         <div className="container mx-auto max-w-4xl">
+          {/* Mensagem de feedback */}
+          {message && (
+            <Alert 
+              variant={message.type === 'error' ? 'destructive' : 'default'} 
+              className={`mb-6 ${message.type === 'success' ? 'bg-green-100 border-2 border-green-600' : 'border-gold/30'}`}
+            >
+              {message.type === 'success' && <CheckCircle2 className="h-5 w-5 text-green-600" />}
+              <AlertDescription className={message.type === 'success' ? 'text-green-900 font-medium' : ''}>
+                {message.text}
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="grid md:grid-cols-2 gap-10">
             <div>
               <h2 className="text-xl font-display font-bold mb-4">Envie sua mensagem</h2>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <label className="text-sm font-medium mb-1 block">Nome</label>
-                  <input className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" value={form.nome} onChange={(e) => setForm({...form, nome: e.target.value})} />
+                  <input 
+                    required
+                    className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" 
+                    value={form.nome} 
+                    onChange={(e) => setForm({...form, nome: e.target.value})} 
+                  />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block">E-mail</label>
-                  <input type="email" className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} />
+                  <input 
+                    type="email" 
+                    required
+                    className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" 
+                    value={form.email} 
+                    onChange={(e) => setForm({...form, email: e.target.value})} 
+                  />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block">Assunto</label>
-                  <input className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" value={form.assunto} onChange={(e) => setForm({...form, assunto: e.target.value})} />
+                  <input 
+                    required
+                    className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm" 
+                    value={form.assunto} 
+                    onChange={(e) => setForm({...form, assunto: e.target.value})} 
+                  />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block">Mensagem</label>
-                  <textarea rows={5} className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm resize-none" value={form.mensagem} onChange={(e) => setForm({...form, mensagem: e.target.value})} />
+                  <textarea 
+                    rows={5} 
+                    required
+                    className="w-full rounded-md border border-input bg-background px-3 py-2.5 text-sm resize-none" 
+                    value={form.mensagem} 
+                    onChange={(e) => setForm({...form, mensagem: e.target.value})} 
+                  />
                 </div>
-                <Button variant="hero"><Send className="w-4 h-4 mr-1" /> Enviar mensagem</Button>
+                <Button type="submit" variant="hero" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-1" />
+                      Enviar mensagem
+                    </>
+                  )}
+                </Button>
               </form>
             </div>
 
@@ -67,7 +163,7 @@ const Contato = () => {
               <h3 className="font-display font-bold mb-3">Parcerias e Convites</h3>
               <div className="bg-cream rounded-xl border border-border p-5 text-sm text-muted-foreground">
                 <p className="mb-2">O LIDA está aberto a parcerias com outros grupos de pesquisa, escritórios de advocacia, empresas de tecnologia e instituições acadêmicas.</p>
-                <p>Para convites de eventos, palestras ou colaborações, envie um e-mail detalhando a proposta para <strong className="text-foreground">lidapucsp@gmail.com</strong>.</p>
+                <p>Para convites de eventos, palestras ou colaborações, utilize o <strong className="text-foreground">formulário de contato ao lado</strong> detalhando sua proposta.</p>
               </div>
             </div>
           </div>

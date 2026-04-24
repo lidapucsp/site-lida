@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Sobre from "./pages/Sobre";
 import Eixos from "./pages/Eixos";
@@ -20,6 +21,7 @@ import Termos from "./pages/Termos";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import GerenciarTarefas from "./pages/GerenciarTarefas";
+import GerenciarContatos from "./pages/GerenciarContatos";
 import AreaMembros from "./pages/AreaMembros";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +33,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sobre" element={<Sobre />} />
@@ -59,6 +62,14 @@ const App = () => (
             element={
               <ProtectedRoute requireAdmin>
                 <GerenciarTarefas />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/contatos" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <GerenciarContatos />
               </ProtectedRoute>
             } 
           />

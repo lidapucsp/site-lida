@@ -226,7 +226,6 @@ export default function InteressesSection() {
                     <p className="font-semibold text-navy-900">
                       {membro.profiles?.full_name || membro.profiles?.username}
                     </p>
-                    <p className="text-sm text-gray-600">@{membro.profiles?.username}</p>
                   </div>
                 </div>
               ))

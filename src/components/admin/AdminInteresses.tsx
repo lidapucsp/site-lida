@@ -35,7 +35,6 @@ interface MembroDetalhado {
   user_id: string
   username: string
   full_name: string | null
-  email: string
   avatar_url: string | null
   created_at: string
 }
@@ -114,31 +113,46 @@ export function AdminInteresses() {
     try {
       setLoadingMembros(true)
 
-      const { data, error } = await supabase
+      // Primeiro buscar os membros_interesses
+      const { data: interessesData, error: interessesError } = await supabase
         .from('membros_interesses')
-        .select(`
-          user_id,
-          created_at,
-          profile:profiles!membros_interesses_user_id_fkey (
-            username,
-            full_name,
-            email,
-            avatar_url
-          )
-        `)
+        .select('user_id, created_at')
         .eq('area_id', areaId)
         .order('created_at', { ascending: false })
 
-      if (error) throw error
+      if (interessesError) {
+        console.error('Erro ao buscar interesses:', interessesError)
+        throw interessesError
+      }
 
-      const membrosFormatados = (data || []).map((item: any) => ({
-        user_id: item.user_id,
-        username: item.profile?.username || 'N/A',
-        full_name: item.profile?.full_name,
-        email: item.profile?.email || 'N/A',
-        avatar_url: item.profile?.avatar_url,
-        created_at: item.created_at,
-      }))
+      if (!interessesData || interessesData.length === 0) {
+        setMembros([])
+        return
+      }
+
+      // Buscar os profiles relacionados
+      const userIds = interessesData.map(i => i.user_id)
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url')
+        .in('id', userIds)
+
+      if (profilesError) {
+        console.error('Erro ao buscar profiles:', profilesError)
+        throw profilesError
+      }
+
+      // Combinar os dados
+      const membrosFormatados = interessesData.map((interesse) => {
+        const profile = profilesData?.find(p => p.id === interesse.user_id)
+        return {
+          user_id: interesse.user_id,
+          username: profile?.username || 'N/A',
+          full_name: profile?.full_name,
+          avatar_url: profile?.avatar_url,
+          created_at: interesse.created_at,
+        }
+      })
 
       setMembros(membrosFormatados)
     } catch (err) {
@@ -314,10 +328,6 @@ export function AdminInteresses() {
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-navy">
                           {membro.full_name || membro.username}
-                        </p>
-                        <p className="text-sm text-navy-light">@{membro.username}</p>
-                        <p className="text-sm text-navy-light truncate">
-                          {membro.email}
                         </p>
                       </div>
                       <Badge variant="outline" className="text-xs">

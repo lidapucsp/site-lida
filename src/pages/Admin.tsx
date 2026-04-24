@@ -55,6 +55,7 @@ export default function Admin() {
   const [comunicadosCount, setComunicadosCount] = useState(0)
   const [reunioesCount, setReunioesCount] = useState(0)
   const [membrosCount, setMembrosCount] = useState(0)
+  const [contatosNovosCount, setContatosNovosCount] = useState(0)
   const [membroLogadoId, setMembroLogadoId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -77,15 +78,17 @@ export default function Admin() {
 
   const fetchCounts = async () => {
     try {
-      const [comunicadosRes, reunioesRes, membrosRes] = await Promise.all([
+      const [comunicadosRes, reunioesRes, membrosRes, contatosRes] = await Promise.all([
         supabase.from('comunicados').select('*', { count: 'exact', head: true }),
         supabase.from('reunioes').select('*', { count: 'exact', head: true }),
-        supabase.from('membros').select('*', { count: 'exact', head: true })
+        supabase.from('membros').select('*', { count: 'exact', head: true }),
+        supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo')
       ])
 
       setComunicadosCount(comunicadosRes.count || 0)
       setReunioesCount(reunioesRes.count || 0)
       setMembrosCount(membrosRes.count || 0)
+      setContatosNovosCount(contatosRes.count || 0)
     } catch (error) {
       console.error('Erro ao buscar counts:', error)
     } finally {
@@ -300,7 +303,7 @@ export default function Admin() {
                       variant="ghost"
                       size="sm"
                       onClick={() => navigate('/admin/tarefas')}
-                      className="text-gold hover:text-gold-600"
+                      className="text-gold hover:bg-gold hover:text-white transition-colors"
                     >
                       <ArrowRight className="w-4 h-4" />
                     </Button>
@@ -433,6 +436,47 @@ export default function Admin() {
                       Nenhum evento agendado
                     </p>
                   )}
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="border-gold/20">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-navy flex items-center gap-2">
+                      <Mail className="w-5 h-5 text-gold" />
+                      Mensagens de Contato
+                    </CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate('/admin/contatos')}
+                      className="text-gold hover:bg-gold hover:text-white transition-colors"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <CardDescription>
+                    Novas mensagens recebidas
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-navy mb-2">
+                      {contatosNovosCount}
+                    </div>
+                    <p className="text-sm text-navy-light mb-4">
+                      {contatosNovosCount === 1 ? 'mensagem nova' : 'mensagens novas'}
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => navigate('/admin/contatos')}
+                    >
+                      Gerenciar Contatos
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
