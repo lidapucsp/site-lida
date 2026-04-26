@@ -48,7 +48,7 @@ export default function AdminReunioes() {
     if (!confirm('Tem certeza que deseja deletar esta reunião?')) return
 
     try {
-      const { error } = await supabase.from('reunioes').delete().eq('id', id)
+      const { error } = await supabase.from('aulas').delete().eq('id', id)
       if (error) throw error
       refetch()
     } catch (error) {
@@ -60,7 +60,7 @@ export default function AdminReunioes() {
   const toggleAtivo = async (id: string, ativo: boolean) => {
     try {
       const { error } = await supabase
-        .from('reunioes')
+        .from('aulas')
         .update({ ativo: !ativo })
         .eq('id', id)
       if (error) throw error
@@ -131,7 +131,7 @@ export default function AdminReunioes() {
                       )}
                     </TableCell>
                     <TableCell>
-                      {format(new Date(reuniao.data_reuniao), 'dd/MM/yyyy')}
+                      {format(new Date(reuniao.data_aula), 'dd/MM/yyyy')}
                     </TableCell>
                     <TableCell>{reuniao.duracao ? `${reuniao.duracao} min` : '-'}</TableCell>
                     <TableCell>
@@ -184,7 +184,7 @@ function ReuniaoForm({ reuniao, eixos, onSuccess }: any) {
     video_url: reuniao?.video_url || '',
     thumbnail_url: reuniao?.thumbnail_url || '',
     duracao: reuniao?.duracao || '',
-    data_reuniao: reuniao?.data_reuniao || new Date().toISOString().split('T')[0],
+    data_aula: reuniao?.data_aula || new Date().toISOString().split('T')[0],
     eixo_id: reuniao?.eixo_id || '',
     palestrante: reuniao?.palestrante || '',
     materiais_url: reuniao?.materiais_url || '',
@@ -205,12 +205,12 @@ function ReuniaoForm({ reuniao, eixos, onSuccess }: any) {
 
       if (reuniao) {
         const { error } = await supabase
-          .from('reunioes')
+          .from('aulas')
           .update(data as any)
           .eq('id', reuniao.id)
         if (error) throw error
       } else {
-        const { error } = await supabase.from('reunioes').insert(data as any)
+        const { error } = await supabase.from('aulas').insert(data as any)
         if (error) throw error
       }
 
@@ -280,12 +280,12 @@ function ReuniaoForm({ reuniao, eixos, onSuccess }: any) {
 
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <Label htmlFor="data_reuniao">Data da Reunião*</Label>
+            <Label htmlFor="data_aula">Data da Reunião*</Label>
             <Input
-              id="data_reuniao"
+              id="data_aula"
               type="date"
-              value={formData.data_reuniao}
-              onChange={(e) => handleChange('data_reuniao', e.target.value)}
+              value={formData.data_aula}
+              onChange={(e) => handleChange('data_aula', e.target.value)}
               required
             />
           </div>
@@ -312,13 +312,12 @@ function ReuniaoForm({ reuniao, eixos, onSuccess }: any) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="eixo_id">Eixo</Label>
-            <Select value={formData.eixo_id} onValueChange={(v) => handleChange('eixo_id', v)}>
+            <Label htmlFor="eixo_id">Eixo (opcional)</Label>
+            <Select value={formData.eixo_id || undefined} onValueChange={(v) => handleChange('eixo_id', v)}>
               <SelectTrigger>
-                <SelectValue placeholder="Selecione um eixo" />
+                <SelectValue placeholder="Nenhum eixo" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Nenhum</SelectItem>
                 {eixos.map((eixo: any) => (
                   <SelectItem key={eixo.id} value={eixo.id}>
                     {eixo.titulo}

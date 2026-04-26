@@ -22,9 +22,9 @@ export function useReunioes(options: UseReunioesOptions = {}) {
     try {
       setLoading(true)
       let query = supabase
-        .from('reunioes')
+        .from('aulas')
         .select('*')
-        .order('data_reuniao', { ascending: false })
+        .order('data_aula', { ascending: false })
         .order('ordem', { ascending: true })
 
       if (options.eixoId) {

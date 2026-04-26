@@ -122,10 +122,10 @@ export default function ReunioesSection() {
 
               <CardContent>
                 <div className="space-y-2 text-sm text-navy-light">
-                  {reuniao.data_reuniao && (
+                  {reuniao.data_aula && (
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(reuniao.data_reuniao), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {format(new Date(reuniao.data_aula), "d 'de' MMMM, yyyy", { locale: ptBR })}
                     </div>
                   )}
                   {reuniao.duracao && (
@@ -192,11 +192,11 @@ export default function ReunioesSection() {
                 )}
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  {reuniaoAberta.data_reuniao && (
+                  {reuniaoAberta.data_aula && (
                     <div>
                       <span className="font-semibold text-navy">Data:</span>
                       <p className="text-navy-light">
-                        {format(new Date(reuniaoAberta.data_reuniao), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                        {format(new Date(reuniaoAberta.data_aula), "d 'de' MMMM, yyyy", { locale: ptBR })}
                       </p>
                     </div>
                   )}

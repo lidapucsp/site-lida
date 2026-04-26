@@ -28,7 +28,7 @@ export function AdminEventos() {
   const [formData, setFormData] = useState<Partial<EventoInsert>>({
     titulo: '',
     descricao: '',
-    tipo: 'seminario',
+    tipo: 'Seminário',
     data_evento: '',
     horario: '',
     local: '',
@@ -52,7 +52,7 @@ export function AdminEventos() {
     setFormData({
       titulo: '',
       descricao: '',
-      tipo: 'seminario',
+      tipo: 'Seminário',
       data_evento: '',
       horario: '',
       local: '',
@@ -68,12 +68,50 @@ export function AdminEventos() {
   }
 
   const handleSave = async () => {
+    // Validar campos obrigatórios
+    if (!formData.titulo?.trim()) {
+      toast({
+        title: 'Erro',
+        description: 'O título é obrigatório.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    if (!formData.descricao?.trim()) {
+      toast({
+        title: 'Erro',
+        description: 'A descrição é obrigatória.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    if (!formData.data_evento) {
+      toast({
+        title: 'Erro',
+        description: 'A data do evento é obrigatória.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     setSaving(true)
     try {
+      // Limpar campos vazios (transformar strings vazias em null)
+      const dataToSave = {
+        ...formData,
+        horario: formData.horario?.trim() || null,
+        local: formData.local?.trim() || null,
+        organizador: formData.organizador?.trim() || null,
+        url_inscricao: formData.url_inscricao?.trim() || null,
+        url_materiais: formData.url_materiais?.trim() || null,
+      }
+
       if (editingEvento) {
         const { error } = await supabase
           .from('eventos')
-          .update(formData)
+          .update(dataToSave)
           .eq('id', editingEvento.id)
         
         if (error) throw error
@@ -85,7 +123,7 @@ export function AdminEventos() {
       } else {
         const { error } = await supabase
           .from('eventos')
-          .insert([formData as EventoInsert])
+          .insert([dataToSave as EventoInsert])
         
         if (error) throw error
         
@@ -98,9 +136,10 @@ export function AdminEventos() {
       setOpen(false)
       refetch()
     } catch (error) {
+      console.error('Erro ao salvar evento:', error)
       toast({
         title: 'Erro',
-        description: 'Não foi possível salvar as alterações.',
+        description: error instanceof Error ? error.message : 'Não foi possível salvar as alterações.',
         variant: 'destructive',
       })
     } finally {
@@ -126,6 +165,7 @@ export function AdminEventos() {
       
       refetch()
     } catch (error) {
+      console.error('Erro ao salvar evento:', error)
       toast({
         title: 'Erro',
         description: 'Não foi possível deletar o evento.',
@@ -225,11 +265,12 @@ export function AdminEventos() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="seminario">Seminário</SelectItem>
-                        <SelectItem value="workshop">Workshop</SelectItem>
-                        <SelectItem value="conferencia">Conferência</SelectItem>
-                        <SelectItem value="curso">Curso</SelectItem>
-                        <SelectItem value="outro">Outro</SelectItem>
+                        <SelectItem value="Seminário">Seminário</SelectItem>
+                        <SelectItem value="Workshop">Workshop</SelectItem>
+                        <SelectItem value="Palestra">Palestra</SelectItem>
+                        <SelectItem value="Congresso">Congresso</SelectItem>
+                        <SelectItem value="Reunião">Reunião</SelectItem>
+                        <SelectItem value="Mesa Redonda">Mesa Redonda</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

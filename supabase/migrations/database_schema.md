@@ -67,6 +67,27 @@ Histórico de comunicados enviados por email
 | `enviado_em` | `timestamptz` |  Nullable |
 | `status` | `text` |  Nullable |
 
+## Table `contatos`
+
+Mensagens recebidas através do formulário de contato
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `nome` | `varchar` |  |
+| `email` | `varchar` |  |
+| `assunto` | `varchar` |  |
+| `mensagem` | `text` |  |
+| `status` | `varchar` |  Nullable |
+| `lido` | `bool` |  Nullable |
+| `resposta` | `text` |  Nullable |
+| `respondido_por` | `uuid` |  Nullable |
+| `respondido_em` | `timestamptz` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
 ## Table `eixos`
 
 ### Columns
