@@ -22,13 +22,12 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-gold/10 shadow-xl">
       <div className="container mx-auto flex items-center justify-between h-20 px-4">
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center group">
           <img 
-            src="/LIDA-logo.PNG" 
+            src="/LIDA-logo-branco.PNG" 
             alt="LIDA Logo" 
-            className="h-12 w-auto object-contain group-hover:scale-110 transition-transform duration-300" 
+            className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" 
           />
-          <span className="text-primary-foreground font-display text-2xl font-extrabold tracking-tight">LIDA</span>
         </Link>
 
         {/* Desktop */}

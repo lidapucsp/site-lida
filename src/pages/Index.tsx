@@ -84,11 +84,6 @@ const Index = () => {
       
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
         <div className="max-w-4xl">
-          <div className="flex items-center gap-3 mb-8 animate-fade-in">
-            <div className="h-px w-16 bg-gradient-to-r from-gold to-transparent  animate-glow" />
-            <span className="text-gold text-sm font-bold tracking-[0.2em] uppercase">PUC-SP</span>
-          </div>
-          
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold text-primary-foreground leading-[1.1] mb-8 animate-fade-in-up">
             Inteligência Artificial e Direito, 
             <span className="text-gold-gradient block mt-2">na prática com pensamento crítico.</span>

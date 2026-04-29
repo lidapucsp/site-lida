@@ -8,9 +8,9 @@ const Footer = () => (
         <div>
           <div className="flex items-center gap-2 mb-4">
             <img 
-              src="/LIDA-logo.PNG" 
+              src="/LIDA-logo-branco.PNG" 
               alt="LIDA Logo" 
-              className="h-8 w-auto object-contain" 
+              className="h-10 w-auto object-contain" 
             />
             <span className="font-display text-lg font-bold">LIDA</span>
           </div>
