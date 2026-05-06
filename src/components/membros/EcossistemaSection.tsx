@@ -101,6 +101,7 @@ export default function EcossistemaSection() {
             funcao:funcoes_equipe(*)
           `)
           .eq('user_id', profile.id)
+          .eq('ativo', true)
           .single();
 
         if (membroError || !membroData) {
