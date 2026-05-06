@@ -123,7 +123,6 @@ export function useMembrosEquipe(equipeId?: string) {
           funcao:funcoes_equipe(nome)
         `)
         .eq('equipe_id', equipeId)
-        .eq('ativo', true)
         .order('data_entrada', { ascending: false })
 
       if (fetchError) throw fetchError
@@ -181,7 +180,7 @@ export function useMembrosEquipe(equipeId?: string) {
     try {
       const { error: deleteError } = await supabase
         .from('membros_equipe')
-        .update({ ativo: false, updated_at: new Date().toISOString() })
+        .delete()
         .eq('id', membroId)
 
       if (deleteError) throw deleteError
