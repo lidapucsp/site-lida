@@ -178,18 +178,22 @@ export function useMembrosEquipe(equipeId?: string) {
 
   const removerMembro = async (membroId: string) => {
     try {
-      const { error: deleteError } = await supabase
+      const { data, error: deleteError } = await supabase
         .from('membros_equipe')
         .delete()
         .eq('id', membroId)
+        .select();
 
-      if (deleteError) throw deleteError
+      if (deleteError) {
+        console.error('Erro ao deletar membro:', deleteError);
+        throw deleteError;
+      }
 
-      await fetchMembros()
-      return { success: true }
+      await fetchMembros();
+      return { success: true };
     } catch (err) {
-      console.error('Erro ao remover membro:', err)
-      return { success: false, error: err }
+      console.error('Erro ao remover membro:', err);
+      return { success: false, error: err };
     }
   }
 

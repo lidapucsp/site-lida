@@ -179,7 +179,7 @@ export default function EcossistemaSection() {
 
             <CardHeader className="relative z-10">
               <CollapsibleTrigger className="w-full">
-                <div className="flex items-start gap-3 mb-4 cursor-pointer hover:opacity-80 transition-opacity">
+                <div className="flex items-start gap-3 cursor-pointer hover:opacity-80 transition-opacity">
                   <div className="p-3 bg-gold/20 rounded-lg">
                     <Sparkles className="w-6 h-6 text-gold" />
                   </div>
@@ -197,10 +197,11 @@ export default function EcossistemaSection() {
                   </div>
                 </div>
               </CollapsibleTrigger>
+            </CardHeader>
 
               {/* Ciclo Operacional */}
               <CollapsibleContent>
-                <div className="mt-6">
+                <CardContent className="relative z-10">
               <h3 className="text-cream font-semibold text-lg mb-4 flex items-center gap-2">
                 <ArrowRight className="w-5 h-5 text-gold" />
                 Ciclo Contínuo de Produção
@@ -288,9 +289,8 @@ export default function EcossistemaSection() {
               <p className="text-center text-cream/60 text-sm mt-4 italic">
                 Este ciclo se retroalimenta continuamente, criando um ecossistema vivo e sustentável
               </p>
-                </div>
+                </CardContent>
               </CollapsibleContent>
-            </CardHeader>
           </Card>
         </Collapsible>
 
@@ -299,9 +299,9 @@ export default function EcossistemaSection() {
             <CardTitle className="text-navy">Você ainda não foi alocado em uma equipe</CardTitle>
             <CardDescription className="text-navy-light">
               Entre em contato com a coordenação para ser adicionado a uma equipe do ecossistema.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     );
   }
@@ -329,7 +329,7 @@ export default function EcossistemaSection() {
 
           <CardHeader className="relative z-10">
             <CollapsibleTrigger className="w-full">
-              <div className="flex items-start gap-3 mb-4 cursor-pointer hover:opacity-80 transition-opacity">
+              <div className="flex items-start gap-3 cursor-pointer hover:opacity-80 transition-opacity">
                 <div className="p-3 bg-gold/20 rounded-lg">
                   <Sparkles className="w-6 h-6 text-gold" />
                 </div>
@@ -347,10 +347,11 @@ export default function EcossistemaSection() {
                 </div>
               </div>
             </CollapsibleTrigger>
+          </CardHeader>
 
             {/* Ciclo Operacional */}
             <CollapsibleContent>
-              <div className="mt-6">
+              <CardContent className="relative z-10">
             <h3 className="text-cream font-semibold text-lg mb-4 flex items-center gap-2">
               <ArrowRight className="w-5 h-5 text-gold" />
               Ciclo Contínuo de Produção
@@ -438,9 +439,8 @@ export default function EcossistemaSection() {
             <p className="text-center text-cream/60 text-sm mt-4 italic">
               Este ciclo se retroalimenta continuamente, criando um ecossistema vivo e sustentável
             </p>
-              </div>
+              </CardContent>
             </CollapsibleContent>
-          </CardHeader>
         </Card>
       </Collapsible>
 

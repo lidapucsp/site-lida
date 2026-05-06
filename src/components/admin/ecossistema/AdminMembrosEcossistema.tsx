@@ -118,9 +118,11 @@ export default function AdminMembrosEcossistema() {
         description: 'O membro foi removido da equipe',
       });
     } else {
+      const errorMessage = result.error?.message || 'Não foi possível remover o membro';
+      console.error('Erro detalhado:', result.error);
       toast({
         title: 'Erro ao remover',
-        description: 'Não foi possível remover o membro',
+        description: errorMessage,
         variant: 'destructive',
       });
     }
