@@ -17,6 +17,7 @@ export default function PerfilSection() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   // Estado do formulário de perfil
   const [formData, setFormData] = useState({
@@ -28,9 +29,9 @@ export default function PerfilSection() {
     avatar_url: ''
   })
 
-  // Atualizar formData quando profile carregar ou mudar
+  // Atualizar formData quando profile carregar ou mudar (apenas se não estiver editando)
   useEffect(() => {
-    if (profile) {
+    if (profile && !isEditing) {
       setFormData({
         full_name: profile.full_name || '',
         bio: profile.bio || '',
@@ -40,7 +41,7 @@ export default function PerfilSection() {
         avatar_url: profile.avatar_url || ''
       })
     }
-  }, [profile])
+  }, [profile, isEditing])
 
   // Estado do formulário de email
   const [newEmail, setNewEmail] = useState('')
@@ -51,6 +52,12 @@ export default function PerfilSection() {
     new: '',
     confirm: ''
   })
+
+  // Handler para mudanças no formulário que marca como editando
+  const handleFormChange = (field: keyof typeof formData, value: string) => {
+    setIsEditing(true)
+    setFormData({ ...formData, [field]: value })
+  }
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,6 +80,7 @@ export default function PerfilSection() {
       if (error) throw error
 
       await refreshProfile()
+      setIsEditing(false)
       setMessage({ type: 'success', text: 'Perfil atualizado com sucesso!' })
     } catch (error: any) {
       setMessage({ type: 'error', text: error.message || 'Erro ao atualizar perfil' })
@@ -190,7 +198,7 @@ export default function PerfilSection() {
                   type="url"
                   placeholder="https://exemplo.com/foto.jpg"
                   value={formData.avatar_url}
-                  onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })}
+                  onChange={(e) => handleFormChange('avatar_url', e.target.value)}
                   className="border-gold/30"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -207,7 +215,7 @@ export default function PerfilSection() {
               <Input
                 id="full_name"
                 value={formData.full_name}
-                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                onChange={(e) => handleFormChange('full_name', e.target.value)}
                 className="border-gold/30"
                 required
               />
@@ -220,7 +228,7 @@ export default function PerfilSection() {
                 id="bio"
                 placeholder="Conte um pouco sobre você, suas áreas de interesse, projetos..."
                 value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                onChange={(e) => handleFormChange('bio', e.target.value)}
                 className="border-gold/30 min-h-[120px]"
                 maxLength={500}
               />
@@ -239,7 +247,7 @@ export default function PerfilSection() {
                 id="instituicao"
                 placeholder="Ex: PUC-SP, USP, Empresa X..."
                 value={formData.instituicao}
-                onChange={(e) => setFormData({ ...formData, instituicao: e.target.value })}
+                onChange={(e) => handleFormChange('instituicao', e.target.value)}
                 className="border-gold/30"
               />
               <p className="text-xs text-muted-foreground">
@@ -257,7 +265,7 @@ export default function PerfilSection() {
                 id="funcao"
                 placeholder="Ex: Pesquisador, Estudante de Doutorado, Desenvolvedor..."
                 value={formData.funcao}
-                onChange={(e) => setFormData({ ...formData, funcao: e.target.value })}
+                onChange={(e) => handleFormChange('funcao', e.target.value)}
                 className="border-gold/30"
               />
               <p className="text-xs text-muted-foreground">
@@ -276,7 +284,7 @@ export default function PerfilSection() {
                 type="url"
                 placeholder="https://www.linkedin.com/in/seu-perfil"
                 value={formData.linkedin}
-                onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                onChange={(e) => handleFormChange('linkedin', e.target.value)}
                 className="border-gold/30"
               />
               <p className="text-xs text-muted-foreground">

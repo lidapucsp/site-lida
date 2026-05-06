@@ -22,6 +22,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import GerenciarTarefas from "./pages/GerenciarTarefas";
 import GerenciarContatos from "./pages/GerenciarContatos";
+import GerenciarEcossistema from "./pages/GerenciarEcossistema";
 import AreaMembros from "./pages/AreaMembros";
 import NotFound from "./pages/NotFound";
 
@@ -70,6 +71,14 @@ const App = () => (
             element={
               <ProtectedRoute requireAdmin>
                 <GerenciarContatos />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/ecossistema" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <GerenciarEcossistema />
               </ProtectedRoute>
             } 
           />

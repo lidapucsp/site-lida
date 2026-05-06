@@ -479,6 +479,47 @@ export default function Admin() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card className="border-gold/20">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-navy flex items-center gap-2">
+                      <Users className="w-5 h-5 text-gold" />
+                      Ecossistema LIDA
+                    </CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate('/admin/ecossistema')}
+                      className="text-gold hover:bg-gold hover:text-white transition-colors"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <CardDescription>
+                    Gerencie equipes, tarefas e comunicados
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                      <span className="text-sm text-navy-light">Equipes</span>
+                      <span className="font-semibold text-navy">4</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                      <span className="text-sm text-navy-light">Tarefas Ativas</span>
+                      <span className="font-semibold text-navy">-</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => navigate('/admin/ecossistema')}
+                    >
+                      Acessar Ecossistema
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 

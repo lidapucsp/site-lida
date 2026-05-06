@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Video, Users, MessageSquare, LogOut, UserCircle, Shield, Home, Mail, Heart } from 'lucide-react'
+import { Video, Users, MessageSquare, LogOut, UserCircle, Shield, Home, Mail, Heart, Network } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ReunioesSection from '@/components/membros/ReunioesSection'
 import ForumSection from '@/components/membros/ForumSection'
@@ -13,6 +13,7 @@ import MembrosSection from '@/components/membros/MembrosSection'
 import PerfilSection from '@/components/membros/PerfilSection'
 import ComunicadosSection from '@/components/membros/ComunicadosSection'
 import InteressesSection from '@/components/membros/InteressesSection'
+import EcossistemaSection from '@/components/membros/EcossistemaSection'
 
 export default function AreaMembros() {
   const { profile, signOut } = useAuth()
@@ -82,7 +83,7 @@ export default function AreaMembros() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-6 bg-white border border-gold/20">
+          <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-7 bg-white border border-gold/20">
             <TabsTrigger
               value="reunioes"
               className="data-[state=active]:bg-navy data-[state=active]:text-cream"
@@ -119,6 +120,13 @@ export default function AreaMembros() {
               Membros
             </TabsTrigger>
             <TabsTrigger
+              value="ecossistema"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream"
+            >
+              <Network className="w-4 h-4 mr-2" />
+              Ecossistema
+            </TabsTrigger>
+            <TabsTrigger
               value="perfil"
               className="data-[state=active]:bg-navy data-[state=active]:text-cream"
             >
@@ -145,6 +153,10 @@ export default function AreaMembros() {
 
           <TabsContent value="membros">
             <MembrosSection />
+          </TabsContent>
+
+          <TabsContent value="ecossistema">
+            <EcossistemaSection />
           </TabsContent>
 
           <TabsContent value="perfil">

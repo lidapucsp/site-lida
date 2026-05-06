@@ -390,4 +390,3 @@ Perfis de usuários estendendo auth.users
 | `prazo` | `date` |  Nullable |
 | `created_at` | `timestamptz` |  Nullable |
 | `updated_at` | `timestamptz` |  Nullable |
-
