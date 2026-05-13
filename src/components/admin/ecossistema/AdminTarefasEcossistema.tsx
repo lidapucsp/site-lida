@@ -318,7 +318,7 @@ export default function AdminTarefasEcossistema() {
                       </SelectItem>
                     ))}
                     {!formData.equipe_id && (
-                      <SelectItem value="" disabled className="text-gray-400">
+                      <SelectItem value="placeholder" disabled className="text-gray-400">
                         Selecione uma equipe primeiro
                       </SelectItem>
                     )}
