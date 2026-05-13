@@ -314,7 +314,7 @@ export default function AdminTarefasEcossistema() {
                     )}
                     {formData.equipe_id && membrosEquipe.map((membro) => (
                       <SelectItem key={membro.user_id} value={membro.user_id} className="text-navy hover:bg-gold/10">
-                        {membro.profiles?.full_name || membro.profiles?.username}
+                        {membro.profile?.full_name || membro.profile?.username}
                       </SelectItem>
                     ))}
                     {!formData.equipe_id && (
