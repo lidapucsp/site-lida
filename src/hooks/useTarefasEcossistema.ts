@@ -79,9 +79,13 @@ export function useTarefasEcossistema(options: UseTarefasEcossistemaOptions = {}
 
       if (options.equipeId) {
         query = query.eq('equipe_id', options.equipeId)
-      }
-
-      if (options.userId) {
+        
+        // Se houver userId, buscar tarefas atribuídas ao usuário OU à equipe toda (null)
+        if (options.userId) {
+          query = query.or(`atribuido_para.eq.${options.userId},atribuido_para.is.null`)
+        }
+      } else if (options.userId) {
+        // Se não houver equipeId, buscar apenas tarefas do usuário
         query = query.eq('atribuido_para', options.userId)
       }
 

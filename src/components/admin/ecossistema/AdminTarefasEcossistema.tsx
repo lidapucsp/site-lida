@@ -77,9 +77,14 @@ export default function AdminTarefasEcossistema() {
       return;
     }
 
+    const dadosTarefa = {
+      ...formData,
+      atribuido_para: formData.atribuido_para === 'equipe_toda' ? null : formData.atribuido_para || null
+    };
+
     const result = editando
-      ? await atualizarTarefa(editando.id, formData)
-      : await criarTarefa(formData);
+      ? await atualizarTarefa(editando.id, dadosTarefa)
+      : await criarTarefa(dadosTarefa);
 
     if (result.success) {
       toast({
@@ -113,7 +118,7 @@ export default function AdminTarefasEcossistema() {
       titulo: tarefa.titulo,
       descricao: tarefa.descricao || '',
       equipe_id: tarefa.equipe_id || '',
-      atribuido_para: tarefa.atribuido_para || '',
+      atribuido_para: tarefa.atribuido_para || 'equipe_toda',
       prioridade: tarefa.prioridade,
       prazo: tarefa.prazo || '',
     });
@@ -189,12 +194,13 @@ export default function AdminTarefasEcossistema() {
                   )}
 
                   <div className="flex items-center gap-4 text-sm text-navy/60">
-                    {tarefa.atribuido && (
-                      <div className="flex items-center gap-1">
-                        <User className="w-3 h-3" />
-                        {tarefa.atribuido.full_name || tarefa.atribuido.username}
-                      </div>
-                    )}
+                    <div className="flex items-center gap-1">
+                      <User className="w-3 h-3" />
+                      {tarefa.atribuido 
+                        ? (tarefa.atribuido.full_name || tarefa.atribuido.username)
+                        : '🎯 Toda a equipe'
+                      }
+                    </div>
                     {tarefa.prazo && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
@@ -298,6 +304,9 @@ export default function AdminTarefasEcossistema() {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gold/20">
+                    <SelectItem value="equipe_toda" className="text-navy hover:bg-gold/10 font-semibold">
+                      🎯 Toda a equipe
+                    </SelectItem>
                     {profiles.map((p) => (
                       <SelectItem key={p.id} value={p.id} className="text-navy hover:bg-gold/10">
                         {p.full_name || p.username}

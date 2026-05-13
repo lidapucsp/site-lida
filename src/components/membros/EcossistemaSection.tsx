@@ -127,6 +127,7 @@ export default function EcossistemaSection() {
   // Buscar minhas tarefas
   const { tarefas, loading: loadingTarefas, atualizarTarefa } = useTarefasEcossistema({
     userId: profile?.id,
+    equipeId: minhaEquipe?.id,
   });
 
   // Chat da equipe - só quando tiver equipeId
