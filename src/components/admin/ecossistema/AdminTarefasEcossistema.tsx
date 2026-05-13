@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useEquipes } from '@/hooks/useEquipes';
+import { useEquipes, useMembrosEquipe } from '@/hooks/useEquipes';
 import { useProfiles } from '@/hooks/useProfiles';
 import { useTarefasEcossistema } from '@/hooks/useTarefasEcossistema';
 import { Button } from '@/components/ui/button';
@@ -54,11 +54,7 @@ export default function AdminTarefasEcossistema() {
   const { equipes } = useEquipes();
   const { profiles } = useProfiles();
   const { tarefas, loading, criarTarefa, atualizarTarefa, deletarTarefa } = useTarefasEcossistema();
-  const { toast } = useToast();
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editando, setEditando] = useState<any>(null);
-
+  
   const [formData, setFormData] = useState({
     titulo: '',
     descricao: '',
@@ -67,6 +63,13 @@ export default function AdminTarefasEcossistema() {
     prioridade: 'media' as 'baixa' | 'media' | 'alta' | 'urgente',
     prazo: '',
   });
+  
+  // Buscar membros da equipe selecionada
+  const { membros: membrosEquipe } = useMembrosEquipe(formData.equipe_id);
+  const { toast } = useToast();
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editando, setEditando] = useState<any>(null);
 
   const handleSubmit = async () => {
     if (!formData.titulo) {
@@ -304,14 +307,21 @@ export default function AdminTarefasEcossistema() {
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gold/20">
-                    <SelectItem value="equipe_toda" className="text-navy hover:bg-gold/10 font-semibold">
-                      🎯 Toda a equipe
-                    </SelectItem>
-                    {profiles.map((p) => (
-                      <SelectItem key={p.id} value={p.id} className="text-navy hover:bg-gold/10">
-                        {p.full_name || p.username}
+                    {formData.equipe_id && (
+                      <SelectItem value="equipe_toda" className="text-navy hover:bg-gold/10 font-semibold">
+                        🎯 Toda a equipe
+                      </SelectItem>
+                    )}
+                    {formData.equipe_id && membrosEquipe.map((membro) => (
+                      <SelectItem key={membro.user_id} value={membro.user_id} className="text-navy hover:bg-gold/10">
+                        {membro.profiles?.full_name || membro.profiles?.username}
                       </SelectItem>
                     ))}
+                    {!formData.equipe_id && (
+                      <SelectItem value="" disabled className="text-gray-400">
+                        Selecione uma equipe primeiro
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
