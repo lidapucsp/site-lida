@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Loader2, Play, Calendar, Clock, User, FileText, ExternalLink } from 'lucide-react'
+import { Loader2, Play, Calendar, Clock, User, FileText, ExternalLink, Video } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
@@ -18,24 +18,6 @@ export default function ReunioesSection() {
     eixoId: filtroEixo === 'todos' ? undefined : filtroEixo
   })
   const { eixos } = useEixos()
-
-  const getVideoEmbedUrl = (url: string) => {
-    // Converter URLs do YouTube para formato embed
-    if (url.includes('youtube.com/watch?v=')) {
-      const videoId = url.split('v=')[1]?.split('&')[0]
-      return `https://www.youtube.com/embed/${videoId}`
-    }
-    if (url.includes('youtu.be/')) {
-      const videoId = url.split('youtu.be/')[1]?.split('?')[0]
-      return `https://www.youtube.com/embed/${videoId}`
-    }
-    // Vimeo
-    if (url.includes('vimeo.com/')) {
-      const videoId = url.split('vimeo.com/')[1]?.split('?')[0]
-      return `https://player.vimeo.com/video/${videoId}`
-    }
-    return url
-  }
 
   if (loading) {
     return (
@@ -171,16 +153,43 @@ export default function ReunioesSection() {
 
           {reuniaoAberta && (
             <div className="space-y-6">
-              {/* Player de Vídeo */}
-              <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-                <iframe
-                  src={getVideoEmbedUrl(reuniaoAberta.video_url)}
-                  title={reuniaoAberta.titulo}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+              {/* Área do Vídeo */}
+              {reuniaoAberta.video_url ? (
+                <button
+                  type="button"
+                  className="relative w-full aspect-video rounded-xl overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                  onClick={() => window.open(reuniaoAberta.video_url, '_blank', 'noopener,noreferrer')}
+                  aria-label={`Assistir: ${reuniaoAberta.titulo}`}
+                >
+                  {reuniaoAberta.thumbnail_url ? (
+                    <img
+                      src={reuniaoAberta.thumbnail_url}
+                      alt={reuniaoAberta.titulo}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-navy via-navy-light to-navy">
+                      <Video className="w-14 h-14 text-gold opacity-70" />
+                      <span className="text-white/70 text-sm font-medium">Nenhuma miniatura disponível</span>
+                    </div>
+                  )}
+                  {/* Overlay de hover */}
+                  <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center shadow-lg">
+                      <Play className="w-7 h-7 text-navy fill-navy ml-1" />
+                    </div>
+                    <span className="text-white font-semibold text-sm tracking-wide">Clique para assistir o vídeo</span>
+                    <span className="text-white/60 text-xs flex items-center gap-1">
+                      <ExternalLink className="w-3 h-3" /> Abre em nova aba
+                    </span>
+                  </div>
+                </button>
+              ) : (
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-navy via-navy-light to-navy flex flex-col items-center justify-center gap-3">
+                  <Video className="w-14 h-14 text-gold opacity-50" />
+                  <p className="text-white/60 font-medium text-sm">Vídeo não disponível para esta reunião</p>
+                </div>
+              )}
 
               {/* Informações */}
               <div className="space-y-4">
