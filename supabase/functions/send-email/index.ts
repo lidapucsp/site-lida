@@ -150,7 +150,7 @@ serve(async (req) => {
         <body>
           <div class="header">
             <div class="logo">LIDA - PUC-SP</div>
-            <p style="margin: 0; opacity: 0.9;">Laboratório Interdisciplinar de Dados</p>
+            <p style="margin: 0; opacity: 0.9;">Laboratório de IA e direito aplicado</p>
           </div>
           <div class="content">
             <div class="message">${mensagem.replace(/\n/g, '<br>')}</div>
