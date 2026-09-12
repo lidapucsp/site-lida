@@ -24,6 +24,9 @@ export function AdminParticipantes() {
   const [editingProfile, setEditingProfile] = useState<Profile | null>(null)
   const [cargoDialog, setCargoDialog] = useState(false)
   const [cargoInput, setCargoInput] = useState('')
+
+  // Estado para Selecionar Usuários para remoção
+  const [ selectedUsers, setSelectedUsers ] = useState<Set<Profile>>(new Set());
   
   // Estados para criar/editar usuário
   const [userDialog, setUserDialog] = useState(false)
@@ -39,6 +42,10 @@ export function AdminParticipantes() {
   // Estados para deletar
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [deletingProfile, setDeletingProfile] = useState<Profile | null>(null)
+
+  // Estados para deletar vários usuários
+  const [deleteMultipleDialog, setDeleteMultipleDialog] = useState(false);
+  const [deletingMultiple, setDeletingMultiple] = useState(false);
 
   useEffect(() => {
     fetchProfiles()
@@ -90,6 +97,56 @@ export function AdminParticipantes() {
     } finally {
       setUpdating(null)
     }
+  }
+
+  // Função para Selecionar todos os Usuários (Seleção para Remoção)
+  function toggleSelectAll() {
+    if (selectedUsers.size === profiles.filter(user => !user.is_admin).length) {
+      setSelectedUsers(new Set());
+      return;
+    }
+
+    setSelectedUsers(
+      new Set(profiles.filter(user => !user.is_admin).map(usuario => usuario))
+    );
+  }
+  
+  // Função para Selecionar o Usuário (Seleção para Remoção)
+  function toggleUser(profile: Profile) {
+    setSelectedUsers(prev => {
+      const novoSet = new Set(prev);
+
+      if (novoSet.has(profile)) {
+        novoSet.delete(profile);
+      } else {
+        novoSet.add(profile);
+      }
+
+      return novoSet;
+    });
+  }
+
+  // Função para Abrir modal de Confirmação (Remover Usuários Selecionados)
+  function toggleModalDeleteMultiple() {
+    console.log(selectedUsers)
+    setDeleteMultipleDialog(!deleteMultipleDialog);
+  }
+
+
+  // Função para Remover os Usuários Selecionados
+  async function confirmDeleteMultiple() {
+    const users = Array.from(selectedUsers);
+
+    for (let i = 0; i < users.length; i++) {
+      
+      await deleteUser(users[i])
+
+    }
+
+    setSelectedUsers(new Set());
+    toggleModalDeleteMultiple()
+
+    // atualizar lista
   }
 
   const handleEditCargo = (profile: Profile) => {
@@ -318,6 +375,56 @@ export function AdminParticipantes() {
     }
   }
 
+  // Função usada para Deletar vários Users
+  async function deleteUser(userToDelete) {
+    if (!userToDelete) return
+
+    setUpdating(userToDelete.id)
+    try {
+      // Deletar via Edge Function
+      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+      
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/manage-users`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${anonKey}`,
+          },
+          body: JSON.stringify({
+            action: 'delete',
+            user_id: user?.id,
+            target_user_id: userToDelete.id
+          })
+        }
+      )
+
+      const result = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Erro ao deletar usuário')
+      }
+
+      // O profile será deletado automaticamente pelo cascade
+      toast({
+        title: 'Usuário removido',
+        description: `${userToDelete.full_name || userToDelete.username} foi removido do sistema.`,
+      })
+
+      setDeleteDialog(false)
+      fetchProfiles()
+    } catch (error: any) {
+      toast({
+        title: 'Erro',
+        description: error.message || 'Não foi possível remover o usuário.',
+        variant: 'destructive',
+      })
+    } finally {
+      setUpdating(null)
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -339,9 +446,34 @@ export function AdminParticipantes() {
         </Button>
       </div>
 
+      {selectedUsers.size > 0 && (
+        <div className="flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
+          <span className="text-sm font-medium text-primary">
+            {selectedUsers.size} participante
+            {selectedUsers.size > 1 ? "s" : ""}/membro
+            {selectedUsers.size > 1 ? "s" : ""} selecionado
+            {selectedUsers.size > 1 ? "s" : ""}
+          </span>
+
+          <button className="flex items-center gap-2 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-500 hover:text-white"
+            onClick={toggleModalDeleteMultiple}>
+            <Trash2 size={16} />
+
+            Excluir selecionados
+          </button>
+        </div>
+      )}
+
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>
+            <input
+              type="checkbox"
+              checked={selectedUsers.size === profiles.filter(user => !user.is_admin).length}
+              onChange={toggleSelectAll}
+            />
+            </TableHead>
             <TableHead>Username</TableHead>
             <TableHead>Nome Completo</TableHead>
             <TableHead>Cargo</TableHead>
@@ -354,6 +486,18 @@ export function AdminParticipantes() {
           {profiles && profiles.length > 0 ? (
             profiles.map((profile) => (
               <TableRow key={profile.id}>
+                <TableCell>
+                  {
+                    profile.is_admin ?
+                    "-"
+                    :
+                    <input
+                    type="checkbox"
+                    checked={selectedUsers.has(profile)}
+                    onChange={() => toggleUser(profile)}
+                    />
+                  }
+                </TableCell>
                 <TableCell className="font-medium">{profile.username}</TableCell>
                 <TableCell>{profile.full_name || '-'}</TableCell>
                 <TableCell>
@@ -662,6 +806,61 @@ export function AdminParticipantes() {
               {updating === deletingProfile?.id && (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               )}
+              Sim, Remover
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog de confirmação para deletar vários participantes */}
+      <Dialog
+        open={deleteMultipleDialog}
+        onOpenChange={setDeleteMultipleDialog}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-navy flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+              Confirmar Exclusão
+            </DialogTitle>
+
+            <DialogDescription>
+              Tem certeza que deseja remover{" "}
+              <span className="font-semibold">
+                {selectedUsers.size} participante
+                {selectedUsers.size > 1 ? "s" : ""}
+              </span>
+              ?
+              <br />
+              Esta ação não pode ser desfeita.
+            </DialogDescription>
+          </DialogHeader>
+
+          <Alert variant="destructive">
+            <AlertDescription>
+              Todos os dados associados aos participantes selecionados
+              serão permanentemente removidos do sistema.
+            </AlertDescription>
+          </Alert>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteMultipleDialog(false)}
+              className="border-gold/30"
+            >
+              Cancelar
+            </Button>
+
+            <Button
+              onClick={confirmDeleteMultiple}
+              disabled={deletingMultiple}
+              variant="destructive"
+            >
+              {deletingMultiple && (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              )}
+
               Sim, Remover
             </Button>
           </DialogFooter>
