@@ -12,6 +12,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+
 import { 
   Users, 
   MessageSquare, 
@@ -35,7 +43,7 @@ import {
   ChevronDown,
   Crown
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const iconMap = {
@@ -82,6 +90,8 @@ export default function EcossistemaSection() {
   const [introAberta, setIntroAberta] = useState(true);
   const [enviandoMsg, setEnviandoMsg] = useState(false);
   const [carregandoEquipe, setCarregandoEquipe] = useState(true);
+
+  const [tarefaSelecionada, setTarefaSelecionada] = useState<any>(null);
 
   // Descobrir qual equipe o usuário pertence
   useEffect(() => {
@@ -536,7 +546,13 @@ export default function EcossistemaSection() {
                       const prioridade = prioridadeMap[tarefa.prioridade as keyof typeof prioridadeMap];
                       
                       return (
-                        <Card key={tarefa.id} className="p-3 bg-cream/30 border-gold/10">
+                        // <Card key={tarefa.id} className="p-3 bg-cream/30 border-gold/10">
+                        <Card
+                          key={tarefa.id}
+                          title="Clique para ver os detalhes"
+                          className="p-3 bg-cream/30 border-gold/10 cursor-pointer hover:border-gold/30 hover:shadow-sm transition-all"
+                          onClick={() => setTarefaSelecionada(tarefa)}
+                        >
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <h4 className="text-sm font-semibold text-navy line-clamp-2">
@@ -556,27 +572,46 @@ export default function EcossistemaSection() {
                             {tarefa.prazo && (
                               <div className="flex items-center gap-1 text-xs text-navy/60">
                                 <Calendar className="w-3 h-3" />
-                                {format(new Date(tarefa.prazo), 'dd/MM/yyyy', { locale: ptBR })}
+                                {format(parse(tarefa.prazo, 'yyyy-MM-dd', new Date()), 'dd/MM/yyyy', { locale: ptBR })}
                               </div>
                             )}
 
                             {/* Botões de mudança de status */}
                             <div className="flex gap-1 pt-2">
-                              {status !== 'em_andamento' && status !== 'concluida' && (
+                              {status !== 'em_andamento' && status !== 'concluida' && status !== 'em_revisao' && (
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleAtualizarStatus(tarefa.id, 'em_andamento')}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAtualizarStatus(tarefa.id, 'em_andamento')}
+                                  }
                                   className="text-xs h-7 text-navy hover:bg-gold/10"
                                 >
                                   Iniciar
+                                </Button>
+                              )}
+                              {status !== 'em_andamento' && status !== 'concluida' && status !== 'pendente'  && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAtualizarStatus(tarefa.id, 'em_andamento')}
+                                  }
+                                  className="text-xs h-7 text-navy hover:bg-gold/10"
+                                >
+                                  Continuar
                                 </Button>
                               )}
                               {status === 'em_andamento' && (
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleAtualizarStatus(tarefa.id, 'em_revisao')}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAtualizarStatus(tarefa.id, 'em_revisao')}
+                                  }
                                   className="text-xs h-7 text-navy hover:bg-gold/10"
                                 >
                                   Revisar
@@ -586,10 +621,26 @@ export default function EcossistemaSection() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleAtualizarStatus(tarefa.id, 'concluida')}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAtualizarStatus(tarefa.id, 'concluida')}
+                                  }
                                   className="text-xs h-7 text-green-600 hover:bg-green-50"
                                 >
                                   Concluir
+                                </Button>
+                              )}
+                              {status === 'concluida' && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAtualizarStatus(tarefa.id, 'em_andamento')}
+                                  }
+                                  className="text-xs h-7 text-navy hover:bg-gold/10"
+                                >
+                                  Refazer
                                 </Button>
                               )}
                             </div>
@@ -807,6 +858,114 @@ export default function EcossistemaSection() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <Dialog
+        open={!!tarefaSelecionada}
+        onOpenChange={(aberto) => {
+          if (!aberto) {
+            setTarefaSelecionada(null);
+          }
+        }}
+      >
+        <DialogContent className="max-w-2xl bg-white border-gold/20">
+
+          {tarefaSelecionada && (
+            <>
+              <DialogHeader>
+                <div className="flex items-start justify-between gap-4">
+
+                  <div>
+                    <DialogTitle className="text-xl text-navy">
+                      {tarefaSelecionada.titulo}
+                    </DialogTitle>
+
+                    <p className="text-sm text-navy/50 mt-1">
+                      Detalhes da tarefa
+                    </p>
+                  </div>
+
+                  {(() => {
+                    const prioridade =
+                      prioridadeMap[
+                        tarefaSelecionada.prioridade as keyof typeof prioridadeMap
+                      ];
+
+                    return (
+                      <Badge
+                        className={`${prioridade?.color} shrink-0`}
+                      >
+                        {prioridade?.label}
+                      </Badge>
+                    );
+                  })()}
+
+                </div>
+              </DialogHeader>
+
+              <div className="space-y-5 mt-4">
+
+                {/* Descrição */}
+                <div>
+                  <h3 className="text-sm font-semibold text-navy mb-2">
+                    Descrição
+                  </h3>
+
+                  <div className="rounded-lg border border-gold/10 bg-cream/30 p-4 max-h-[45vh] overflow-y-auto">
+                    <p className="text-sm leading-6 text-navy/80 whitespace-pre-wrap break-words">
+                      {tarefaSelecionada.descricao || 'Nenhuma descrição informada.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Prazo */}
+                {tarefaSelecionada.prazo && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-navy mb-2">
+                      Prazo
+                    </h3>
+
+                    <div className="flex items-center gap-2 text-sm text-navy/70">
+                      <Calendar className="w-4 h-4" />
+
+                      {format(
+                        parse(
+                          tarefaSelecionada.prazo,
+                          'yyyy-MM-dd',
+                          new Date()
+                        ),
+                        'dd/MM/yyyy',
+                        { locale: ptBR }
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Status */}
+                <div>
+                  <h3 className="text-sm font-semibold text-navy mb-2">
+                    Status
+                  </h3>
+
+                  <Badge
+                    className={
+                      statusMap[
+                        tarefaSelecionada.status as keyof typeof statusMap
+                      ]?.color
+                    }
+                  >
+                    {
+                      statusMap[
+                        tarefaSelecionada.status as keyof typeof statusMap
+                      ]?.label
+                    }
+                  </Badge>
+                </div>
+
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

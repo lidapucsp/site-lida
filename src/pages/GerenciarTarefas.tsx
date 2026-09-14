@@ -213,6 +213,9 @@ export default function GerenciarTarefas() {
           </p>
         ) : (
           tarefas.map((tarefa) => (
+            
+            // tarefa.atribuido_para == profile.membro_id ? 
+            true ?
             <Card
               key={tarefa.id}
               draggable
@@ -278,10 +281,36 @@ export default function GerenciarTarefas() {
                         {tarefa.membro.cargo}
                       </p>
                     </div>
+                      {tarefa.status === 'a_fazer' && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            moverTarefa(tarefa.id, 'em_progresso')}
+                          }
+                          className="text-xs h-7 text-navy hover:bg-gold/10"
+                        >
+                          Começar
+                        </Button>
+                      )}
+                      {tarefa.status === 'em_progresso' && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            // tarefa.status = 'concluido'
+                            moverTarefa(tarefa.id, 'concluido')}
+                          }
+                          className="text-xs h-7 text-navy hover:bg-gold/10"
+                        >
+                          Finalizar
+                        </Button>
+                      )}
                   </div>
                 )}
               </CardContent>
-            </Card>
+            </Card> :
+            null
           ))
         )}
       </CardContent>
