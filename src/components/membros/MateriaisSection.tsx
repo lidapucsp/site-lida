@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useReunioes } from '@/hooks/useReunioes'
+import { useMateriais } from '@/hooks/useMateriais'
 import { useEixos } from '@/hooks/useEixos'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,11 +10,11 @@ import { Loader2, Play, Calendar, Clock, User, FileText, ExternalLink, Video } f
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-export default function ReunioesSection() {
+export default function MateriaisSection() {
   const [filtroEixo, setFiltroEixo] = useState<string>('todos')
-  const [reuniaoAberta, setReuniaoAberta] = useState<any>(null)
+  const [materialAberto, setMaterialAberto] = useState<any>(null)
   
-  const { reunioes, loading } = useReunioes({
+  const { materiais, loading } = useMateriais({
     eixoId: filtroEixo === 'todos' ? undefined : filtroEixo
   })
   const { eixos } = useEixos()
@@ -32,8 +32,8 @@ export default function ReunioesSection() {
       {/* Filtros */}
       <Card className="border-gold/20">
         <CardHeader>
-          <CardTitle className="text-navy font-display">Reuniões e Vídeos</CardTitle>
-          <CardDescription>Acesse todo o conteúdo das reuniões realizadas</CardDescription>
+          <CardTitle className="text-navy font-display">Acervo de Materiais</CardTitle>
+          <CardDescription>Acesse todo o conteúdo dos Materiais</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -57,21 +57,21 @@ export default function ReunioesSection() {
 
       {/* Lista de Reuniões */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {reunioes.map((reuniao) => {
-          const eixo = eixos.find((e) => e.id === reuniao.eixo_id)
+        {materiais.map((material) => {
+          const eixo = eixos.find((e) => e.id === material.eixo_id)
           
           return (
             <Card
-              key={reuniao.id}
+              key={material.id}
               className="border-gold/20 hover:shadow-lg transition-shadow cursor-pointer group"
-              onClick={() => setReuniaoAberta(reuniao)}
+              onClick={() => setMaterialAberto(material)}
             >
               {/* Thumbnail */}
               <div className="relative aspect-video bg-navy-light overflow-hidden">
-                {reuniao.thumbnail_url ? (
+                {material.thumbnail_url ? (
                   <img
-                    src={reuniao.thumbnail_url}
-                    alt={reuniao.titulo}
+                    src={material.thumbnail_url}
+                    alt={material.titulo}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
                 ) : (
@@ -87,7 +87,7 @@ export default function ReunioesSection() {
               <CardHeader>
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-lg font-display text-navy line-clamp-2">
-                    {reuniao.titulo}
+                    {material.titulo}
                   </CardTitle>
                   {eixo && (
                     <Badge variant="outline" className="border-gold text-gold text-xs shrink-0">
@@ -95,31 +95,31 @@ export default function ReunioesSection() {
                     </Badge>
                   )}
                 </div>
-                {reuniao.descricao && (
+                {material.descricao && (
                   <CardDescription className="line-clamp-2">
-                    {reuniao.descricao}
+                    {material.descricao}
                   </CardDescription>
                 )}
               </CardHeader>
 
               <CardContent>
                 <div className="space-y-2 text-sm text-navy-light">
-                  {reuniao.palestrante && (
+                  {material.criador_material && (
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4" />
-                      {reuniao.palestrante}
+                      {material.criador_material}
                     </div>
                   )}
-                  {reuniao.data_aula && (
+                  {material.data_material && (
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(reuniao.data_aula), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {format(new Date(material.data_material), "d 'de' MMMM, yyyy", { locale: ptBR })}
                     </div>
                   )}
-                  {reuniao.duracao && (
+                  {material.duracao && (
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4" />
-                      {reuniao.duracao} minutos
+                      {material.duracao} minutos
                     </div>
                   )}
                 </div>
@@ -129,42 +129,42 @@ export default function ReunioesSection() {
         })}
       </div>
 
-      {reunioes.length === 0 && (
+      {materiais.length === 0 && (
         <Card className="border-gold/20">
           <CardContent className="py-12 text-center">
-            <Play className="w-12 h-12 text-gold mx-auto mb-4 opacity-60" />
+            {/* <Play className="w-12 h-12 text-gold mx-auto mb-4 opacity-60" /> */}
             <p className="text-navy-light">
               {filtroEixo === 'todos'
-                ? 'Nenhuma reunião disponível no momento'
-                : 'Nenhuma reunião encontrada para este eixo'}
+                ? 'Nenhum material disponível no momento'
+                : 'Nenhum material encontrado para este eixo'}
             </p>
           </CardContent>
         </Card>
       )}
 
       {/* Dialog com Player de Vídeo */}
-      <Dialog open={!!reuniaoAberta} onOpenChange={() => setReuniaoAberta(null)}>
+      <Dialog open={!!materialAberto} onOpenChange={() => setMaterialAberto(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-display text-navy pr-8">
-              {reuniaoAberta?.titulo}
+              {materialAberto?.titulo}
             </DialogTitle>
           </DialogHeader>
 
-          {reuniaoAberta && (
+          {materialAberto && (
             <div className="space-y-6">
               {/* Área do Vídeo */}
-              {reuniaoAberta.video_url ? (
+              {materialAberto.materiais_url ? (
                 <button
                   type="button"
                   className="relative w-full aspect-video rounded-xl overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-                  onClick={() => window.open(reuniaoAberta.video_url, '_blank', 'noopener,noreferrer')}
-                  aria-label={`Assistir: ${reuniaoAberta.titulo}`}
+                  onClick={() => window.open(materialAberto.materiais_url, '_blank', 'noopener,noreferrer')}
+                  aria-label={`Assistir: ${materialAberto.titulo}`}
                 >
-                  {reuniaoAberta.thumbnail_url ? (
+                  {materialAberto.thumbnail_url ? (
                     <img
-                      src={reuniaoAberta.thumbnail_url}
-                      alt={reuniaoAberta.titulo}
+                      src={materialAberto.thumbnail_url}
+                      alt={materialAberto.titulo}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
@@ -178,7 +178,7 @@ export default function ReunioesSection() {
                     <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center shadow-lg">
                       <Play className="w-7 h-7 text-navy fill-navy ml-1" />
                     </div>
-                    <span className="text-white font-semibold text-sm tracking-wide">Clique para assistir o vídeo</span>
+                    <span className="text-white font-semibold text-sm tracking-wide">Clique para abrr o material</span>
                     <span className="text-white/60 text-xs flex items-center gap-1">
                       <ExternalLink className="w-3 h-3" /> Abre em nova aba
                     </span>
@@ -187,48 +187,48 @@ export default function ReunioesSection() {
               ) : (
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-navy via-navy-light to-navy flex flex-col items-center justify-center gap-3">
                   <Video className="w-14 h-14 text-gold opacity-50" />
-                  <p className="text-white/60 font-medium text-sm">Vídeo não disponível para esta reunião</p>
+                  <p className="text-white/60 font-medium text-sm">Imagem não disponível para este material</p>
                 </div>
               )}
 
               {/* Informações */}
               <div className="space-y-4">
-                {reuniaoAberta.descricao && (
+                {materialAberto.descricao && (
                   <div>
                     <h3 className="font-semibold text-navy mb-2">Descrição</h3>
-                    <p className="text-navy-light">{reuniaoAberta.descricao}</p>
+                    <p className="text-navy-light">{materialAberto.descricao}</p>
                   </div>
                 )}
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  {reuniaoAberta.data_aula && (
+                  {materialAberto.data_material && (
                     <div>
                       <span className="font-semibold text-navy">Data:</span>
                       <p className="text-navy-light">
-                        {format(new Date(reuniaoAberta.data_aula), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                        {format(new Date(materialAberto.data_material), "d 'de' MMMM, yyyy", { locale: ptBR })}
                       </p>
                     </div>
                   )}
-                  {reuniaoAberta.duracao && (
+                  {materialAberto.duracao && (
                     <div>
                       <span className="font-semibold text-navy">Duração:</span>
-                      <p className="text-navy-light">{reuniaoAberta.duracao} minutos</p>
+                      <p className="text-navy-light">{materialAberto.duracao} minutos</p>
                     </div>
                   )}
-                  {reuniaoAberta.palestrante && (
+                  {materialAberto.criador_material && (
                     <div>
-                      <span className="font-semibold text-navy">Palestrante:</span>
-                      <p className="text-navy-light">{reuniaoAberta.palestrante}</p>
+                      <span className="font-semibold text-navy">Criador:</span>
+                      <p className="text-navy-light">{materialAberto.criador_material}</p>
                     </div>
                   )}
                 </div>
 
-                {reuniaoAberta.materiais_url && (
+                {materialAberto.materiais_url && (
                   <div>
                     <Button
                       variant="outline"
                       className="border-gold text-navy hover:bg-gold hover:text-navy"
-                      onClick={() => window.open(reuniaoAberta.materiais_url, '_blank')}
+                      onClick={() => window.open(materialAberto.materiais_url, '_blank')}
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       Baixar Materiais

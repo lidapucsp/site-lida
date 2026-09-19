@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Video, Users, MessageSquare, LogOut, UserCircle, Shield, Home, Mail, Heart, Network } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ReunioesSection from '@/components/membros/ReunioesSection'
+import MateriaisSection from '@/components/membros/MateriaisSection'
 import ForumSection from '@/components/membros/ForumSection'
 import MembrosSection from '@/components/membros/MembrosSection'
 import PerfilSection from '@/components/membros/PerfilSection'
@@ -83,7 +84,14 @@ export default function AreaMembros() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-7 bg-white border border-gold/20">
+          <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-8 bg-white border border-gold/20">
+            <TabsTrigger
+              value="materiais"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream"
+            >
+              <Video className="w-4 h-4 mr-2" />
+              Materiais
+            </TabsTrigger>
             <TabsTrigger
               value="reunioes"
               className="data-[state=active]:bg-navy data-[state=active]:text-cream"
@@ -134,6 +142,10 @@ export default function AreaMembros() {
               Meu Perfil
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="materiais">
+            <MateriaisSection />
+          </TabsContent>
 
           <TabsContent value="reunioes">
             <ReunioesSection />
