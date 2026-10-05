@@ -34,6 +34,8 @@ import {
   Trash2,
   CheckCircle2,
 } from 'lucide-react';
+import { ptBR } from 'date-fns/locale';
+import { format, parse } from 'date-fns';
 
 const statusMap = {
   pendente: { label: 'Pendente', color: 'bg-gray-500/20 text-gray-400 border-gray-500/30' },
@@ -207,7 +209,7 @@ export default function AdminTarefasEcossistema() {
                     {tarefa.prazo && (
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {new Date(tarefa.prazo).toLocaleDateString('pt-BR')}
+                      {format(parse(tarefa.prazo, 'yyyy-MM-dd', new Date()), "dd/MM/yyyy", { locale: ptBR })}
                       </div>
                     )}
                   </div>
