@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Loader2, Play, Calendar, Clock, User, FileText, ExternalLink, Video } from 'lucide-react'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 export default function MateriaisSection() {
@@ -113,7 +113,8 @@ export default function MateriaisSection() {
                   {material.data_material && (
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(material.data_material), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {format(parse(material.data_material, 'yyyy-MM-dd', new Date()), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {/* {format(new Date(material.data_material), "d 'de' MMMM, yyyy", { locale: ptBR })} */}
                     </div>
                   )}
                   {material.duracao && (
@@ -178,7 +179,7 @@ export default function MateriaisSection() {
                     <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center shadow-lg">
                       <Play className="w-7 h-7 text-navy fill-navy ml-1" />
                     </div>
-                    <span className="text-white font-semibold text-sm tracking-wide">Clique para abrr o material</span>
+                    <span className="text-white font-semibold text-sm tracking-wide">Clique para abrir o material</span>
                     <span className="text-white/60 text-xs flex items-center gap-1">
                       <ExternalLink className="w-3 h-3" /> Abre em nova aba
                     </span>
@@ -205,7 +206,7 @@ export default function MateriaisSection() {
                     <div>
                       <span className="font-semibold text-navy">Data:</span>
                       <p className="text-navy-light">
-                        {format(new Date(materialAberto.data_material), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {format(parse(materialAberto.data_material, 'yyyy-MM-dd', new Date()), "d 'de' MMMM, yyyy", { locale: ptBR })}
                       </p>
                     </div>
                   )}

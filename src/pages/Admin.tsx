@@ -43,6 +43,7 @@ import AdminCalendario from '@/components/admin/AdminCalendario'
 import AdminComunicados from '@/components/admin/AdminComunicados'
 import { AdminProcessoSeletivo } from '@/components/admin/AdminProcessoSeletivo'
 import { AdminInteresses } from '@/components/admin/AdminInteresses'
+import AdminMateriais from '@/components/admin/AdminMateriais'
 
 export default function Admin() {
   const navigate = useNavigate()
@@ -53,6 +54,7 @@ export default function Admin() {
   const { profiles } = useProfiles()
   const [activeTab, setActiveTab] = useState('dashboard')
   const [comunicadosCount, setComunicadosCount] = useState(0)
+  const [materiaisCount, setMateriaisCount] = useState(0)
   const [reunioesCount, setReunioesCount] = useState(0)
   const [membrosCount, setMembrosCount] = useState(0)
   const [contatosNovosCount, setContatosNovosCount] = useState(0)
@@ -78,14 +80,16 @@ export default function Admin() {
 
   const fetchCounts = async () => {
     try {
-      const [comunicadosRes, reunioesRes, membrosRes, contatosRes] = await Promise.all([
+      const [comunicadosRes, materiaisRes, reunioesRes, membrosRes, contatosRes] = await Promise.all([
         supabase.from('comunicados').select('*', { count: 'exact', head: true }),
-        supabase.from('reunioes').select('*', { count: 'exact', head: true }),
+        supabase.from('materiais').select('*', { count: 'exact', head: true }),
+        supabase.from('aulas').select('*', { count: 'exact', head: true }),
         supabase.from('membros').select('*', { count: 'exact', head: true }),
         supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo')
       ])
 
       setComunicadosCount(comunicadosRes.count || 0)
+      setMateriaisCount(materiaisRes.count || 0)
       setReunioesCount(reunioesRes.count || 0)
       setMembrosCount(membrosRes.count || 0)
       setContatosNovosCount(contatosRes.count || 0)
@@ -112,6 +116,7 @@ export default function Admin() {
     (eventos?.length || 0) + 
     (profiles?.length || 0) + 
     comunicadosCount + 
+    materiaisCount + 
     reunioesCount + 
     membrosCount
   const estimativaUsoSupabase = Math.min((totalRegistros / 50000) * 100, 100).toFixed(1)
@@ -135,6 +140,13 @@ export default function Admin() {
       title: 'Comunicados',
       value: comunicadosCount,
       icon: Mail,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100',
+    },
+    {
+      title: 'Materiais',
+      value: materiaisCount,
+      icon: BookOpen,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
     },
@@ -193,73 +205,80 @@ export default function Admin() {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-10 bg-white border border-gold/20 p-1 h-auto">
+          <TabsList className="grid w-full grid-cols-6 bg-white border border-gold/20 p-1 h-auto">
             <TabsTrigger 
               value="dashboard" 
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Dashboard</span>
             </TabsTrigger>
             <TabsTrigger 
               value="eixos"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">Eixos</span>
             </TabsTrigger>
             <TabsTrigger 
               value="publicacoes"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Publicações</span>
             </TabsTrigger>
             <TabsTrigger 
               value="eventos"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Calendar className="w-4 h-4" />
               <span className="hidden sm:inline">Eventos</span>
             </TabsTrigger>
             <TabsTrigger 
               value="calendario"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <CalendarDays className="w-4 h-4" />
               <span className="hidden sm:inline">Calendário</span>
             </TabsTrigger>
             <TabsTrigger 
+              value="materiais"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
+            >
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Materiais</span>
+            </TabsTrigger>
+            <TabsTrigger 
               value="reunioes"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Video className="w-4 h-4" />
               <span className="hidden sm:inline">Reuniões</span>
             </TabsTrigger>
             <TabsTrigger 
               value="membros"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Membros</span>
             </TabsTrigger>
             <TabsTrigger 
               value="interesses"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Heart className="w-4 h-4" />
               <span className="hidden sm:inline">Interesses</span>
             </TabsTrigger>
             <TabsTrigger 
               value="comunicados"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <Mail className="w-4 h-4" />
               <span className="hidden sm:inline">Comunicados</span>
             </TabsTrigger>
             <TabsTrigger 
               value="processo-seletivo"
-              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3"
+              className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
             >
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Seletivo</span>
@@ -268,7 +287,7 @@ export default function Admin() {
 
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {stats.map((stat) => {
                 const Icon = stat.icon
                 return (
@@ -387,6 +406,10 @@ export default function Admin() {
                   <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                     <span className="text-sm text-navy-light">Comunicados</span>
                     <span className="font-semibold text-navy">{comunicadosCount}</span>
+                  </div>
+                  <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
+                    <span className="text-sm text-navy-light">Materiais</span>
+                    <span className="font-semibold text-navy">{materiaisCount}</span>
                   </div>
                   <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                     <span className="text-sm text-navy-light">Reuniões</span>
@@ -538,6 +561,10 @@ export default function Admin() {
 
           <TabsContent value="calendario">
             <AdminCalendario />
+          </TabsContent>
+
+          <TabsContent value="materiais">
+            <AdminMateriais />
           </TabsContent>
 
           <TabsContent value="reunioes">
