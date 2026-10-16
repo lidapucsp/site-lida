@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Loader2, Play, Calendar, Clock, User, FileText, ExternalLink, Video } from 'lucide-react'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 export default function ReunioesSection() {
@@ -113,7 +113,7 @@ export default function ReunioesSection() {
                   {reuniao.data_aula && (
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      {format(new Date(reuniao.data_aula), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                      {format(parse(reuniao.data_aula, 'yyyy-MM-dd', new Date()), "dd 'de' MMMM, yyyy", { locale: ptBR })}
                     </div>
                   )}
                   {reuniao.duracao && (
