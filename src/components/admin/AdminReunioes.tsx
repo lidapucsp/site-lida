@@ -26,7 +26,8 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Edit, Trash2, Loader2, Video } from 'lucide-react'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 export default function AdminReunioes() {
   const { reunioes, loading, refetch } = useReunioes({ includeInactive: true })
@@ -131,7 +132,7 @@ export default function AdminReunioes() {
                       )}
                     </TableCell>
                     <TableCell>
-                      {format(new Date(reuniao.data_aula), 'dd/MM/yyyy')}
+                      {format(parse(reuniao.data_aula, 'yyyy-MM-dd', new Date()), "dd/MM/yyyy", { locale: ptBR })}
                     </TableCell>
                     <TableCell>{reuniao.duracao ? `${reuniao.duracao} min` : '-'}</TableCell>
                     <TableCell>
