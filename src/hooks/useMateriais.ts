@@ -38,7 +38,6 @@ export function useMateriais(options: UseMateriaisOptions = {}) {
       const { data, error: fetchError } = await query
 
       if (fetchError) throw fetchError
-      console.log(data)
       setMateriais(data || [])
       setError(null)
     } catch (err) {
