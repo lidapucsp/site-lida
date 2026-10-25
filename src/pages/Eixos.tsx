@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ShieldCheck, Database, Gavel, Cpu, Lightbulb, Scale, Loader2 } from "lucide-react";
@@ -32,25 +33,10 @@ const Eixos = () => {
 
   return (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-          backgroundSize: "60px 60px",
-        }} />
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-      </div>
-      
-      <div className="container mx-auto max-w-3xl text-center relative z-10">
-        <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Eixos Temáticos</h1>
-        <p className="text-primary-foreground/70 text-lg">As grandes áreas de investigação do LIDA, onde pesquisa e prática se encontram.</p>
-      </div>
-    </section>
+    <PageHero eyebrow="Linhas de pesquisa" title="Eixos Temáticos" subtitle="As grandes áreas de investigação do LIDA, onde pesquisa e prática se encontram." />
 
-    <section className="section-padding-top-sm">
-      <div className="container mx-auto max-w-5xl space-y-8">
+    <section className="section-padding bg-cream">
+      <div className="container mx-auto max-w-5xl space-y-8 reveal-grid">
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 animate-spin text-gold" />
@@ -59,29 +45,29 @@ const Eixos = () => {
           eixos.map((e) => {
             const Icon = iconMap[e.icone] || ShieldCheck;
             return (
-              <div key={e.id} className="bg-card rounded-xl border border-border p-6 md:p-8 card-hover">
+              <div key={e.id} className="card-light group reveal md:p-10">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center shrink-0">
-                    <Icon className="w-6 h-6 text-gold-dark" />
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold via-gold to-gold-dark flex items-center justify-center shrink-0 shadow-lg shadow-gold/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <Icon className="w-7 h-7 text-navy" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-xl font-display font-bold mb-2">{e.titulo}</h2>
+                    <h2 className="text-2xl font-display font-bold mb-3 text-navy group-hover:text-gold-dark transition-colors">{e.titulo}</h2>
                     <p className="text-muted-foreground mb-4">{e.definicao}</p>
                     <div className="grid sm:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <h4 className="text-sm font-semibold mb-2">Exemplos de temas</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-gold-dark mb-3">Exemplos de temas</h4>
                         <ul className="text-sm text-muted-foreground space-y-1">
                           {e.temas.map((t) => <li key={t} className="flex gap-2"><span className="text-gold">•</span>{t}</li>)}
                         </ul>
                       </div>
                       <div>
-                        <h4 className="text-sm font-semibold mb-2">Tipos de entrega</h4>
+                        <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-gold-dark mb-3">Tipos de entrega</h4>
                         <ul className="text-sm text-muted-foreground space-y-1">
                           {e.entregas.map((en) => <li key={en} className="flex gap-2"><span className="text-gold">•</span>{en}</li>)}
                         </ul>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="premium" size="sm" asChild>
                       <Link to="/processo-seletivo">Quero atuar neste eixo</Link>
                     </Button>
                   </div>
