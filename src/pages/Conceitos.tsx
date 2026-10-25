@@ -1,4 +1,5 @@
 import Layout from '@/components/layout/Layout';
+import PageHero from '@/components/layout/PageHero';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Brain, Network, MessageSquare, Eye, Cog, Scale, FileSearch, Users, Gavel } from 'lucide-react';
@@ -7,34 +8,15 @@ export default function Conceitos() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-            backgroundSize: "60px 60px",
-          }} />
-          <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-        </div>
-        
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">
-            Conceitos de Inteligência Artificial
-          </h1>
-          <p className="text-primary-foreground/70 text-lg">
-            Compreenda os fundamentos da inteligência artificial, suas divisões, aplicações no direito e as principais ferramentas disponíveis no mercado jurídico.
-          </p>
-        </div>
-      </section>
+      <PageHero eyebrow="Glossário" title="Conceitos de Inteligência Artificial" subtitle="Compreenda os fundamentos da inteligência artificial, suas divisões, aplicações no direito e as principais ferramentas disponíveis no mercado jurídico." />
 
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+      <div className="bg-cream"><div className="container mx-auto px-4 py-16 max-w-6xl">
         {/* O que é IA */}
-        <Card className="mb-8">
+        <Card className="mb-8 rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Brain className="w-8 h-8 text-gold-600" />
-              <CardTitle className="text-2xl">O que é Inteligência Artificial?</CardTitle>
+              <Brain className="w-8 h-8 text-gold-dark" />
+              <CardTitle className="text-2xl font-display text-navy">O que é Inteligência Artificial?</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="prose max-w-none">
@@ -45,33 +27,33 @@ export default function Conceitos() {
               A IA moderna busca criar máquinas que possam <strong>aprender com dados</strong>, <strong>reconhecer padrões</strong> e <strong>tomar decisões inteligentes</strong> com mínima intervenção humana. Desde sua formalização na década de 1950, a IA evoluiu dramaticamente, especialmente após 2012, com o advento do deep learning.
             </p>
             
-            <blockquote className="border-l-4 border-gold-600 pl-4 my-6 text-gray-800 italic">
+            <blockquote className="border-l-4 border-gold pl-4 my-6 text-gray-800 italic">
               <strong>A IA não busca apenas imitar a inteligência humana, mas expandir as capacidades de processamento, análise e tomada de decisão baseada em dados em escala impossível para humanos.</strong>
             </blockquote>
           </CardContent>
         </Card>
 
         {/* Divisões da IA */}
-        <Card className="mb-8">
+        <Card className="mb-8 rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Network className="w-8 h-8 text-gold-600" />
-              <CardTitle className="text-2xl">Principais Divisões e Técnicas da IA</CardTitle>
+              <Network className="w-8 h-8 text-gold-dark" />
+              <CardTitle className="text-2xl font-display text-navy">Principais Divisões e Técnicas da IA</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
               {/* Machine Learning */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Cog className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Cog className="w-6 h-6 text-gold-dark" />
                   Machine Learning (Aprendizado de Máquina)
                 </h3>
                 <p className="text-gray-700 mb-3">
                   O <strong>Machine Learning</strong> é o estudo de programas que podem melhorar seu desempenho em determinadas tarefas automaticamente através da experiência. É a base da maioria das aplicações modernas de IA.
                 </p>
-                <div className="bg-cream-50 p-4 rounded-lg mb-3">
-                  <p className="font-semibold text-navy-900 mb-2">Principais Tipos:</p>
+                <div className="bg-cream p-4 rounded-lg mb-3">
+                  <p className="font-semibold text-navy mb-2">Principais Tipos:</p>
                   <ul className="list-disc list-inside space-y-2 text-gray-700">
                     <li><strong>Aprendizado Supervisionado:</strong> O modelo aprende com dados rotulados (ex: classificação de documentos, previsão de resultados judiciais)</li>
                     <li><strong>Aprendizado Não Supervisionado:</strong> O modelo identifica padrões em dados não rotulados (ex: agrupamento de casos semelhantes)</li>
@@ -84,8 +66,8 @@ export default function Conceitos() {
 
               {/* Deep Learning */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Network className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Network className="w-6 h-6 text-gold-dark" />
                   Deep Learning (Aprendizado Profundo)
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -105,15 +87,15 @@ export default function Conceitos() {
 
               {/* NLP */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <MessageSquare className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <MessageSquare className="w-6 h-6 text-gold-dark" />
                   Processamento de Linguagem Natural (NLP)
                 </h3>
                 <p className="text-gray-700 mb-3">
                   O <strong>Processamento de Linguagem Natural</strong> permite que programas leiam, entendam e comuniquem em linguagens humanas. Esta área é especialmente relevante para o direito, dado que a profissão lida predominantemente com texto.
                 </p>
-                <div className="bg-cream-50 p-4 rounded-lg mb-3">
-                  <p className="font-semibold text-navy-900 mb-2">Aplicações no Direito:</p>
+                <div className="bg-cream p-4 rounded-lg mb-3">
+                  <p className="font-semibold text-navy mb-2">Aplicações no Direito:</p>
                   <ul className="list-disc list-inside space-y-2 text-gray-700">
                     <li>Análise e revisão automatizada de contratos</li>
                     <li>Pesquisa jurídica inteligente em bases de jurisprudência</li>
@@ -128,8 +110,8 @@ export default function Conceitos() {
 
               {/* Computer Vision */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Eye className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Eye className="w-6 h-6 text-gold-dark" />
                   Visão Computacional
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -141,8 +123,8 @@ export default function Conceitos() {
 
               {/* Expert Systems */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-gold-dark" />
                   Sistemas Especialistas
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -154,11 +136,11 @@ export default function Conceitos() {
         </Card>
 
         {/* IA Aplicada ao Direito */}
-        <Card className="mb-8">
+        <Card className="mb-8 rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Scale className="w-8 h-8 text-gold-600" />
-              <CardTitle className="text-2xl">Como a IA se Aplica ao Direito</CardTitle>
+              <Scale className="w-8 h-8 text-gold-dark" />
+              <CardTitle className="text-2xl font-display text-navy">Como a IA se Aplica ao Direito</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -169,14 +151,14 @@ export default function Conceitos() {
             <div className="space-y-6">
               {/* Pesquisa Jurídica */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <FileSearch className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <FileSearch className="w-6 h-6 text-gold-dark" />
                   Pesquisa e Análise Jurídica Inteligente
                 </h3>
                 <p className="text-gray-700 mb-3">
                   Sistemas de IA podem pesquisar em milhões de documentos legais (jurisprudência, legislação, doutrinas) em segundos, identificando precedentes relevantes e padrões decisórios. Ao invés de busca por palavras-chave simples, utilizam compreensão semântica para encontrar resultados mais precisos.
                 </p>
-                <blockquote className="border-l-4 border-gold-600 pl-4 my-4 text-gray-800">
+                <blockquote className="border-l-4 border-gold pl-4 my-4 text-gray-800">
                   <strong>Ferramentas modernas conseguem prever a probabilidade de sucesso de uma ação judicial com base em análise de decisões passadas e características do caso.</strong>
                 </blockquote>
               </div>
@@ -185,14 +167,14 @@ export default function Conceitos() {
 
               {/* Due Diligence e Discovery */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <FileSearch className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <FileSearch className="w-6 h-6 text-gold-dark" />
                   Due Diligence e E-Discovery
                 </h3>
                 <p className="text-gray-700 mb-3">
                   Em processos que envolvem milhões de documentos, a IA pode analisar automaticamente e-mails, contratos e outros documentos para identificar informações relevantes. Técnicas de <em>predictive coding</em> permitem que o sistema aprenda quais documentos são relevantes a partir de exemplos fornecidos por advogados.
                 </p>
-                <div className="bg-cream-50 p-4 rounded-lg">
+                <div className="bg-cream p-4 rounded-lg">
                   <p className="text-sm text-gray-700">
                     <strong>Impacto:</strong> Tarefas que levariam meses para equipes de advogados júnior podem ser concluídas em dias, com maior precisão e menor custo.
                   </p>
@@ -203,8 +185,8 @@ export default function Conceitos() {
 
               {/* Automação Documental */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Cog className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Cog className="w-6 h-6 text-gold-dark" />
                   Automação e Geração de Documentos
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -222,8 +204,8 @@ export default function Conceitos() {
 
               {/* Análise Preditiva */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Gavel className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Gavel className="w-6 h-6 text-gold-dark" />
                   Análise Preditiva e Apoio à Decisão
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -240,8 +222,8 @@ export default function Conceitos() {
 
               {/* Acesso à Justiça */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3 flex items-center gap-2">
-                  <Users className="w-6 h-6 text-gold-600" />
+                <h3 className="text-xl font-semibold text-navy mb-3 flex items-center gap-2">
+                  <Users className="w-6 h-6 text-gold-dark" />
                   Democratização do Acesso à Justiça
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -269,11 +251,11 @@ export default function Conceitos() {
         </Card>
 
         {/* Ferramentas Populares */}
-        <Card className="mb-8">
+        <Card className="mb-8 rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Cog className="w-8 h-8 text-gold-600" />
-              <CardTitle className="text-2xl">Ferramentas Populares de IA no Direito</CardTitle>
+              <Cog className="w-8 h-8 text-gold-dark" />
+              <CardTitle className="text-2xl font-display text-navy">Ferramentas Populares de IA no Direito</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -284,26 +266,26 @@ export default function Conceitos() {
             <div className="space-y-6">
               {/* Ferramentas Gerais de IA */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3">IA Generativa de Propósito Geral</h3>
+                <h3 className="text-xl font-semibold text-navy mb-3">IA Generativa de Propósito Geral</h3>
                 <div className="space-y-4">
-                  <div className="bg-cream-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">ChatGPT (OpenAI)</h4>
+                  <div className="bg-cream p-4 rounded-lg">
+                    <h4 className="font-semibold text-navy mb-2">ChatGPT (OpenAI)</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Modelo de linguagem avançado que pode auxiliar advogados em pesquisa, redação, análise de documentos e brainstorming jurídico. Versões especializadas como GPT-4 demonstram capacidade impressionante em raciocínio legal.
                     </p>
                     <p className="text-xs text-gray-600"><strong>Uso:</strong> Rascunho de documentos, análise de argumentos, pesquisa preliminar</p>
                   </div>
 
-                  <div className="bg-cream-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Claude (Anthropic)</h4>
+                  <div className="bg-cream p-4 rounded-lg">
+                    <h4 className="font-semibold text-navy mb-2">Claude (Anthropic)</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Assistente de IA projetado para ser útil, inofensivo e honesto. Particularmente forte em análise de documentos longos e compreensão de contexto jurídico complexo.
                     </p>
                     <p className="text-xs text-gray-600"><strong>Uso:</strong> Análise de contratos extensos, revisão de documentos, consultas legais</p>
                   </div>
 
-                  <div className="bg-cream-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">GitHub Copilot (Microsoft)</h4>
+                  <div className="bg-cream p-4 rounded-lg">
+                    <h4 className="font-semibold text-navy mb-2">GitHub Copilot (Microsoft)</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Embora focado em código, é útil para automação de tarefas jurídicas através de scripts e para advogados que trabalham com contratos inteligentes e tecnologia blockchain.
                     </p>
@@ -316,10 +298,10 @@ export default function Conceitos() {
 
               {/* Ferramentas Especializadas */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3">Plataformas Especializadas em Legal Tech</h3>
+                <h3 className="text-xl font-semibold text-navy mb-3">Plataformas Especializadas em Legal Tech</h3>
                 <div className="space-y-4">
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Harvey AI</h4>
+                    <h4 className="font-semibold text-navy mb-2">Harvey AI</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Plataforma de IA especializada em serviços jurídicos, construída sobre modelos GPT customizados para o contexto legal. Utilizada por grandes escritórios de advocacia para pesquisa, análise e redação.
                     </p>
@@ -327,7 +309,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Casetext CoCounsel</h4>
+                    <h4 className="font-semibold text-navy mb-2">Casetext CoCounsel</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Assistente de IA jurídico que auxilia em pesquisa legal, revisão de documentos e preparação de memorandos. Integra-se com bases de dados jurisprudenciais.
                     </p>
@@ -335,7 +317,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Ross Intelligence</h4>
+                    <h4 className="font-semibold text-navy mb-2">Ross Intelligence</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Uma das primeiras plataformas de pesquisa jurídica baseada em IA, utilizando processamento de linguagem natural para buscar precedentes e responder perguntas legais em linguagem natural.
                     </p>
@@ -343,7 +325,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Lex Machina</h4>
+                    <h4 className="font-semibold text-navy mb-2">Lex Machina</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Plataforma de análise preditiva que fornece insights sobre juízes, advogados e resultados de casos baseados em análise de dados históricos de litígios.
                     </p>
@@ -351,7 +333,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Kira Systems</h4>
+                    <h4 className="font-semibold text-navy mb-2">Kira Systems</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Software de machine learning para identificação, extração e análise de informações em contratos e documentos. Amplamente utilizado em due diligence e M&A.
                     </p>
@@ -359,7 +341,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">LegalRobot</h4>
+                    <h4 className="font-semibold text-navy mb-2">LegalRobot</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Plataforma que analisa contratos para identificar problemas, fornece insights sobre linguagem jurídica e oferece sugestões de melhorias baseadas em melhores práticas.
                     </p>
@@ -372,10 +354,10 @@ export default function Conceitos() {
 
               {/* Ferramentas Brasileiras */}
               <div>
-                <h3 className="text-xl font-semibold text-navy-900 mb-3">Ferramentas Brasileiras de Legal Tech</h3>
+                <h3 className="text-xl font-semibold text-navy mb-3">Ferramentas Brasileiras de Legal Tech</h3>
                 <div className="space-y-4">
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Turivius</h4>
+                    <h4 className="font-semibold text-navy mb-2">Turivius</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Plataforma brasileira de análise jurisprudencial que utiliza IA para pesquisar e analisar decisões judiciais, oferecendo insights sobre tendências e padrões decisórios do Judiciário brasileiro.
                     </p>
@@ -383,7 +365,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Projuris</h4>
+                    <h4 className="font-semibold text-navy mb-2">Projuris</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Sistema de gestão jurídica que incorpora recursos de automação e análise de dados para escritórios e departamentos jurídicos brasileiros.
                     </p>
@@ -391,7 +373,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">Justto</h4>
+                    <h4 className="font-semibold text-navy mb-2">Justto</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Plataforma de resolução de conflitos online que utiliza IA para facilitar acordos e mediações, aumentando a eficiência na solução de disputas.
                     </p>
@@ -399,7 +381,7 @@ export default function Conceitos() {
                   </div>
 
                   <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-navy-900 mb-2">SAJ Tribunais</h4>
+                    <h4 className="font-semibold text-navy mb-2">SAJ Tribunais</h4>
                     <p className="text-gray-700 text-sm mb-2">
                       Sistema de processo judicial eletrônico que incorpora recursos de automação e inteligência artificial para gestão processual em tribunais brasileiros.
                     </p>
@@ -409,7 +391,7 @@ export default function Conceitos() {
               </div>
             </div>
 
-            <div className="mt-6 bg-cream-100 border border-gold-300 p-4 rounded-lg">
+            <div className="mt-6 bg-cream border border-gold/40 p-4 rounded-lg">
               <p className="text-sm text-gray-800">
                 <strong>💡 Dica:</strong> A escolha da ferramenta ideal depende das necessidades específicas de cada profissional ou escritório. Muitas plataformas oferecem períodos de teste gratuito, permitindo avaliar qual se adequa melhor ao seu fluxo de trabalho. É fundamental que advogados mantenham-se atualizados sobre essas tecnologias, pois a familiaridade com ferramentas de IA está se tornando uma competência essencial na advocacia moderna.
               </p>
@@ -419,9 +401,9 @@ export default function Conceitos() {
 
         {/* Ponte para o Futuro e Resumo */}
         <div className="space-y-8">
-          <Card>
+          <Card className="rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
             <CardHeader>
-              <CardTitle className="text-xl">Perspectivas Futuras</CardTitle>
+              <CardTitle className="text-xl font-display text-navy">Perspectivas Futuras</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 mb-4">
@@ -439,9 +421,9 @@ export default function Conceitos() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="rounded-2xl border-navy/10 shadow-sm hover:border-gold/50 hover:shadow-xl transition-all duration-500 reveal">
             <CardHeader>
-              <CardTitle className="text-xl">Resumo Final</CardTitle>
+              <CardTitle className="text-xl font-display text-navy">Resumo Final</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-700 mb-4">
@@ -460,6 +442,7 @@ export default function Conceitos() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </Layout>
   );
