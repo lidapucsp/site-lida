@@ -58,6 +58,8 @@ export default function Admin() {
   const [reunioesCount, setReunioesCount] = useState(0)
   const [membrosCount, setMembrosCount] = useState(0)
   const [contatosNovosCount, setContatosNovosCount] = useState(0)
+  const [equipesCount, setEquipesCount] = useState(0)
+  const [tarefasEcossistemaAtivas, setTarefasEcossistemaAtivas] = useState(0)
   const [membroLogadoId, setMembroLogadoId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -80,12 +82,14 @@ export default function Admin() {
 
   const fetchCounts = async () => {
     try {
-      const [comunicadosRes, materiaisRes, reunioesRes, membrosRes, contatosRes] = await Promise.all([
+      const [comunicadosRes, materiaisRes, reunioesRes, membrosRes, contatosRes, equipesRes, tarefasEcoRes] = await Promise.all([
         supabase.from('comunicados').select('*', { count: 'exact', head: true }),
         supabase.from('materiais').select('*', { count: 'exact', head: true }),
         supabase.from('aulas').select('*', { count: 'exact', head: true }),
         supabase.from('membros').select('*', { count: 'exact', head: true }),
-        supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo')
+        supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo'),
+        supabase.from('equipes').select('*', { count: 'exact', head: true }).eq('ativo', true),
+        supabase.from('tarefas_ecossistema').select('*', { count: 'exact', head: true }).not('status', 'in', '(concluida,cancelada)')
       ])
 
       setComunicadosCount(comunicadosRes.count || 0)
@@ -93,6 +97,8 @@ export default function Admin() {
       setReunioesCount(reunioesRes.count || 0)
       setMembrosCount(membrosRes.count || 0)
       setContatosNovosCount(contatosRes.count || 0)
+      setEquipesCount(equipesRes.count || 0)
+      setTarefasEcossistemaAtivas(tarefasEcoRes.count || 0)
     } catch (error) {
       console.error('Erro ao buscar counts:', error)
     } finally {
@@ -527,11 +533,11 @@ export default function Admin() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                       <span className="text-sm text-navy-light">Equipes</span>
-                      <span className="font-semibold text-navy">4</span>
+                      <span className="font-semibold text-navy">{equipesCount}</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                       <span className="text-sm text-navy-light">Tarefas Ativas</span>
-                      <span className="font-semibold text-navy">-</span>
+                      <span className="font-semibold text-navy">{tarefasEcossistemaAtivas}</span>
                     </div>
                     <Button
                       variant="outline"
