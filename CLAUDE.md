@@ -66,6 +66,10 @@ supabase/
 - Fontes: **Plus Jakarta Sans** (corpo) e **Space Grotesk** (títulos `h1–h4`, `font-display`).
 - Utilitários customizados em `index.css`: `.section-padding`, `.card-hover`, `.glass`, `.text-gold-gradient`, animações `animate-fade-in-up` etc.
 - Botão tem variante `hero` (dourado) usada nos headers.
+- **Redesign (dark premium)**, branch `redesign-site-institucional`: tokens `navy-deep` e `sky`; classes `text-hero-gradient`, `eyebrow`/`eyebrow-light`, `section-title`(+`section-title-bar`), `card-dark`, `card-light`, `field`, `btn-sweep`, `reveal`/`reveal-grid`.
+- Animação ao rolar: adicionar a classe `reveal` em qualquer elemento (`reveal-grid` no pai escalona os filhos). O observer está em `useScrollReveal` (chamado no `Layout`); respeita `prefers-reduced-motion`.
+- Páginas internas do site institucional usam `components/layout/PageHero.tsx` como cabeçalho.
+- Padrão de seções: alternar fundos escuro (`bg-navy-deep`) e claro (`bg-cream`/`bg-white`); texto dourado sobre fundo claro usa `gold-dark`.
 
 ## Banco de dados
 
@@ -82,7 +86,7 @@ Se alterar o schema: criar migration em `supabase/migrations/` **e** atualizar `
 
 Objetivo: deixar o site mais bonito e moderno, usando um site de exemplo como referência (a ser passado pelo usuário).
 - **Manter a identidade**: paleta navy/dourado/creme, logo e mascote (`public/`). Modernizar layout, tipografia, espaçamento, animações.
-- **Escopo inicial: só o Site Institucional** (`src/pages/` públicas + `components/layout/`). Área de Membros e Admin só depois, quando a diretoria validar — não alterar sem pedido.
+- **Escopo inicial: só o Site Institucional** (Home e demais páginas públicas já migradas) (`src/pages/` públicas + `components/layout/`). Área de Membros e Admin só depois, quando a diretoria validar — não alterar sem pedido.
 - Mudanças de design devem passar pelos tokens (`index.css` / `tailwind.config.ts`) sempre que possível, em vez de classes soltas por página.
 
 ## Como trabalhar aqui
