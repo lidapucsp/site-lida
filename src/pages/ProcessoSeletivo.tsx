@@ -98,9 +98,9 @@ const ProcessoSeletivo = () => {
         .eq('exibir_site', true)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      if (processoError && processoError.code !== 'PGRST116') {
+      if (processoError) {
         throw processoError;
       }
 

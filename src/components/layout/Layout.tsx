@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CookieBanner from "./CookieBanner";
-import { useScrollReveal } from "@/components/Reveal";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   useScrollReveal();

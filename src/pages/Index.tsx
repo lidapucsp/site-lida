@@ -7,8 +7,12 @@ import { Reveal } from "@/components/Reveal";
 import { useEixos } from "@/hooks/useEixos";
 import { useEventos } from "@/hooks/useEventos";
 import { supabase } from "@/lib/supabase";
+import type { Database as DB } from "@/types/database";
+import type { LucideIcon } from "lucide-react";
 
-const iconMap: Record<string, any> = {
+type ProcessoSeletivoRow = DB["public"]["Tables"]["processos_seletivos"]["Row"];
+
+const iconMap: Record<string, LucideIcon> = {
   ShieldCheck,
   Database,
   Gavel,
@@ -20,7 +24,7 @@ const iconMap: Record<string, any> = {
 const Index = () => {
   const { eixos, loading: loadingEixos } = useEixos();
   const { eventos, loading: loadingEventos } = useEventos({ status: 'agendado' });
-  const [processoSeletivo, setProcessoSeletivo] = useState<any>(null);
+  const [processoSeletivo, setProcessoSeletivo] = useState<ProcessoSeletivoRow | null>(null);
   const [loadingProcesso, setLoadingProcesso] = useState(true);
 
   useEffect(() => {
@@ -33,9 +37,9 @@ const Index = () => {
           .eq('exibir_site', true)
           .order('created_at', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
+        if (error) {
           throw error;
         }
 

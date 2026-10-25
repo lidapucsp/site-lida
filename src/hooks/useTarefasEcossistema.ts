@@ -210,7 +210,7 @@ export function useEntregas(tarefaId?: string) {
         .from('entregas')
         .select(`
           *,
-          membro:profiles(username, full_name, avatar_url)
+          membro:profiles!entregas_membro_id_fkey(username, full_name, avatar_url)
         `)
         .eq('tarefa_id', tarefaId)
         .order('created_at', { ascending: false })

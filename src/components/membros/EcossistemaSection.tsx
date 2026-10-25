@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useMembrosEquipe } from '@/hooks/useEquipes';
-import { useTarefasEcossistema } from '@/hooks/useTarefasEcossistema';
+import { useTarefasEcossistema, type TarefaEcossistema } from '@/hooks/useTarefasEcossistema';
 import { useChatEquipe, useComunicados } from '@/hooks/useChatEcossistema';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -150,12 +150,12 @@ export default function EcossistemaSection() {
     if (!mensagem.trim() || !minhaEquipe) return;
 
     setEnviandoMsg(true);
-    await enviarMensagem(mensagem);
+    await enviarMensagem({ mensagem });
     setMensagem('');
     setEnviandoMsg(false);
   };
 
-  const handleAtualizarStatus = async (tarefaId: string, novoStatus: string) => {
+  const handleAtualizarStatus = async (tarefaId: string, novoStatus: TarefaEcossistema['status']) => {
     await atualizarTarefa(tarefaId, { status: novoStatus });
   };
 

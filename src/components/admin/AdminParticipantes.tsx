@@ -76,7 +76,6 @@ export function AdminParticipantes() {
     try {
       const { error } = await supabase
         .from('profiles')
-        // @ts-expect-error - Supabase types issue with update
         .update({ is_admin: !currentValue })
         .eq('id', profileId)
 
@@ -172,7 +171,6 @@ export function AdminParticipantes() {
     try {
       const { error } = await supabase
         .from('profiles')
-        // @ts-expect-error - Supabase types issue with update
         .update({ cargo: cargoInput.trim() || null })
         .eq('id', editingProfile.id)
 
@@ -256,7 +254,6 @@ export function AdminParticipantes() {
         // Editar usuário existente (apenas profile)
         const { error } = await supabase
           .from('profiles')
-          // @ts-expect-error - Supabase types issue with update
           .update({
             username: formData.username.trim(),
             full_name: formData.full_name.trim() || null
