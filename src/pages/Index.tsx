@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Scale, Brain, BookOpen, Calendar, Users, ArrowRight, FileText, Lightbulb, ShieldCheck, Cpu, Gavel, Database, Zap, Target, Award, Loader2, Instagram } from "lucide-react";
 import Layout from "@/components/layout/Layout";
+import { Reveal } from "@/components/Reveal";
 import { useEixos } from "@/hooks/useEixos";
 import { useEventos } from "@/hooks/useEventos";
 import { supabase } from "@/lib/supabase";
@@ -52,49 +53,31 @@ const Index = () => {
   return (
   <Layout>
     {/* Hero */}
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden min-h-[90vh] flex items-center">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-          backgroundSize: "60px 60px",
-        }} />
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-      </div>
-      
-      {/* Large Logo Watermark with Subtle Shine Animation */}
-      <div className="absolute right-10 top-1/2 -translate-y-1/2 w-[700px] h-[700px] opacity-[0.08] pointer-events-none animate-fade-in animate-delay-500">
-        <div className="w-full h-full relative" style={{
-          WebkitMaskImage: 'url(/LIDA-logo.PNG)',
-          WebkitMaskSize: 'contain',
-          WebkitMaskRepeat: 'no-repeat',
-          WebkitMaskPosition: 'center',
-          maskImage: 'url(/LIDA-logo.PNG)',
-          maskSize: 'contain',
-          maskRepeat: 'no-repeat',
-          maskPosition: 'center'
-        }}>
-          {/* Subtle navy/cream blend matching background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-navy-light/40 via-cream/20 to-navy-light/30" />
-          {/* Animated shine effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cream/40 to-transparent -translate-x-full animate-shine" />
-        </div>
-      </div>
-      
-      <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
-        <div className="max-w-4xl">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold text-primary-foreground leading-[1.1] mb-8 animate-fade-in-up">
-            Inteligência Artificial e Direito, 
+    <section className="relative bg-navy-deep overflow-hidden min-h-[92vh] flex items-center -mt-16 pt-16">
+      {/* Fundo: degradê, grade de pontos e brilhos */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,hsl(var(--navy-light)/0.55),transparent_55%),radial-gradient(ellipse_at_85%_75%,hsl(var(--sky)/0.18),transparent_50%)]" />
+      <div className="absolute inset-0 opacity-[0.15]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--gold) / 0.6) 1px, transparent 0)`,
+        backgroundSize: "48px 48px",
+        maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+        WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+      }} />
+      <div className="absolute top-24 -left-24 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
+
+      <div className="container mx-auto px-4 py-16 md:py-24 relative z-10 grid lg:grid-cols-[1.25fr_1fr] gap-12 items-center">
+        <div>
+          <span className="eyebrow mb-8 animate-fade-in-up">Inteligência e Direito Aplicado · PUC-SP</span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold leading-[1.08] mb-8 animate-fade-in-up animate-delay-100">
+            <span className="text-hero-gradient block">Inteligência Artificial e Direito,</span>
             <span className="text-gold-gradient block mt-2">na prática com pensamento crítico.</span>
           </h1>
-          
-          <p className="text-primary-foreground/80 text-lg md:text-2xl leading-relaxed mb-10 max-w-3xl font-light animate-fade-in-up animate-delay-100">
+
+          <p className="text-primary-foreground/75 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-in-up animate-delay-200">
             O LIDA é um núcleo acadêmico dedicado a compreender, analisar e aplicar os impactos da IA no cenário jurídico contemporâneo. Construímos pensamento crítico sobre regulação, proteção de dados e os desafios éticos da transformação digital.
           </p>
-          
-          <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-200">
-            <Button variant="hero" size="lg" asChild className="group">
+
+          <div className="flex flex-wrap gap-4 animate-fade-in-up animate-delay-300">
+            <Button variant="hero" size="lg" asChild className="group btn-sweep">
               <a href="https://forms.gle/cLmgoubo87g31oqS6" target="_blank" rel="noopener noreferrer">
                 Participar do LIDA
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -108,60 +91,79 @@ const Index = () => {
             </Button>
           </div>
         </div>
+
+        {/* Símbolo do LIDA com anéis concêntricos */}
+        <div className="hidden lg:flex items-center justify-center relative animate-fade-in animate-delay-300" aria-hidden="true">
+          <div className="absolute w-[520px] h-[520px] rounded-full border border-gold/20 ring-pulse" />
+          <div className="absolute w-[400px] h-[400px] rounded-full border border-sky/20 ring-pulse" style={{ animationDelay: "1.5s" }} />
+          <div className="absolute w-[300px] h-[300px] rounded-full bg-gold/10 blur-3xl" />
+          <div className="relative w-64 h-64 rounded-full bg-cream flex items-center justify-center shadow-[0_0_80px_hsl(var(--gold)/0.35)] animate-float">
+            <img src="/LIDA-logo-sem-escrita.PNG" alt="" className="w-48 h-48 object-contain" />
+          </div>
+        </div>
       </div>
     </section>
 
     {/* O que é o LIDA */}
-    <section className="section-padding bg-white">
+    <section className="section-padding bg-cream">
       <div className="container mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in-up">
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-foreground mb-6">O que é o LIDA?</h2>
+        <Reveal className="max-w-4xl mx-auto text-center mb-16">
+          <span className="eyebrow eyebrow-light mb-6">Quem somos</span>
+          <h2 className="section-title section-title-bar text-navy mb-8">O que é o LIDA?</h2>
           <p className="text-muted-foreground leading-relaxed text-lg">
             O Laboratório de Inteligência e Direito Aplicado (LIDA) nasce da inquietação diante de uma pergunta central:
             <strong className="text-foreground font-semibold"> o Direito está preparado para a era da Inteligência Artificial?</strong> Através de pesquisa, grupos de estudo, projetos práticos e produção intelectual, buscamos respostas — e novas perguntas.
           </p>
-        </div>
+        </Reveal>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             { icon: Brain, title: "Pesquisa Aplicada", text: "Investigamos os impactos reais da IA no Direito com rigor acadêmico e visão prática." },
             { icon: Users, title: "Comunidade Nacional", text: "Aberto a estudantes, pesquisadores e profissionais de todo o Brasil interessados em IA e Direito." },
             { icon: BookOpen, title: "Produção Intelectual", text: "Publicamos artigos, notas técnicas e guias para democratizar o conhecimento." },
           ].map((item, idx) => (
-            <div key={item.title} className={`glass rounded-2xl p-8 card-hover group animate-scale-in animate-delay-${idx * 100}`}>
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg">
-                <item.icon className="w-8 h-8 text-gold" />
+            <Reveal key={item.title} delay={idx * 120}>
+              <div className="card-light group h-full">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 shadow-lg">
+                  <item.icon className="w-7 h-7 text-gold" />
+                </div>
+                <h3 className="font-bold text-xl mb-3 text-navy group-hover:text-gold-dark transition-colors">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.text}</p>
               </div>
-              <h3 className="font-bold text-xl mb-3 text-gradient">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
     </section>
 
     {/* Por que participar */}
-    <section className="pt-12 pb-24 bg-cream">
-      <div className="container mx-auto">
-        <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-6 text-gradient">Por que participar do LIDA?</h2>
-        <p className="text-center text-muted-foreground text-lg mb-16 max-w-2xl mx-auto">
-          Desenvolva competências essenciais para a era da IA aplicada ao Direito
-        </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="section-padding bg-navy-deep relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_0%,hsl(var(--navy-light)/0.45),transparent_55%)]" />
+      <div className="container mx-auto relative z-10">
+        <Reveal className="text-center mb-16">
+          <span className="eyebrow mb-6">Benefícios</span>
+          <h2 className="section-title section-title-bar text-hero-gradient mb-6">Por que participar do LIDA?</h2>
+          <p className="text-primary-foreground/70 text-lg max-w-2xl mx-auto">
+            Desenvolva competências essenciais para a era da IA aplicada ao Direito
+          </p>
+        </Reveal>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { icon: Zap, title: "Desenvolva habilidades práticas de IA", text: "Aprenda a aplicar tecnologias de IA em contextos jurídicos reais", color: "from-navy to-navy-light" },
-            { icon: Calendar, title: "Acesse eventos e palestras exclusivas", text: "Participe de seminários e encontros com especialistas da área", color: "from-gold to-gold-dark" },
-            { icon: Target, title: "Participe de projetos aplicados", text: "Colabore em pesquisas e iniciativas de impacto prático", color: "from-navy to-navy-light" },
-            { icon: BookOpen, title: "Produza conhecimento científico", text: "Publique artigos acadêmicos e contribua para o campo", color: "from-gold to-gold-dark" },
-            { icon: Award, title: "Certificado como horas complementares", text: "Obtenha certificado de participação válido como horas complementares em sua instituição", color: "from-navy to-navy-light" },
-            { icon: Users, title: "Networking acadêmico e profissional", text: "Conecte-se com pesquisadores, advogados, juristas e profissionais de todo o Brasil", color: "from-gold to-gold-dark" },
+            { icon: Zap, title: "Desenvolva habilidades práticas de IA", text: "Aprenda a aplicar tecnologias de IA em contextos jurídicos reais" },
+            { icon: Calendar, title: "Acesse eventos e palestras exclusivas", text: "Participe de seminários e encontros com especialistas da área" },
+            { icon: Target, title: "Participe de projetos aplicados", text: "Colabore em pesquisas e iniciativas de impacto prático" },
+            { icon: BookOpen, title: "Produza conhecimento científico", text: "Publique artigos acadêmicos e contribua para o campo" },
+            { icon: Award, title: "Certificado como horas complementares", text: "Obtenha certificado de participação válido como horas complementares em sua instituição" },
+            { icon: Users, title: "Networking acadêmico e profissional", text: "Conecte-se com pesquisadores, advogados, juristas e profissionais de todo o Brasil" },
           ].map((benefit, idx) => (
-            <div key={benefit.title} className={`glass rounded-2xl p-8 card-hover group animate-fade-in-up animate-delay-${idx * 100}`}>
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 shadow-lg`}>
-                <benefit.icon className="w-8 h-8 text-primary-foreground" />
+            <Reveal key={benefit.title} delay={(idx % 3) * 120}>
+              <div className="card-dark group h-full">
+                <div className="w-14 h-14 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center mb-6 group-hover:bg-gold group-hover:scale-110 transition-all duration-500">
+                  <benefit.icon className="w-7 h-7 text-gold group-hover:text-navy transition-colors duration-500" />
+                </div>
+                <h3 className="font-bold text-lg mb-3 text-primary-foreground">{benefit.title}</h3>
+                <p className="text-primary-foreground/65 leading-relaxed">{benefit.text}</p>
               </div>
-              <h3 className="font-bold text-xl mb-3">{benefit.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{benefit.text}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -170,14 +172,17 @@ const Index = () => {
     {/* Eixos */}
     <section className="section-padding bg-white">
       <div className="container mx-auto">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-gradient">Eixos Temáticos</h2>
+        <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <span className="eyebrow eyebrow-light mb-5">Linhas de pesquisa</span>
+            <h2 className="section-title text-navy">Eixos Temáticos</h2>
+          </div>
           <Button variant="premium" asChild>
             <Link to="/eixos" className="flex items-center gap-2">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
-        </div>
+        </Reveal>
         {loadingEixos ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 animate-spin text-gold" />
@@ -187,20 +192,18 @@ const Index = () => {
             {eixos.slice(0, 4).map((e, idx) => {
               const Icon = iconMap[e.icone] || Scale;
               return (
-                <Link 
-                  to="/eixos" 
-                  key={e.id} 
-                  className={`bg-gradient-to-br from-white to-cream rounded-2xl p-7 border border-gold/10 card-hover group shine relative overflow-hidden animate-scale-in animate-delay-${idx * 100}`}
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-3xl group-hover:bg-gold/10 transition-colors duration-500" />
-                  <div className="relative">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold via-gold to-gold-dark flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold/20">
-                      <Icon className="w-7 h-7 text-navy" />
+                <Reveal key={e.id} delay={idx * 100}>
+                  <Link to="/eixos" className="card-light group block h-full p-7 overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/25 transition-colors duration-500" />
+                    <div className="relative">
+                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gold via-gold to-gold-dark flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-gold/20">
+                        <Icon className="w-7 h-7 text-navy" />
+                      </div>
+                      <h3 className="font-bold text-lg mb-2 text-navy group-hover:text-gold-dark transition-colors">{e.titulo}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{e.definicao}</p>
                     </div>
-                    <h3 className="font-bold text-lg mb-2 group-hover:text-gold-dark transition-colors">{e.titulo}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{e.definicao}</p>
-                  </div>
-                </Link>
+                  </Link>
+                </Reveal>
               );
             })}
           </div>
@@ -211,14 +214,17 @@ const Index = () => {
     {/* Próximos eventos */}
     <section className="section-padding bg-cream">
       <div className="container mx-auto">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-gradient">Próximos Eventos</h2>
+        <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <span className="eyebrow eyebrow-light mb-5">Agenda</span>
+            <h2 className="section-title text-navy">Próximos Eventos</h2>
+          </div>
           <Button variant="premium" asChild>
             <Link to="/eventos" className="flex items-center gap-2">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
-        </div>
+        </Reveal>
         {loadingEventos ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-8 h-8 animate-spin text-gold" />
@@ -234,7 +240,8 @@ const Index = () => {
                 year: 'numeric' 
               });
               return (
-                <div key={e.id} className={`glass rounded-2xl p-8 card-hover flex items-start gap-6 group animate-scale-in animate-delay-${idx * 200}`}>
+                <Reveal key={e.id} delay={idx * 150}>
+                <div className="card-light flex items-start gap-6 group h-full">
                   <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500 shadow-xl">
                     <Calendar className="w-7 h-7 text-gold" />
                   </div>
@@ -257,6 +264,7 @@ const Index = () => {
                     </Button>
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>
@@ -267,7 +275,10 @@ const Index = () => {
     {/* Como participar */}
     <section className="section-padding bg-white">
       <div className="container mx-auto">
-        <h2 className="text-3xl md:text-5xl font-display font-bold text-center mb-6 text-gradient">Como Participar</h2>
+        <Reveal className="text-center mb-6">
+          <span className="eyebrow eyebrow-light mb-5">Processo seletivo</span>
+          <h2 className="section-title section-title-bar text-navy">Como Participar</h2>
+        </Reveal>
         
         {loadingProcesso ? (
           <div className="flex items-center justify-center py-16">
@@ -281,7 +292,7 @@ const Index = () => {
             </p>
             
             {processoSeletivo.descricao && (
-              <div className="glass rounded-2xl p-8 max-w-4xl mx-auto mb-12">
+              <div className="card-light max-w-4xl mx-auto mb-12">
                 <h3 className="font-bold text-2xl mb-6 text-center text-gradient">Sobre o Processo Seletivo</h3>
                 <div className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
                   {processoSeletivo.descricao}
@@ -317,7 +328,7 @@ const Index = () => {
             
             <div className="text-center space-y-4">
               {processoSeletivo.inscricao_url && (
-                <Button variant="hero" size="lg" asChild className="shadow-2xl shadow-gold/20">
+                <Button variant="hero" size="lg" asChild className="shadow-2xl shadow-gold/20 btn-sweep">
                   <a href={processoSeletivo.inscricao_url} target="_blank" rel="noopener noreferrer" className="group">
                     Inscrever-se Agora
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -336,7 +347,7 @@ const Index = () => {
           </>
         ) : (
           <div className="max-w-3xl mx-auto text-center py-16">
-            <div className="glass rounded-2xl p-12">
+            <div className="card-light p-12">
               <Users className="w-16 h-16 text-gold mx-auto mb-6" />
               <h3 className="font-bold text-2xl mb-4 text-gradient">Nenhum Processo Seletivo Aberto</h3>
               <p className="text-muted-foreground text-lg leading-relaxed mb-8">
@@ -365,7 +376,8 @@ const Index = () => {
     </section>
 
     {/* Newsletter */}
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy section-padding overflow-hidden">
+    <section className="relative bg-navy-deep section-padding overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,hsl(var(--gold)/0.18),transparent_60%)]" />
       {/* Animated Background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gold rounded-full blur-3xl animate-float" />
@@ -374,7 +386,8 @@ const Index = () => {
       
       <div className="container mx-auto text-center max-w-2xl relative z-10">
         <div className="mb-8">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-4">Fique por dentro</h2>
+          <span className="eyebrow mb-6">Newsletter</span>
+          <h2 className="section-title text-hero-gradient mb-4">Fique por dentro</h2>
           <p className="text-primary-foreground/70 text-lg leading-relaxed">Receba editais, eventos e publicações diretamente no seu e-mail. Seja o primeiro a saber.</p>
         </div>
         
