@@ -390,3 +390,174 @@ Perfis de usuários estendendo auth.users
 | `prazo` | `date` |  Nullable |
 | `created_at` | `timestamptz` |  Nullable |
 | `updated_at` | `timestamptz` |  Nullable |
+
+## Table `materiais`
+
+Materiais de estudo disponíveis para membros (Área de Membros > Materiais).
+> Colunas inferidas do formulário `AdminMateriais.tsx` e do hook `useMateriais.ts`; conferir tipos/nullability no painel do Supabase.
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `titulo` | `text` |  |
+| `descricao` | `text` |  Nullable |
+| `thumbnail_url` | `text` |  Nullable |
+| `duracao` | `int4` |  Nullable |
+| `data_material` | `date` |  |
+| `eixo_id` | `uuid` |  Nullable |
+| `criador_material` | `text` |  Nullable |
+| `materiais_url` | `text` |  Nullable |
+| `ordem` | `int4` |  Nullable |
+| `ativo` | `bool` |  |
+| `created_at` | `timestamptz` |  |
+| `updated_at` | `timestamptz` |  |
+
+---
+
+# Ecossistema LIDA
+
+Tabelas criadas pela migration `20260506000000_create_ecossistema_tables.sql` (todas com RLS habilitado; admins = `profiles.is_admin`).
+
+## Table `equipes`
+
+Equipes do ecossistema (Acadêmica, Marketing, Administrativa, Tech).
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `nome` | `text` |  Unique |
+| `descricao` | `text` |  Nullable |
+| `diretor_id` | `uuid` |  Nullable, FK `profiles.id` |
+| `diretor_nome` | `text` |  Nullable |
+| `cor` | `text` |  Nullable, default `#1e3a8a` |
+| `icone` | `text` |  Nullable |
+| `ordem` | `int4` |  Nullable |
+| `ativo` | `bool` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
+## Table `funcoes_equipe`
+
+Funções dentro de cada equipe (ex.: Pesquisador, Designer, Desenvolvedor).
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` (cascade) |
+| `nome` | `text` |  |
+| `descricao` | `text` |  Nullable |
+| `ordem` | `int4` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+
+## Table `membros_equipe`
+
+Alocação de usuários em equipes. `UNIQUE(user_id, equipe_id)`.
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `user_id` | `uuid` |  Nullable, FK `profiles.id` (cascade) |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` (cascade) |
+| `funcao_id` | `uuid` |  Nullable, FK `funcoes_equipe.id` |
+| `nivel` | `text` |  `iniciante` \| `ativo` \| `lider` \| `coordenador` (default `iniciante`) |
+| `data_entrada` | `timestamptz` |  Nullable |
+| `ativo` | `bool` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
+## Table `tarefas_ecossistema`
+
+Tarefas das equipes (distintas da tabela `tarefas`, que é da diretoria).
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `titulo` | `text` |  |
+| `descricao` | `text` |  Nullable |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` |
+| `atribuido_para` | `uuid` |  Nullable, FK `profiles.id` |
+| `criado_por` | `uuid` |  Nullable, FK `profiles.id` |
+| `status` | `text` |  `pendente` \| `em_andamento` \| `em_revisao` \| `concluida` \| `cancelada` |
+| `prioridade` | `text` |  `baixa` \| `media` \| `alta` \| `urgente` |
+| `prazo` | `date` |  Nullable |
+| `tags` | `_text` |  Nullable |
+| `ordem` | `int4` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+| `concluida_em` | `timestamptz` |  Nullable |
+
+## Table `entregas`
+
+Entregas dos membros para uma tarefa, com avaliação.
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `tarefa_id` | `uuid` |  Nullable, FK `tarefas_ecossistema.id` (cascade) |
+| `membro_id` | `uuid` |  Nullable, FK `profiles.id` |
+| `descricao` | `text` |  Nullable |
+| `arquivo_url` | `text` |  Nullable |
+| `observacoes` | `text` |  Nullable |
+| `avaliacao` | `text` |  Nullable, `pendente` \| `aprovada` \| `revisao_necessaria` \| `rejeitada` |
+| `avaliado_por` | `uuid` |  Nullable, FK `profiles.id` |
+| `avaliado_em` | `timestamptz` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
+## Table `chat_mensagens`
+
+Chat por equipe.
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` (cascade) |
+| `autor_id` | `uuid` |  Nullable, FK `profiles.id` |
+| `autor_nome` | `text` |  |
+| `autor_avatar` | `text` |  Nullable |
+| `mensagem` | `text` |  |
+| `anexo_url` | `text` |  Nullable |
+| `anexo_nome` | `text` |  Nullable |
+| `respondendo_id` | `uuid` |  Nullable, FK `chat_mensagens.id` |
+| `editada` | `bool` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
+
+## Table `comunicados_ecossistema`
+
+Comunicados internos do ecossistema (distintos de `comunicados`, que são emails).
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `titulo` | `text` |  |
+| `mensagem` | `text` |  |
+| `tipo` | `text` |  `informacao` \| `alerta` \| `urgente` \| `celebracao` |
+| `enviado_por` | `uuid` |  Nullable, FK `profiles.id` |
+| `enviado_por_nome` | `text` |  Nullable |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` |
+| `destinatarios` | `_uuid` |  Nullable |
+| `todos_membros` | `bool` |  Nullable |
+| `lido_por` | `_uuid` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+
+## Table `metricas_membros`
+
+Métricas mensais de desempenho. `UNIQUE(membro_id, equipe_id, mes_referencia)`.
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `membro_id` | `uuid` |  Nullable, FK `profiles.id` (cascade) |
+| `equipe_id` | `uuid` |  Nullable, FK `equipes.id` |
+| `mes_referencia` | `date` |  |
+| `tarefas_concluidas` | `int4` |  Nullable |
+| `tarefas_atrasadas` | `int4` |  Nullable |
+| `qualidade_media` | `numeric(3,2)` |  Nullable |
+| `participacao_chat` | `int4` |  Nullable |
+| `pontuacao_total` | `numeric(5,2)` |  Nullable |
+| `observacoes` | `text` |  Nullable |
+| `created_at` | `timestamptz` |  Nullable |
+| `updated_at` | `timestamptz` |  Nullable |
