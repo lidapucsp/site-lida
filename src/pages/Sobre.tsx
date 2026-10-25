@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Target, Eye, Heart, BookOpen, Users, Lightbulb, Calendar, FileText, Loader2 } from "lucide-react";
 import { useMembros } from "@/hooks/useMembros";
 
@@ -13,43 +14,31 @@ const Sobre = () => {
 
   return (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-          backgroundSize: "60px 60px",
-        }} />
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-      </div>
-      
-      <div className="container mx-auto max-w-3xl text-center relative z-10">
-        <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Sobre o LIDA</h1>
-        <p className="text-primary-foreground/70 text-lg">Laboratório de Inteligência e Direito Aplicado — PUC-SP</p>
-      </div>
-    </section>
+    <PageHero eyebrow="Quem somos" title="Sobre o LIDA" subtitle="Laboratório de Inteligência e Direito Aplicado — PUC-SP" />
 
-    <section className="section-padding-top-sm">
+    <section className="section-padding bg-cream">
       <div className="container mx-auto max-w-4xl">
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-8 mb-24 reveal-grid">
           {[
             { icon: Target, title: "Missão", text: "Produzir conhecimento crítico e aplicado sobre os impactos da Inteligência Artificial no Direito, formando profissionais preparados para os desafios da transformação digital." },
             { icon: Eye, title: "Visão", text: "Ser referência acadêmica na intersecção entre tecnologia e Direito, promovendo pesquisa de excelência e debate qualificado no cenário brasileiro e internacional." },
             { icon: Heart, title: "Valores", text: "Rigor acadêmico, pensamento crítico, colaboração, inovação responsável, acessibilidade do conhecimento e compromisso ético com a sociedade." },
           ].map((item) => (
-            <div key={item.title} className="bg-card rounded-xl p-6 border border-border shadow-sm">
-              <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center mb-4">
-                <item.icon className="w-6 h-6 text-gold-dark" />
+            <div key={item.title} className="card-light group reveal">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+                <item.icon className="w-7 h-7 text-gold" />
               </div>
-              <h2 className="font-display font-bold text-xl mb-3">{item.title}</h2>
-              <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
+              <h2 className="font-display font-bold text-xl mb-3 text-navy group-hover:text-gold-dark transition-colors">{item.title}</h2>
+              <p className="text-muted-foreground leading-relaxed">{item.text}</p>
             </div>
           ))}
         </div>
 
-        <h2 className="text-2xl font-display font-bold mb-6">O que fazemos</h2>
-        <div className="grid sm:grid-cols-2 gap-4 mb-16">
+        <div className="text-center mb-12 reveal">
+          <span className="eyebrow eyebrow-light mb-5">Atuação</span>
+          <h2 className="section-title section-title-bar text-navy">O que fazemos</h2>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 mb-24 reveal-grid">
           {[
             { icon: BookOpen, label: "Pesquisa acadêmica", desc: "Investigações sobre regulação, ética e aplicação de IA no Direito." },
             { icon: Users, label: "Grupos de estudo", desc: "Encontros periódicos para leitura e debate de temas contemporâneos." },
@@ -58,17 +47,20 @@ const Sobre = () => {
             { icon: FileText, label: "Produção intelectual", desc: "Artigos, notas técnicas, relatórios e publicações acadêmicas." },
             { icon: Target, label: "Extensão universitária", desc: "Atividades que conectam a academia à sociedade e ao mercado." },
           ].map((a) => (
-            <div key={a.label} className="flex gap-4 p-4 rounded-lg bg-cream border border-border">
-              <a.icon className="w-5 h-5 text-navy shrink-0 mt-0.5" />
+            <div key={a.label} className="reveal flex gap-4 p-5 rounded-xl bg-white border border-navy/10 hover:border-gold/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <a.icon className="w-5 h-5 text-gold-dark shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-sm">{a.label}</h3>
+                <h3 className="font-semibold text-sm text-navy">{a.label}</h3>
                 <p className="text-muted-foreground text-sm">{a.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-display font-bold mb-8 text-center text-gradient">Nosso Time</h2>
+        <div className="text-center mb-12 reveal">
+          <span className="eyebrow eyebrow-light mb-5">Diretoria</span>
+          <h2 className="section-title section-title-bar text-navy">Nosso Time</h2>
+        </div>
         
         {loading ? (
           <div className="flex justify-center items-center py-20">
@@ -79,7 +71,7 @@ const Sobre = () => {
             {/* Coordenador */}
             {coordenador && (
               <div className="mb-12">
-                <div className="glass rounded-2xl p-8 max-w-3xl mx-auto">
+                <div className="card-light max-w-3xl mx-auto reveal">
                   <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
                     <div className="relative group">
                       <div className="absolute inset-0 bg-gradient-to-br from-gold to-gold-dark rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
@@ -93,7 +85,7 @@ const Sobre = () => {
                       <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-gold to-gold-dark text-navy text-xs font-bold mb-3">
                         {coordenador.cargo}
                       </span>
-                      <h3 className="font-display font-bold text-2xl mb-2 text-gradient">{coordenador.nome}</h3>
+                      <h3 className="font-display font-bold text-2xl mb-2 text-navy">{coordenador.nome}</h3>
                       <p className="text-muted-foreground leading-relaxed">
                         {coordenador.bio}
                       </p>
@@ -119,7 +111,7 @@ const Sobre = () => {
             {/* Presidente */}
             {presidente && (
               <div className="mb-12">
-                <div className="glass rounded-2xl p-8 max-w-3xl mx-auto ring-2 ring-gold/30 shadow-2xl shadow-gold/10">
+                <div className="card-light max-w-3xl mx-auto ring-2 ring-gold/40 shadow-2xl shadow-gold/10 reveal">
                   <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
                     <div className="relative group">
                       <div className="absolute inset-0 bg-gradient-to-br from-gold via-gold-dark to-gold rounded-2xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity" />
@@ -163,9 +155,9 @@ const Sobre = () => {
               {diretores.map((member) => (
                 <div 
                   key={member.id} 
-                  className={`glass rounded-2xl p-5 card-hover group w-full sm:w-64 ${
+                  className={`card-light !p-5 group w-full sm:w-64 reveal ${
                     member.is_founder 
-                      ? 'ring-2 ring-gold/50 shadow-xl shadow-gold/20 hover:ring-gold/70' 
+                      ? 'ring-2 ring-gold/50 shadow-xl shadow-gold/20' 
                       : ''
                   }`}
                 >
@@ -213,8 +205,12 @@ const Sobre = () => {
           </>
         )}
 
-        <h2 className="text-2xl font-display font-bold mb-6">Perguntas que nos movem</h2>
-        <ul className="space-y-3 text-muted-foreground">
+        <div className="rounded-3xl bg-navy-deep p-8 md:p-12 relative overflow-hidden reveal">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_0%,hsl(var(--navy-light)/0.55),transparent_60%)]" />
+          <div className="relative">
+        <span className="eyebrow mb-5">Inquietações</span>
+        <h2 className="text-2xl md:text-3xl font-display font-bold mb-8 text-hero-gradient">Perguntas que nos movem</h2>
+        <ul className="space-y-4 text-primary-foreground/80 text-lg">
           {[
             "O Direito está preparado para a era da Inteligência Artificial?",
             "Como regular tecnologias que evoluem mais rápido que as leis?",
@@ -228,6 +224,8 @@ const Sobre = () => {
             </li>
           ))}
         </ul>
+          </div>
+        </div>
       </div>
     </section>
   </Layout>
