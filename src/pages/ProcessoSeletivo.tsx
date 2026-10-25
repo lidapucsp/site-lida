@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle, HelpCircle, Loader2, Award } from "lucide-react";
@@ -174,12 +175,7 @@ const ProcessoSeletivo = () => {
   if (!processo && processosAnteriores.length === 0) {
     return (
       <Layout>
-        <section className="section-padding-top pb-20">
-          <div className="container mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-display font-bold mb-4">Processo Seletivo</h1>
-            <p className="text-muted-foreground">Nenhum processo seletivo ativo no momento. Fique atento às nossas redes sociais!</p>
-          </div>
-        </section>
+        <PageHero eyebrow="Seletivo" title="Processo Seletivo" subtitle="Nenhum processo seletivo ativo no momento. Fique atento às nossas redes sociais!" />
       </Layout>
     );
   }
@@ -188,35 +184,20 @@ const ProcessoSeletivo = () => {
   if (!processo && processosAnteriores.length > 0) {
     return (
       <Layout>
-        <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-          {/* Animated Background */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-              backgroundSize: "60px 60px",
-            }} />
-            <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-          </div>
-          
-          <div className="container mx-auto max-w-3xl text-center relative z-10">
-            <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Processo Seletivo</h1>
-            <p className="text-primary-foreground/70 text-lg">Confira os processos seletivos anteriores do LIDA</p>
-          </div>
-        </section>
+        <PageHero eyebrow="Seletivo" title="Processo Seletivo" subtitle="Confira os processos seletivos anteriores do LIDA" />
 
-        <section className="section-padding-top-sm pb-20">
+        <section className="section-padding bg-cream">
           <div className="container mx-auto max-w-3xl">
             <p className="text-muted-foreground text-center mb-8">
               Não há processo seletivo ativo no momento. Confira os processos anteriores:
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-5 reveal-grid">
               {processosAnteriores.map((proc) => (
-                <div key={proc.id} className="bg-card border border-border rounded-xl p-6 hover:border-gold/50 transition-colors">
+                <div key={proc.id} className="card-light group reveal">
                   <div className="flex flex-col gap-4">
                     <div className="flex-1">
-                      <h3 className="font-display font-bold text-lg mb-1">{proc.titulo}</h3>
+                      <h3 className="font-display font-bold text-xl mb-1 text-navy group-hover:text-gold-dark transition-colors">{proc.titulo}</h3>
                       <p className="text-sm text-muted-foreground mb-3">Período: {proc.periodo}</p>
                       {proc.descricao && (
                         <p className="text-sm text-muted-foreground mb-4">{proc.descricao}</p>
@@ -283,28 +264,14 @@ const ProcessoSeletivo = () => {
 
   return (
     <Layout>
-      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-            backgroundSize: "60px 60px",
-          }} />
-          <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-        </div>
-        
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Processo Seletivo</h1>
-          <p className="text-primary-foreground/70 text-lg">Faça parte do LIDA! Confira o edital e inscreva-se.</p>
-        </div>
-      </section>
+      <PageHero eyebrow="Seletivo" title="Processo Seletivo" subtitle="Faça parte do LIDA! Confira o edital e inscreva-se." />
 
-      <section className="section-padding-top-sm">
+      <section className="section-padding bg-cream">
         <div className="container mx-auto max-w-3xl">
           {/* Edital Card */}
           {processo.edital_url && (
-            <div className="bg-gradient-to-br from-navy to-navy-dark border-2 border-gold/40 rounded-2xl p-8 mb-8 text-center shadow-xl">
+            <div className="relative overflow-hidden bg-navy-deep border border-gold/40 rounded-3xl p-10 mb-8 text-center shadow-2xl shadow-navy/20 reveal">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,hsl(var(--gold)/0.18),transparent_60%)]" />
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/20 mb-4">
                 <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -312,7 +279,7 @@ const ProcessoSeletivo = () => {
               </div>
               <h2 className="text-2xl font-display font-bold mb-3 text-gold">{processo.titulo}</h2>
               <p className="text-cream/80 mb-6">{processo.edital_descricao}</p>
-              <Button variant="hero" size="lg" asChild className="bg-gold hover:bg-gold-dark text-navy">
+              <Button variant="hero" size="lg" asChild className="btn-sweep relative">
                 <a href={processo.edital_url} target="_blank" rel="noopener noreferrer">
                   Acessar Edital Completo
                 </a>
@@ -322,14 +289,14 @@ const ProcessoSeletivo = () => {
 
           {/* Inscrição Card */}
           {processo.inscricao_url && (
-            <div className="bg-gold/10 border border-gold/30 rounded-xl p-6 mb-10 text-center">
-              <h2 className="text-xl font-display font-bold mb-2">{processo.titulo}</h2>
+            <div className="card-light !border-gold/40 mb-10 text-center reveal">
+              <h2 className="text-2xl font-display font-bold mb-2 text-navy">{processo.titulo}</h2>
               {processo.inscricao_inicio && processo.inscricao_fim && (
                 <p className="text-muted-foreground mb-4">
                   Inscrições: {new Date(processo.inscricao_inicio).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })} até {new Date(processo.inscricao_fim).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })} (horário de Brasília)
                 </p>
               )}
-              <Button variant="hero" size="lg" asChild>
+              <Button variant="hero" size="lg" asChild className="btn-sweep">
                 <a href={processo.inscricao_url} target="_blank" rel="noopener noreferrer">Inscrever-se agora</a>
               </Button>
             </div>
@@ -337,8 +304,8 @@ const ProcessoSeletivo = () => {
 
           {/* Informações Essenciais */}
           {infos.length > 0 && (
-            <div className="bg-navy/5 rounded-xl p-6 mb-8">
-              <h3 className="text-lg font-display font-bold mb-3 text-navy">Informações Essenciais</h3>
+            <div className="card-light mb-10 reveal">
+              <h3 className="text-lg font-display font-bold uppercase tracking-[0.1em] mb-4 text-navy">Informações Essenciais</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 {infos.map((info) => (
                   <li key={info.id} className="flex gap-2">
@@ -353,7 +320,7 @@ const ProcessoSeletivo = () => {
           {/* Requisitos para Inscrição */}
           {requisitos.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Requisitos para Inscrição</h3>
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Requisitos para Inscrição</h3>
               <ul className="space-y-3 mb-8">
                 {requisitos.map((req) => (
                   <li key={req.id} className="flex gap-3">
@@ -373,14 +340,14 @@ const ProcessoSeletivo = () => {
           {/* Cronograma */}
           {cronograma.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Cronograma</h3>
-              <div className="bg-card rounded-xl border border-border overflow-hidden mb-10">
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Cronograma</h3>
+              <div className="bg-white rounded-2xl border border-navy/10 overflow-hidden mb-10 shadow-sm reveal">
                 <table className="w-full text-sm">
                   <tbody>
                     {cronograma.map((item) => (
-                      <tr key={item.id} className="border-b border-border last:border-0">
-                        <td className="px-4 py-3 font-medium">{item.etapa}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{item.descricao}</td>
+                      <tr key={item.id} className="border-b border-navy/10 last:border-0 hover:bg-gold/5 transition-colors">
+                        <td className="px-5 py-4 font-bold text-navy">{item.etapa}</td>
+                        <td className="px-5 py-4 text-muted-foreground">{item.descricao}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -392,7 +359,7 @@ const ProcessoSeletivo = () => {
           {/* Compromissos dos Participantes */}
           {compromissos.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Compromissos dos Participantes</h3>
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Compromissos dos Participantes</h3>
               <ul className="space-y-2 mb-8">
                 {compromissos.map((comp) => (
                   <li key={comp.id} className="flex gap-2 text-sm">
@@ -407,22 +374,22 @@ const ProcessoSeletivo = () => {
           {/* Perguntas Frequentes */}
           {faqs.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Perguntas Frequentes</h3>
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Perguntas Frequentes</h3>
               <div className="space-y-2 mb-10">
                 {faqs.map((faq, i) => (
-                  <div key={faq.id} className="bg-card rounded-lg border border-border">
+                  <div key={faq.id} className={`bg-white rounded-xl border transition-all duration-300 ${openFaq === i ? "border-gold/60 shadow-lg" : "border-navy/10 hover:border-gold/40"}`}>
                     <button
                       onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full flex items-center justify-between p-4 text-left text-sm font-medium"
+                      className="w-full flex items-center justify-between p-5 text-left text-sm font-bold text-navy"
                     >
                       <span className="flex items-center gap-2">
                         <HelpCircle className="w-4 h-4 text-gold" />
                         {faq.pergunta}
                       </span>
-                      <span className="text-muted-foreground">{openFaq === i ? "−" : "+"}</span>
+                      <span className="text-gold-dark text-lg leading-none">{openFaq === i ? "−" : "+"}</span>
                     </button>
                     {openFaq === i && (
-                      <div className="px-4 pb-4 text-sm text-muted-foreground">{faq.resposta}</div>
+                      <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed animate-fade-in">{faq.resposta}</div>
                     )}
                   </div>
                 ))}
@@ -433,12 +400,12 @@ const ProcessoSeletivo = () => {
           {/* Resultados e Seleções Anteriores */}
           {resultadosAnteriores.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Resultados e Seleções Anteriores</h3>
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Resultados e Seleções Anteriores</h3>
               <ul className="space-y-2 text-sm mb-10">
                 {resultadosAnteriores.map((resultado) => (
                   <li key={resultado.id}>
                     {resultado.url ? (
-                      <a href={resultado.url} target="_blank" rel="noopener noreferrer" className="text-navy hover:underline">
+                      <a href={resultado.url} target="_blank" rel="noopener noreferrer" className="text-navy font-medium hover:text-gold-dark transition-colors">
                         {resultado.titulo} →
                       </a>
                     ) : (
@@ -453,8 +420,8 @@ const ProcessoSeletivo = () => {
           {/* Aprovados */}
           {aprovados.length > 0 && (
             <>
-              <h3 className="text-xl font-display font-bold mb-4">Aprovados</h3>
-              <div className="bg-navy/5 rounded-xl p-6 mb-8">
+              <h3 className="text-xl font-display font-bold uppercase tracking-[0.1em] mb-5 text-navy reveal">Aprovados</h3>
+              <div className="card-light mb-8 reveal">
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {aprovados.map((aprovado) => (
                     <li key={aprovado.id} className="flex flex-col gap-1">
