@@ -16,7 +16,7 @@ export default function GerenciarEcossistema() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Header */}
-      <header className="bg-navy border-b border-gold/20 sticky top-0 z-50 shadow-lg">
+      <header className="bg-navy-deep/90 backdrop-blur-xl border-b border-gold/20 sticky top-0 z-50 shadow-xl">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
