@@ -67,6 +67,9 @@ const Index = () => {
         WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
       }} />
       <div className="absolute top-24 -left-24 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
+      <div className="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.16]" aria-hidden="true">
+        <img src="/LIDA-logo-branco.PNG" alt="" className="w-[110%] max-w-[640px] object-contain neon-logo" />
+      </div>
 
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10 grid lg:grid-cols-[1.25fr_1fr] gap-12 items-center">
         <div>
@@ -100,9 +103,10 @@ const Index = () => {
         <div className="hidden lg:flex items-center justify-center relative animate-fade-in animate-delay-300" aria-hidden="true">
           <div className="absolute w-[520px] h-[520px] rounded-full border border-gold/20 ring-pulse" />
           <div className="absolute w-[400px] h-[400px] rounded-full border border-sky/20 ring-pulse" style={{ animationDelay: "1.5s" }} />
-          <div className="absolute w-[300px] h-[300px] rounded-full bg-gold/10 blur-3xl" />
-          <div className="relative w-64 h-64 rounded-full bg-cream flex items-center justify-center shadow-[0_0_80px_hsl(var(--gold)/0.35)] animate-float">
-            <img src="/LIDA-logo-sem-escrita.PNG" alt="" className="w-48 h-48 object-contain" />
+          <div className="absolute w-[360px] h-[360px] rounded-full bg-sky/15 blur-3xl" />
+          <div className="relative w-[440px] animate-float">
+            <img src="/LIDA-logo-branco.PNG" alt="" className="absolute inset-0 w-full h-full object-contain blur-2xl opacity-70 scale-105" />
+            <img src="/LIDA-logo-branco.PNG" alt="" className="relative w-full object-contain neon-logo" />
           </div>
         </div>
       </div>

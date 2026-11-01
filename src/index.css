@@ -199,6 +199,20 @@
   .reveal-grid > .reveal:nth-child(3n+2) { --reveal-delay: 120ms; }
   .reveal-grid > .reveal:nth-child(3n+3) { --reveal-delay: 240ms; }
 
+  /* Logo branca com brilho neon (azul claro + dourado) */
+  .neon-logo {
+    filter:
+      drop-shadow(0 0 4px rgba(255, 255, 255, 0.9))
+      drop-shadow(0 0 18px hsl(var(--sky) / 0.8))
+      drop-shadow(0 0 48px hsl(var(--sky) / 0.55))
+      drop-shadow(0 0 90px hsl(var(--gold) / 0.35));
+    animation: neon-pulse 4s ease-in-out infinite;
+  }
+  @keyframes neon-pulse {
+    0%, 100% { opacity: 0.92; }
+    50% { opacity: 1; }
+  }
+
   /* Anéis concêntricos pulsantes do hero */
   .ring-pulse {
     animation: ring-pulse 6s ease-in-out infinite;
@@ -212,7 +226,7 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; translate: none; }
   .reveal.is-visible { animation: none; }
-  .ring-pulse, .animate-float, .animate-shine, .shine::before { animation: none; }
+  .ring-pulse, .neon-logo, .animate-float, .animate-shine, .shine::before { animation: none; }
   .btn-sweep::after { display: none; }
 }
 
