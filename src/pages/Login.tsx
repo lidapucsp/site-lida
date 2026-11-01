@@ -47,11 +47,25 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream via-gold-light/20 to-navy/5 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md border-gold/20 shadow-xl">
+    <div className="relative min-h-screen bg-navy-deep overflow-hidden flex items-center justify-center p-4">
+      {/* Fundo: degradê, grade de pontos e logo neon */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_10%,hsl(var(--navy-light)/0.55),transparent_55%),radial-gradient(ellipse_at_90%_90%,hsl(var(--sky)/0.15),transparent_50%)]" />
+      <div
+        className="absolute inset-0 opacity-[0.12]"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--gold) / 0.6) 1px, transparent 0)',
+          backgroundSize: '48px 48px',
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.12]" aria-hidden="true">
+        <img src="/LIDA-logo-branco.PNG" alt="" className="w-[min(900px,120vw)] object-contain neon-logo" />
+      </div>
+
+      <Card className="relative w-full max-w-md border-gold/30 shadow-2xl shadow-black/40 rounded-3xl animate-fade-in-up">
         <CardHeader className="space-y-3 text-center">
-          <div className="mx-auto w-16 h-16 bg-navy rounded-2xl flex items-center justify-center">
-            <Lock className="w-8 h-8 text-cream" />
+          <span className="eyebrow mx-auto">{isAdminLogin ? 'Acesso restrito' : 'Comunidade LIDA'}</span>
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-navy to-navy-light rounded-2xl flex items-center justify-center shadow-lg shadow-navy/30">
+            <Lock className="w-8 h-8 text-gold" />
           </div>
           <CardTitle className="text-3xl font-display text-navy">
             {isAdminLogin ? 'Área Administrativa' : 'Área de Membros LIDA'}
@@ -121,7 +135,7 @@ export default function Login() {
 
             <Button
               type="submit"
-              className="w-full bg-navy hover:bg-navy-dark text-cream font-semibold h-11"
+              variant="hero" size="lg" className="w-full btn-sweep"
               disabled={loading}
             >
               {loading ? (
