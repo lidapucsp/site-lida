@@ -202,14 +202,14 @@
   /* Logo branca com brilho neon (azul claro + dourado) */
   .neon-logo {
     filter:
-      drop-shadow(0 0 4px rgba(255, 255, 255, 0.9))
-      drop-shadow(0 0 18px hsl(var(--sky) / 0.8))
-      drop-shadow(0 0 48px hsl(var(--sky) / 0.55))
-      drop-shadow(0 0 90px hsl(var(--gold) / 0.35));
+      drop-shadow(0 0 2px rgba(255, 255, 255, 0.55))
+      drop-shadow(0 0 12px hsl(var(--sky) / 0.45))
+      drop-shadow(0 0 32px hsl(var(--sky) / 0.3))
+      drop-shadow(0 0 60px hsl(var(--gold) / 0.15));
     animation: neon-pulse 4s ease-in-out infinite;
   }
   @keyframes neon-pulse {
-    0%, 100% { opacity: 0.92; }
+    0%, 100% { opacity: 0.8; }
     50% { opacity: 1; }
   }
 

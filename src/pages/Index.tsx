@@ -103,9 +103,9 @@ const Index = () => {
         <div className="hidden lg:flex items-center justify-center relative animate-fade-in animate-delay-300" aria-hidden="true">
           <div className="absolute w-[520px] h-[520px] rounded-full border border-gold/20 ring-pulse" />
           <div className="absolute w-[400px] h-[400px] rounded-full border border-sky/20 ring-pulse" style={{ animationDelay: "1.5s" }} />
-          <div className="absolute w-[360px] h-[360px] rounded-full bg-sky/15 blur-3xl" />
+          <div className="absolute w-[360px] h-[360px] rounded-full bg-sky/10 blur-3xl" />
           <div className="relative w-[440px] animate-float">
-            <img src="/LIDA-logo-branco.PNG" alt="" className="absolute inset-0 w-full h-full object-contain blur-2xl opacity-70 scale-105" />
+            <img src="/LIDA-logo-branco.PNG" alt="" className="absolute inset-0 w-full h-full object-contain blur-2xl opacity-30 scale-105" />
             <img src="/LIDA-logo-branco.PNG" alt="" className="relative w-full object-contain neon-logo" />
           </div>
         </div>
