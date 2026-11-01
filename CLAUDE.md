@@ -86,7 +86,7 @@ Se alterar o schema: criar migration em `supabase/migrations/` **e** atualizar `
 
 Objetivo: deixar o site mais bonito e moderno, usando um site de exemplo como referência (a ser passado pelo usuário).
 - **Manter a identidade**: paleta navy/dourado/creme, logo e mascote (`public/`). Modernizar layout, tipografia, espaçamento, animações.
-- **Escopo inicial: só o Site Institucional** (Home e demais páginas públicas já migradas) (`src/pages/` públicas + `components/layout/`). Área de Membros e Admin só depois, quando a diretoria validar — não alterar sem pedido.
+- Site Institucional, Login, Área de Membros e Painel Admin já foram migrados. Nas áreas logadas o visual vem principalmente dos componentes base (`ui/card`, `ui/tabs`, `ui/input`, `ui/select`, `ui/dialog`) e dos cabeçalhos escuros (`bg-navy-deep/90 backdrop-blur-xl`); mexa neles antes de criar classes soltas por tela.
 - Mudanças de design devem passar pelos tokens (`index.css` / `tailwind.config.ts`) sempre que possível, em vez de classes soltas por página.
 
 ## Como trabalhar aqui
