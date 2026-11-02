@@ -189,8 +189,8 @@ export function AdminProcessoSeletivo() {
   const handleAddItem = async (table: string, data: any) => {
     setSaving(true)
     try {
-      const { error } = await (supabase
-        .from(table) as any)
+      const { error } = await (supabase as any)
+        .from(table)
         .insert([{ ...data, processo_id: selectedProcesso }])
       
       if (error) throw error
@@ -211,8 +211,8 @@ export function AdminProcessoSeletivo() {
   const handleUpdateItem = async (table: string, id: string, data: any) => {
     setSaving(true)
     try {
-      const { error } = await (supabase
-        .from(table) as any)
+      const { error } = await (supabase as any)
+        .from(table)
         .update(data)
         .eq('id', id)
       
@@ -235,7 +235,7 @@ export function AdminProcessoSeletivo() {
     if (!confirm('Tem certeza que deseja excluir este item?')) return
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from(table)
         .delete()
         .eq('id', id)

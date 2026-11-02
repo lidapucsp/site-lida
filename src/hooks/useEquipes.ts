@@ -161,9 +161,11 @@ export function useMembrosEquipe(equipeId?: string) {
 
   const atualizarMembro = async (membroId: string, updates: Partial<MembroEquipe>) => {
     try {
+      // profile/funcao são dados de join, não colunas da tabela
+      const { profile: _profile, funcao: _funcao, ...dados } = updates
       const { error: updateError } = await supabase
         .from('membros_equipe')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({ ...dados, updated_at: new Date().toISOString() })
         .eq('id', membroId)
 
       if (updateError) throw updateError

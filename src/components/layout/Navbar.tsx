@@ -20,7 +20,7 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-gold/10 shadow-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-navy-deep/80 backdrop-blur-xl border-b border-gold/15 shadow-xl">
       <div className="container mx-auto flex items-center justify-between h-20 px-4">
         <Link to="/" className="flex items-center group">
           <img 
@@ -36,10 +36,10 @@ const Navbar = () => {
             <Link
               key={l.path}
               to={l.path}
-              className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+              className={`relative px-4 py-2.5 text-sm font-semibold uppercase tracking-wider transition-colors duration-300 after:absolute after:left-4 after:right-4 after:bottom-1 after:h-0.5 after:rounded-full after:bg-gold after:origin-left after:transition-transform after:duration-300 ${
                 location.pathname === l.path
-                  ? "text-gold bg-gold/10 shadow-lg shadow-gold/10"
-                  : "text-primary-foreground/80 hover:text-gold hover:bg-primary-foreground/5"
+                  ? "text-gold after:scale-x-100"
+                  : "text-primary-foreground/75 hover:text-gold after:scale-x-0 hover:after:scale-x-100"
               }`}
             >
               {l.label}

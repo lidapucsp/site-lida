@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Calendar as CalIcon, Loader2 } from "lucide-react";
 import { useCalendario } from "@/hooks/useCalendario";
 import { format, parseISO } from 'date-fns';
@@ -35,24 +36,9 @@ const Calendario = () => {
 
   return (
     <Layout>
-      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-            backgroundSize: "60px 60px",
-          }} />
-          <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-        </div>
-        
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Calendário</h1>
-          <p className="text-primary-foreground/70 text-lg">Atividades, prazos e eventos do LIDA.</p>
-        </div>
-      </section>
+      <PageHero eyebrow="Agenda" title="Calendário" subtitle="Atividades, prazos e eventos do LIDA." />
 
-      <section className="section-padding-top-sm">
+      <section className="section-padding bg-cream">
         <div className="container mx-auto max-w-3xl space-y-10">
           {loading ? (
             <div className="flex justify-center items-center py-20">
@@ -63,20 +49,20 @@ const Calendario = () => {
               <p className="text-red-600">Erro ao carregar eventos do calendário.</p>
             </div>
           ) : Object.keys(eventosPorMes).length === 0 ? (
-            <div className="bg-cream rounded-xl border border-border p-12 text-center">
+            <div className="bg-white rounded-2xl border border-navy/10 p-12 text-center">
               <CalIcon className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-30" />
               <p className="text-muted-foreground">Nenhum evento agendado no momento.</p>
             </div>
           ) : (
             Object.entries(eventosPorMes).map(([mes, eventosDoMes]) => (
-              <div key={mes}>
-                <h2 className="text-xl font-display font-bold mb-4 flex items-center gap-2">
-                  <CalIcon className="w-5 h-5 text-gold" /> {mes}
+              <div key={mes} className="reveal">
+                <h2 className="text-lg font-display font-bold uppercase tracking-[0.12em] mb-5 flex items-center gap-3 text-navy">
+                  <span className="w-9 h-9 rounded-lg bg-gradient-to-br from-navy to-navy-light flex items-center justify-center"><CalIcon className="w-4 h-4 text-gold" /></span> {mes}
                 </h2>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {eventosDoMes.map((e) => (
-                    <div key={e.id} className="bg-card rounded-lg border border-border p-4 flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center font-bold text-sm">{e.dia}</div>
+                    <div key={e.id} className="group bg-white rounded-xl border border-navy/10 p-4 flex items-center gap-4 hover:border-gold/60 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                      <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center font-display font-bold text-navy group-hover:bg-gold transition-colors duration-300">{e.dia}</div>
                       <div className="flex-1">
                         <p className="font-medium text-sm">{e.titulo}</p>
                         {e.descricao && (
@@ -91,8 +77,8 @@ const Calendario = () => {
             ))
           )}
 
-          <div className="bg-cream rounded-xl border border-border p-6 text-center">
-            <h3 className="font-semibold mb-2">Google Calendar</h3>
+          <div className="bg-white rounded-2xl border border-navy/10 p-8 text-center reveal">
+            <h3 className="font-display font-bold text-lg mb-2 text-navy">Google Calendar</h3>
             <p className="text-sm text-muted-foreground mb-4">Adicione o calendário do LIDA ao seu Google Calendar para não perder nenhum evento.</p>
             <div className="bg-muted rounded-lg h-48 flex items-center justify-center text-sm text-muted-foreground">
               [Embed Google Calendar — placeholder]

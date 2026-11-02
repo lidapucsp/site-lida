@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ExternalLink, Loader2 } from "lucide-react";
 import { useEventos } from "@/hooks/useEventos";
@@ -11,24 +12,9 @@ const Eventos = () => {
 
   return (
   <Layout>
-    <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-      {/* Animated Background */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-          backgroundSize: "60px 60px",
-        }} />
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-      </div>
-      
-      <div className="container mx-auto max-w-3xl text-center relative z-10">
-        <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Eventos e Atividades</h1>
-        <p className="text-primary-foreground/70 text-lg">Seminários, workshops e palestras promovidos pelo LIDA.</p>
-      </div>
-    </section>
+    <PageHero eyebrow="Agenda" title="Eventos e Atividades" subtitle="Seminários, workshops e palestras promovidos pelo LIDA." />
 
-    <section className="section-padding-top-sm">
+    <section className="section-padding bg-cream">
       <div className="container mx-auto max-w-4xl">
         {loading ? (
           <div className="flex justify-center items-center py-20">
@@ -36,8 +22,11 @@ const Eventos = () => {
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-display font-bold mb-6">Próximos Eventos</h2>
-            <div className="space-y-4 mb-16">
+            <div className="mb-10 reveal">
+              <span className="eyebrow eyebrow-light mb-4">Agenda</span>
+              <h2 className="section-title text-navy">Próximos Eventos</h2>
+            </div>
+            <div className="space-y-5 mb-24 reveal-grid">
               {eventosAgendados.length === 0 ? (
                 <p className="text-center text-muted-foreground py-10">Nenhum evento agendado no momento.</p>
               ) : (
@@ -48,9 +37,9 @@ const Eventos = () => {
                     year: 'numeric' 
                   });
                   return (
-                    <div key={e.id} className="bg-card rounded-xl border border-border p-6 card-hover">
-                      <span className="text-xs font-medium text-gold bg-gold/10 px-2.5 py-1 rounded-full">{e.tipo}</span>
-                      <h3 className="text-lg font-semibold mt-3 mb-2">{e.titulo}</h3>
+                    <div key={e.id} className="card-light group reveal">
+                      <span className="text-xs font-bold text-gold-dark bg-gold/10 px-2.5 py-1 rounded-full">{e.tipo}</span>
+                      <h3 className="text-xl font-display font-bold mt-3 mb-2 text-navy group-hover:text-gold-dark transition-colors">{e.titulo}</h3>
                       <p className="text-sm text-muted-foreground mb-3">{e.descricao}</p>
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
                         <span className="flex items-center gap-1">
@@ -62,7 +51,7 @@ const Eventos = () => {
                         )}
                       </div>
                       {e.url_inscricao ? (
-                        <Button variant="hero" size="sm" asChild>
+                        <Button variant="hero" size="sm" asChild className="btn-sweep">
                           <a href={e.url_inscricao} target="_blank" rel="noopener noreferrer">Inscrever-se</a>
                         </Button>
                       ) : (
@@ -74,8 +63,11 @@ const Eventos = () => {
               )}
             </div>
 
-            <h2 className="text-2xl font-display font-bold mb-6">Eventos Passados</h2>
-            <div className="space-y-4">
+            <div className="mb-10 reveal">
+              <span className="eyebrow eyebrow-light mb-4">Histórico</span>
+              <h2 className="section-title text-navy">Eventos Passados</h2>
+            </div>
+            <div className="space-y-4 reveal-grid">
               {eventosRealizados.length === 0 ? (
                 <p className="text-center text-muted-foreground py-10">Nenhum evento realizado ainda.</p>
               ) : (
@@ -85,8 +77,8 @@ const Eventos = () => {
                     year: 'numeric' 
                   });
                   return (
-                    <div key={e.id} className="bg-cream rounded-xl border border-border p-6">
-                      <h3 className="font-semibold mb-1">{e.titulo}</h3>
+                    <div key={e.id} className="reveal bg-white rounded-2xl border border-navy/10 p-6 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
+                      <h3 className="font-bold mb-1 text-navy">{e.titulo}</h3>
                       <p className="text-xs text-muted-foreground mb-2">{dataFormatada}</p>
                       <p className="text-sm text-muted-foreground mb-3">{e.descricao}</p>
                       {e.possui_materiais && e.url_materiais && (

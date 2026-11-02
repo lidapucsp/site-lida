@@ -58,6 +58,8 @@ export default function Admin() {
   const [reunioesCount, setReunioesCount] = useState(0)
   const [membrosCount, setMembrosCount] = useState(0)
   const [contatosNovosCount, setContatosNovosCount] = useState(0)
+  const [equipesCount, setEquipesCount] = useState(0)
+  const [tarefasEcossistemaAtivas, setTarefasEcossistemaAtivas] = useState(0)
   const [membroLogadoId, setMembroLogadoId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -80,12 +82,14 @@ export default function Admin() {
 
   const fetchCounts = async () => {
     try {
-      const [comunicadosRes, materiaisRes, reunioesRes, membrosRes, contatosRes] = await Promise.all([
+      const [comunicadosRes, materiaisRes, reunioesRes, membrosRes, contatosRes, equipesRes, tarefasEcoRes] = await Promise.all([
         supabase.from('comunicados').select('*', { count: 'exact', head: true }),
         supabase.from('materiais').select('*', { count: 'exact', head: true }),
         supabase.from('aulas').select('*', { count: 'exact', head: true }),
         supabase.from('membros').select('*', { count: 'exact', head: true }),
-        supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo')
+        supabase.from('contatos').select('*', { count: 'exact', head: true }).eq('status', 'novo'),
+        supabase.from('equipes').select('*', { count: 'exact', head: true }).eq('ativo', true),
+        supabase.from('tarefas_ecossistema').select('*', { count: 'exact', head: true }).not('status', 'in', '(concluida,cancelada)')
       ])
 
       setComunicadosCount(comunicadosRes.count || 0)
@@ -93,6 +97,8 @@ export default function Admin() {
       setReunioesCount(reunioesRes.count || 0)
       setMembrosCount(membrosRes.count || 0)
       setContatosNovosCount(contatosRes.count || 0)
+      setEquipesCount(equipesRes.count || 0)
+      setTarefasEcossistemaAtivas(tarefasEcoRes.count || 0)
     } catch (error) {
       console.error('Erro ao buscar counts:', error)
     } finally {
@@ -126,59 +132,62 @@ export default function Admin() {
       title: 'Publicações',
       value: publicacoes?.length || 0,
       icon: BookOpen,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
     {
       title: 'Eventos',
       value: eventos?.length || 0,
       icon: CalendarCheck,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
     {
       title: 'Comunicados',
       value: comunicadosCount,
       icon: Mail,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
     {
       title: 'Materiais',
       value: materiaisCount,
       icon: BookOpen,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
     {
       title: 'Reuniões',
       value: reunioesCount,
       icon: Video,
-      color: 'text-red-600',
-      bgColor: 'bg-red-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
     {
       title: 'Participantes',
       value: profiles?.length || 0,
       icon: Users,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100',
+      color: 'text-gold-dark',
+      bgColor: 'bg-gold/15',
     },
   ]
 
   return (
     <div className="min-h-screen bg-cream">
       {/* Header */}
-      <header className="bg-navy border-b border-gold/20 sticky top-0 z-50 shadow-lg">
+      <header className="bg-navy-deep/90 backdrop-blur-xl border-b border-gold/20 sticky top-0 z-50 shadow-xl">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-display font-bold text-cream">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-4">
+              <img src="/LIDA-logo-branco.PNG" alt="LIDA" className="h-10 w-auto object-contain hidden sm:block" />
+              <div>
+              <h1 className="text-lg sm:text-2xl font-display font-bold text-cream leading-tight">
                 Painel Administrativo
               </h1>
               <p className="text-sm text-gold-light">
                 Bem-vindo(a), {profile?.full_name || profile?.username}
               </p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <Button
@@ -205,7 +214,7 @@ export default function Admin() {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-white border border-gold/20 p-1 h-auto">
+          <TabsList className="w-full justify-start h-auto">
             <TabsTrigger 
               value="dashboard" 
               className="data-[state=active]:bg-navy data-[state=active]:text-cream flex items-center gap-2 py-3 hover:bg-gold/20"
@@ -291,7 +300,7 @@ export default function Admin() {
               {stats.map((stat) => {
                 const Icon = stat.icon
                 return (
-                  <Card key={stat.title} className="border-gold/20">
+                  <Card key={stat.title} className="border-navy/10 hover:border-gold/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-sm font-medium text-navy-light">
                         {stat.title}
@@ -301,7 +310,7 @@ export default function Admin() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-navy">
+                      <div className="text-4xl font-display font-bold text-navy">
                         {stat.value}
                       </div>
                     </CardContent>
@@ -311,7 +320,7 @@ export default function Admin() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-gold/20">
+              <Card className="border-navy/10 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-navy flex items-center gap-2">
@@ -380,7 +389,7 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-gold/20">
+              <Card className="border-navy/10 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-navy flex items-center gap-2">
                     <List className="w-5 h-5 text-gold" />
@@ -426,7 +435,7 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-gold/20">
+              <Card className="border-navy/10 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-navy flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-gold" />
@@ -464,7 +473,7 @@ export default function Admin() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-gold/20">
+              <Card className="border-navy/10 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-navy flex items-center gap-2">
@@ -503,7 +512,7 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-gold/20">
+              <Card className="border-navy/10 hover:border-gold/50 hover:shadow-lg transition-all duration-300">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-navy flex items-center gap-2">
@@ -527,11 +536,11 @@ export default function Admin() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                       <span className="text-sm text-navy-light">Equipes</span>
-                      <span className="font-semibold text-navy">4</span>
+                      <span className="font-semibold text-navy">{equipesCount}</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-cream rounded-lg">
                       <span className="text-sm text-navy-light">Tarefas Ativas</span>
-                      <span className="font-semibold text-navy">-</span>
+                      <span className="font-semibold text-navy">{tarefasEcossistemaAtivas}</span>
                     </div>
                     <Button
                       variant="outline"

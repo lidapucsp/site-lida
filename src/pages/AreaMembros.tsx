@@ -29,10 +29,11 @@ export default function AreaMembros() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-white to-gold-light/10">
       {/* Header */}
-      <header className="bg-navy text-cream border-b border-gold/20">
+      <header className="bg-navy-deep/95 backdrop-blur-xl text-cream border-b border-gold/20 sticky top-0 z-50 shadow-xl">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-4">
+              <img src="/LIDA-logo-branco.PNG" alt="LIDA" className="h-10 w-auto object-contain hidden md:block" />
               <Avatar className="h-12 w-12 border-2 border-gold">
                 <AvatarImage src={profile?.avatar_url || ''} />
                 <AvatarFallback className="bg-gold text-navy font-bold">
@@ -40,7 +41,7 @@ export default function AreaMembros() {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-2xl font-display font-bold">
+                <h1 className="text-lg sm:text-2xl font-display font-bold leading-tight">
                   Bem-vindo(a), {profile?.full_name || profile?.username}!
                 </h1>
                 <p className="text-gold-light text-sm">Área de Membros LIDA</p>
@@ -84,7 +85,7 @@ export default function AreaMembros() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-8 bg-white border border-gold/20">
+          <TabsList className="w-full max-w-6xl mx-auto h-auto">
             <TabsTrigger
               value="materiais"
               className="data-[state=active]:bg-navy data-[state=active]:text-cream"

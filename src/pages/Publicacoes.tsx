@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Layout from "@/components/layout/Layout";
+import PageHero from "@/components/layout/PageHero";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Loader2 } from "lucide-react";
 import { usePublicacoes } from "@/hooks/usePublicacoes";
@@ -29,41 +30,26 @@ const Publicacoes = () => {
 
   return (
     <Layout>
-      <section className="relative bg-gradient-to-br from-navy via-navy-dark to-navy overflow-hidden hero-padding">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--gold) / 0.4) 2px, transparent 0)`,
-            backgroundSize: "60px 60px",
-          }} />
-          <div className="absolute top-20 left-20 w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gold/5 rounded-full blur-3xl animate-float animation-delay-500" />
-        </div>
-        
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-primary-foreground mb-4">Publicações</h1>
-          <p className="text-primary-foreground/70 text-lg">Produção intelectual do LIDA: artigos, notas técnicas, relatórios e guias.</p>
-        </div>
-      </section>
+      <PageHero eyebrow="Produção intelectual" title="Publicações" subtitle="Produção intelectual do LIDA: artigos, notas técnicas, relatórios e guias." />
 
-      <section className="section-padding-top-sm">
+      <section className="section-padding bg-cream">
         <div className="container mx-auto max-w-5xl">
-          <div className="flex flex-wrap gap-4 mb-8">
+          <div className="flex flex-wrap gap-4 mb-10 p-5 rounded-2xl bg-white border border-navy/10 shadow-sm reveal">
             <div>
-              <label className="text-sm font-medium mb-1 block">Eixo</label>
-              <select value={eixo} onChange={(e) => setEixo(e.target.value)} className="rounded-md border border-input bg-background px-3 py-2 text-sm">
+              <label className="text-xs font-bold uppercase tracking-[0.15em] text-gold-dark mb-1.5 block">Eixo</label>
+              <select value={eixo} onChange={(e) => setEixo(e.target.value)} className="rounded-lg border border-navy/15 bg-cream px-3 py-2 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all">
                 {eixosFilter.map((e) => <option key={e}>{e}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-sm font-medium mb-1 block">Ano</label>
-              <select value={ano} onChange={(e) => setAno(e.target.value)} className="rounded-md border border-input bg-background px-3 py-2 text-sm">
+              <label className="text-xs font-bold uppercase tracking-[0.15em] text-gold-dark mb-1.5 block">Ano</label>
+              <select value={ano} onChange={(e) => setAno(e.target.value)} className="rounded-lg border border-navy/15 bg-cream px-3 py-2 text-sm focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all">
                 {anosFilter.map((a) => <option key={a}>{a}</option>)}
               </select>
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5 reveal-grid">
             {loading ? (
               <div className="flex justify-center items-center py-20">
                 <Loader2 className="w-8 h-8 animate-spin text-gold" />
@@ -77,13 +63,13 @@ const Publicacoes = () => {
                   month: '2-digit' 
                 });
                 return (
-                  <div key={p.id} className="bg-card rounded-xl border border-border p-6 card-hover">
+                  <div key={p.id} className="card-light group reveal">
                     <div className="flex items-center gap-2 mb-3">
                       <FileText className="w-4 h-4 text-gold" />
-                      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{p.tipo}</span>
+                      <span className="text-xs font-bold text-gold-dark bg-gold/10 px-2.5 py-0.5 rounded-full">{p.tipo}</span>
                       <span className="text-xs text-muted-foreground">{dataFormatada}</span>
                     </div>
-                    <h2 className="text-lg font-semibold mb-1">{p.titulo}</h2>
+                    <h2 className="text-xl font-display font-bold mb-1 text-navy group-hover:text-gold-dark transition-colors">{p.titulo}</h2>
                     <p className="text-sm text-muted-foreground mb-2">{p.autores}</p>
                     <p className="text-sm text-muted-foreground mb-4">{p.resumo}</p>
                     <div className="flex flex-wrap gap-2">
@@ -99,7 +85,7 @@ const Publicacoes = () => {
                       </Button>
                     </div>
                     {showCitacao === p.id && (
-                      <div className="mt-3 p-3 bg-muted rounded-md text-xs text-muted-foreground font-mono">
+                      <div className="mt-3 p-4 bg-cream border-l-4 border-gold rounded-md text-xs text-muted-foreground font-mono">
                         {p.citacao}
                       </div>
                     )}

@@ -38,7 +38,7 @@ export function usePublicacoes(options: UsePublicacoesOptions = {}) {
         query = query.eq('ano', parseInt(options.ano));
       }
       if (options.tipo && options.tipo !== 'Todos') {
-        query = query.eq('tipo', options.tipo);
+        query = query.eq('tipo', options.tipo as Publicacao['tipo']);
       }
 
       const { data, error } = await query;
